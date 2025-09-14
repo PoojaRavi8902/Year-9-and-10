@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>IGCSE 0478 — Assessment: Number systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1724;
+    --panel:#0b1220;
+    --card:#0f1728;
+    --muted:#94a3b8;
+    --accent:#06b6d4;
+    --accent-2:#7c3aed;
+    --glass: rgba(255,255,255,0.03);
+    --success:#16a34a;
+    --danger:#ef4444;
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial; background:linear-gradient(180deg,#071124 0%, #0b1630 100%); color:#e6eef6;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; padding:28px;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto;}
+  header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .title-block{display:flex; flex-direction:column;}
+  h1{margin:0; font-size:1.55rem; letter-spacing:0.2px;}
+  .byline{color:var(--muted); font-weight:600; margin-top:6px;}
+  .meta{color:var(--muted); font-size:0.9rem;}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:18px; box-shadow:0 8px 30px rgba(2,6,23,0.6); margin-bottom:16px; border:1px solid rgba(255,255,255,0.03);}
+  .section-title{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  h2{margin:0; font-size:1.1rem; color:var(--accent);}
+  p.lead{margin:8px 0 0; color:var(--muted);}
+  .grid{display:grid; gap:12px;}
+  .mcq-question, .short-question, .exam-question{padding:12px; background:var(--glass); border-radius:8px; border:1px solid rgba(255,255,255,0.02);}
+  .qnum{display:inline-block; background:linear-gradient(90deg,var(--accent-2),var(--accent)); color:#021025; padding:6px 9px; border-radius:999px; font-weight:700; margin-right:10px; font-size:0.85rem;}
+  label.option{display:block; padding:8px; border-radius:6px; margin:6px 0; cursor:pointer; transition:all .12s; border:1px solid rgba(255,255,255,0.02);}
+  label.option:hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(3,7,18,0.5);}
+  input[type="radio"], input[type="checkbox"]{margin-right:8px;}
+  .btn{background:linear-gradient(90deg,var(--accent),#0ea5b1); color:#012; padding:10px 14px; border-radius:8px; border:none; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(6,182,212,0.12); transition:transform .12s;}
+  .btn:hover{transform:translateY(-3px)}
+  .btn.alt{background:transparent; color:var(--accent); border:1px solid rgba(255,255,255,0.04); box-shadow:none;}
+  .scorebox{padding:10px 12px; border-radius:8px; background:rgba(0,0,0,0.35); color:var(--muted); margin-top:10px;}
+  .correct{border:2px solid rgba(22,163,74,0.18); background:linear-gradient(90deg, rgba(25,135,84,0.06), rgba(16,185,129,0.02));}
+  .incorrect{border:2px solid rgba(239,68,68,0.12); background:linear-gradient(0deg, rgba(239,68,68,0.02), rgba(255,0,0,0.01));}
+  .answer-reveal{margin-top:8px; padding:10px; border-radius:8px; background:rgba(255,255,255,0.02); color:var(--muted); font-size:0.95rem;}
+  textarea{width:100%; min-height:120px; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:inherit; resize:vertical;}
+  input[type="text"]{width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:inherit;}
+  .flex-row{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .muted{color:var(--muted);}
+  .small{font-size:0.9rem; color:var(--muted);}
+  .right{margin-left:auto;}
+  .hint{font-size:0.9rem; color:var(--muted); margin-top:6px;}
+  .qa-meta{font-size:0.9rem; color:var(--muted); margin-top:6px;}
+  footer{margin-top:18px; color:var(--muted); text-align:center;}
+  @media(min-width:900px){
+    .two-col{display:grid; grid-template-columns: 1fr 380px; gap:16px;}
+  }
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.02); font-weight:600; color:var(--muted);}
+  .reveal-true{color:var(--success); font-weight:700;}
+  .reveal-false{color:var(--danger); font-weight:700;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title-block">
+        <h1>IGCSE 0478 — Assessment: Number systems (1.1)</h1>
+        <div class="byline">Prepared by Ravi Raju</div>
+      </div>
+      <div class="meta pill">Self-marking practice — MCQs, Short & Exam style</div>
+    </header>
+
+    <!-- MCQ Section -->
+    <section class="card" id="mcq-section">
+      <div class="section-title">
+        <h2>Section A — Multiple Choice Questions (15)</h2>
+        <div class="small">Choose the best answer. Press <strong>Show Answers</strong> when done.</div>
+      </div>
+      <p class="lead">Each MCQ has 4 options. Your selections will be evaluated and scored.</p>
+
+      <div class="grid" id="mcq-list">
+        <!-- MCQs rendered here -->
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+        <button class="btn" onclick="revealMCQAnswers()">Show Answers & Score (MCQs)</button>
+        <div id="mcq-score" class="scorebox" aria-live="polite">MCQ score: —</div>
+      </div>
+    </section>
+
+    <!-- Short Answer Section -->
+    <section class="card" id="short-section">
+      <div class="section-title">
+        <h2>Section B — Short Answer Questions (15)</h2>
+        <div class="small">Type short answers. Press <strong>Show Answers</strong> at the end to check your performance.</div>
+      </div>
+      <p class="lead">Answers are compared case-insensitively. Numeric answers are compared numerically.</p>
+
+      <div class="grid" id="short-list">
+        <!-- Short questions injected here -->
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+        <button class="btn" onclick="revealShortAnswers()">Show Answers & Score (Short)</button>
+        <div id="short-score" class="scorebox" aria-live="polite">Short answer score: —</div>
+      </div>
+    </section>
+
+    <!-- Exam Style Section -->
+    <section class="card" id="exam-section">
+      <div class="section-title">
+        <h2>Section C — Exam Style Questions (15)</h2>
+        <div class="small">Write extended answers. Each question has its own <strong>Submit</strong> button which reveals the model answer for that question only.</div>
+      </div>
+      <div class="grid" id="exam-list">
+        <!-- Exam questions -->
+      </div>
+      <p class="hint">Note: Exam-style answers are revealed per question; no overall score is calculated.</p>
+    </section>
+
+    <footer>
+      <div class="small">Good luck. Once you press Show Answers for MCQs/Short answers the results are visible and cannot be reset from this page.</div>
+    </footer>
+  </div>
+
+<script>
+/* ============================
+  Questions + Answers Database
+  ============================ */
+
+/* 15 MCQs: structure {id, q, choices:[..], answerIndex} */
+const mcqList = [
+  {id:1, q:"Which binary number equals denary 238?", choices:["11101110","11100110","11011110","11111100"], answerIndex:0},
+  {id:2, q:"What is the 8-bit binary for denary 59?", choices:["00111011","00111101","00110111","00011111"], answerIndex:0},
+  {id:3, q:"One hexadecimal digit represents how many binary bits?", choices:["2","3","4","8"], answerIndex:2},
+  {id:4, q:"Hexadecimal 'A' is denary:", choices:["9","10","11","12"], answerIndex:1},
+  {id:5, q:"Which is a valid MAC address format?", choices:["001C:B34F:25FE","00-1C-B3-4F-25-FE","001C.B34F.25FE","00:1C-B3:4F:25-FE"], answerIndex:1},
+  {id:6, q:"IPv6 addresses use which separator?", choices:[".","-",":","/"], answerIndex:2},
+  {id:7, q:"Binary place value for the leftmost bit in an 8-bit number is:", choices:["64","128","256","1"], answerIndex:1},
+  {id:8, q:"Convert binary 1010 to hex:", choices:["A","5","10","B"], answerIndex:0},
+  {id:9, q:"Denary to binary using division method: 8 ÷ 2 yields remainder:", choices:["0","1","2","It depends"], answerIndex:0},
+  {id:10, q:"Which hex color represents pure green?", choices:["#FF0000","#00FF00","#0000FF","#FFFFFF"], answerIndex:1},
+  {id:11, q:"How many unique colours can be represented with 24-bit RGB?", choices:["16,384","65,536","16,777,216","256"], answerIndex:2},
+  {id:12, q:"Binary 11111111 equals denary:", choices:["128","255","256","512"], answerIndex:1},
+  {id:13, q:"Hexadecimal digit F represents denary:", choices:["14","15","16","17"], answerIndex:1},
+  {id:14, q:"What does IPv4 use to separate octets?", choices:["colon (:)", "space", "dot (.)", "hyphen (-)"], answerIndex:2},
+  {id:15, q:"Which is the correct 4-bit binary for hex 'C'?", choices:["1101","1100","1011","1110"], answerIndex:1}
+];
+
+/* 15 Short answers: structure {id, q, answers:[...]} - acceptable answers (strings or numbers) */
+const shortList = [
+  {id:1, q:"Convert binary 00110011 to denary.", answers:["51","51.0"]},
+  {id:2, q:"Convert binary 01111111 to denary.", answers:["127","127.0"]},
+  {id:3, q:"Convert binary 10011001 to denary.", answers:["153","153.0"]},
+  {id:4, q:"Convert binary 01110100 to denary.", answers:["116","116.0"]},
+  {id:5, q:"Convert binary 11111111 to denary.", answers:["255","255.0"]},
+  {id:6, q:"Write denary 41 as 8-bit binary.", answers:["00101001","101001","00101001.0"]},
+  {id:7, q:"Write denary 67 as 8-bit binary.", answers:["01000011","1000011","01000011.0"]},
+  {id:8, q:"Write denary 86 as 8-bit binary.", answers:["01010110","1010110","01010110.0"]},
+  {id:9, q:"What is hex representation of binary 11000011?", answers:["C3","c3","0xC3"]},
+  {id:10, q:"Convert hex 6C to binary (8 bits).", answers:["01101100","1101100"]},
+  {id:11, q:"Convert hex 9C to denary.", answers:["156","156.0"]},
+  {id:12, q:"Convert denary 98 to hexadecimal.", answers:["62","0x62","62.0"]},
+  {id:13, q:"How many bits are in an IPv6 address?", answers:["128","128.0"]},
+  {id:14, q:"How many bits in a MAC address (commonly)?", answers:["48","48.0"]},
+  {id:15, q:"What symbol prefixes an HTML hex color code?", answers:["#","# (hash)"]}
+];
+
+/* 15 Exam style: {id,q, modelAnswer} */
+const examList = [
+  {id:1, q:"Explain why computers use the binary number system rather than denary. (4–6 lines)", modelAnswer:"Computers use binary because their hardware uses switches/transistors that have two stable states (on/off). Binary maps naturally to these two states with 1 and 0. Using base-2 simplifies circuit design, error detection, and reliable storage, as each bit is represented by a physical on/off signal."},
+  {id:2, q:"Describe two methods to convert denary to binary and mention when each is useful.", modelAnswer:"Method 1: Successive subtraction — subtract largest power of two repeatedly to obtain bits; useful for teaching place value. Method 2: Repeated division by 2 — record remainders and read bottom-to-top; useful for algorithmic conversion and programming."},
+  {id:3, q:"Show by example how to convert binary 101111100001 to hexadecimal.", modelAnswer:"Group from right: 1011 1110 0001 → convert each nibble: 1011=B, 1110=E, 0001=1. So hex = BE1."},
+  {id:4, q:"Explain the structure of a MAC address and what the first half commonly indicates.", modelAnswer:"A MAC address is 48 bits, usually shown as 6 groups of two hex digits. The first 3 bytes (first half) often identify the manufacturer (OUI), and the last 3 bytes are the device's unique serial part assigned by the manufacturer."},
+  {id:5, q:"Describe what IPv6 is and one reason it was introduced.", modelAnswer:"IPv6 is the successor to IPv4, using 128-bit addresses to provide a vastly larger address space. It was introduced because IPv4’s 32-bit addresses were insufficient for global device growth and to improve routing and autoconfiguration features."},
+  {id:6, q:"Explain how HTML colour codes work using hexadecimal values.", modelAnswer:"An HTML color code is #RRGGBB where each pair (RR, GG, BB) is a hex value between 00 and FF representing intensity (0–255) of red, green and blue. Combining them creates a 24-bit colour (16,777,216 possible colours)."},
+  {id:7, q:"A program outputs an error code in hex '0xC8F'. Explain briefly how a developer could interpret that.", modelAnswer:"A developer would view the hex value as an address or error identifier; 0xC8F = (12*256)+(8*16)+15 = 3215 in decimal. They would use documentation or a map of error codes to locate the problem area in memory or log."},
+  {id:8, q:"Explain why grouping binary into 4-bit nibbles is convenient.", modelAnswer:"Four bits map exactly to one hex digit (0–F). Grouping into nibbles compresses long binary sequences, making them easier to read, write, and debug for humans while staying directly convertible to binary."},
+  {id:9, q:"Convert denary 35000 to binary (briefly outline the method and final 16-bit result).", modelAnswer:"Use subtraction of powers of two or repeated division. Applying the method yields 16-bit binary: 1000100010111000 (students may present steps; exact bits shown are number dependent)."},
+  {id:10, q:"Discuss two practical uses of hexadecimal in computing.", modelAnswer:"Hex is used in memory/error codes (compact human-readable addresses), MAC addresses (device identifiers), IPv6 representation, and HTML colour codes — anywhere large binary values need concise representation."},
+  {id:11, q:"Explain how you would convert hex '4 5 A' into denary.", modelAnswer:"Multiply each hex digit by its place value: 4×256 + 5×16 + A×1 (A=10) = 1024 + 80 + 10 = 1114."},
+  {id:12, q:"Give a step-by-step method to check if a binary-to-denary conversion is correct.", modelAnswer:"Write place values under each bit, add only where bit=1, sum all selected place values and compare to the claimed denary result. Alternatively, convert denary back to binary to cross-check."},
+  {id:13, q:"Describe any two limitations of using only binary strings for humans and how hex alleviates them.", modelAnswer:"Binary is long and error-prone for humans to read/remember. Hex shortens representation (4 bits per hex digit) and reduces transcription errors; it's easier to map to memory addresses and debugging output."},
+  {id:14, q:"Explain how an IPv6 address is constructed and why colons are used.", modelAnswer:"IPv6 is 128 bits broken into eight 16-bit blocks, each represented as 4 hex digits and separated by colons to improve readability. Colons distinguish the blocks instead of dots used in IPv4."},
+  {id:15, q:"Explain why padding bits when grouping binary (to form full nibbles) is acceptable.", modelAnswer:"Padding with leading zeros does not change value; it aligns the binary into fixed-size groups (nibbles/bytes) for consistent conversion and presentation, making interpretation unambiguous."}
+];
+
+/* ============================
+  Rendering functions
+  ============================ */
+
+function renderMCQs(){
+  const container = document.getElementById('mcq-list');
+  container.innerHTML = '';
+  mcqList.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'mcq-question';
+    div.id = `mcq-${item.id}`;
+    let html = `<div><span class="qnum">${item.id}</span><strong>${escapeHtml(item.q)}</strong></div>`;
+    html += '<div style="margin-top:8px;">';
+    item.choices.forEach((ch, idx)=>{
+      const inputId = `mcq-${item.id}-opt-${idx}`;
+      html += `<label class="option" id="${inputId}-label"><input type="radio" name="mcq-${item.id}" id="${inputId}" value="${idx}"> <span>${escapeHtml(ch)}</span></label>`;
+    });
+    html += '</div>';
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+function renderShorts(){
+  const container = document.getElementById('short-list');
+  container.innerHTML = '';
+  shortList.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'short-question';
+    div.id = `short-${item.id}`;
+    div.innerHTML = `<div><span class="qnum">${item.id}</span><strong>${escapeHtml(item.q)}</strong></div>
+      <div style="margin-top:8px;"><input type="text" id="short-input-${item.id}" placeholder="Type your short answer here"></div>
+      <div id="short-answer-${item.id}" class="answer-reveal" style="display:none;"></div>`;
+    container.appendChild(div);
+  });
+}
+
+function renderExam(){
+  const container = document.getElementById('exam-list');
+  container.innerHTML = '';
+  examList.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'exam-question';
+    div.id = `exam-${item.id}`;
+    div.innerHTML = `<div><span class="qnum">${item.id}</span><strong>${escapeHtml(item.q)}</strong></div>
+      <div style="margin-top:8px;">
+        <textarea id="exam-input-${item.id}" placeholder="Write your answer here..."></textarea>
+      </div>
+      <div style="display:flex; gap:12px; align-items:center; margin-top:8px;">
+        <button class="btn alt" onclick="submitExam(${item.id})">Submit</button>
+        <div id="exam-feedback-${item.id}" class="scorebox" style="display:block">Answer reveal: —</div>
+      </div>
+      <div id="exam-model-${item.id}" class="answer-reveal" style="display:none; white-space:pre-wrap; margin-top:10px;"></div>`;
+    container.appendChild(div);
+  });
+}
+
+/* Escape function to prevent accidental HTML injection if editing content */
+function escapeHtml(s){
+  return s.replaceAll && s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+}
+
+/* ============================
+  Evaluation functions
+  ============================ */
+
+let mcqRevealed = false;
+function revealMCQAnswers(){
+  if(mcqRevealed) return; // don't recalc or hide once shown
+  mcqRevealed = true;
+  let score = 0;
+  mcqList.forEach(item=>{
+    const selected = document.querySelector(`input[name="mcq-${item.id}"]:checked`);
+    const chosenIdx = selected ? Number(selected.value) : null;
+    const qDiv = document.getElementById(`mcq-${item.id}`);
+    // highlight correct option
+    const correctId = `mcq-${item.id}-opt-${item.answerIndex}`;
+    // mark all options
+    item.choices.forEach((ch, idx)=>{
+      const label = document.getElementById(`mcq-${item.id}-opt-${idx}-label`);
+      if(!label) return;
+      label.classList.remove('correct','incorrect');
+      if(idx === item.answerIndex){
+        label.classList.add('correct');
+      }
+      if(chosenIdx !== null && idx === chosenIdx && chosenIdx !== item.answerIndex){
+        label.classList.add('incorrect');
+      }
+    });
+    if(chosenIdx === item.answerIndex) score++;
+    // show small feedback
+    const fb = document.createElement('div');
+    fb.className = 'qa-meta small';
+    if(chosenIdx === null){
+      fb.innerHTML = `<span class="muted">No answer provided — correct answer highlighted.</span>`;
+    } else if(chosenIdx === item.answerIndex){
+      fb.innerHTML = `<span class="reveal-true">Correct</span>`;
+    } else {
+      fb.innerHTML = `<span class="reveal-false">Incorrect</span> — correct highlighted.`;
+    }
+    qDiv.appendChild(fb);
+  });
+  const percent = Math.round((score / mcqList.length) * 100);
+  const out = document.getElementById('mcq-score');
+  out.innerHTML = `MCQ score: <strong style="color:var(--accent)">${score} / ${mcqList.length}</strong> (${percent}%)`;
+}
+
+/* Short answers reveal and scoring */
+let shortRevealed = false;
+function revealShortAnswers(){
+  if(shortRevealed) return;
+  shortRevealed = true;
+  let score = 0;
+  shortList.forEach(item=>{
+    const input = document.getElementById(`short-input-${item.id}`);
+    const user = input.value.trim();
+    const revealDiv = document.getElementById(`short-answer-${item.id}`);
+    // Determine match: check if numeric (both) else case-insensitive compare to any acceptable answer
+    let correct = false;
+    const userNorm = user.replace(/\s+/g,'').toLowerCase();
+    for(const acc of item.answers){
+      const accTrim = String(acc).trim();
+      // numeric compare if both look numeric
+      if(isNumeric(user) && isNumeric(accTrim)){
+        if(Number(user) === Number(accTrim)){ correct = true; break; }
+      } else {
+        if(userNorm === accTrim.replace(/\s+/g,'').toLowerCase()){ correct = true; break; }
+      }
+    }
+    // show model answers, mark
+    const answersHTML = item.answers.map(a=>`<code>${escapeHtml(String(a))}</code>`).join(' or ');
+    revealDiv.style.display = 'block';
+    revealDiv.innerHTML = `<div><strong>Model answer(s):</strong> ${answersHTML}</div>`;
+    if(user.length === 0){
+      revealDiv.innerHTML += `<div class="small muted" style="margin-top:6px;">Your answer: <em>(no answer)</em></div>`;
+    } else {
+      revealDiv.innerHTML += `<div class="small" style="margin-top:6px;">Your answer: <code>${escapeHtml(user)}</code></div>`;
+    }
+    if(correct){
+      revealDiv.classList.add('correct');
+      revealDiv.classList.remove('incorrect');
+      revealDiv.innerHTML += `<div style="margin-top:6px;" class="reveal-true">Auto-check: Correct</div>`;
+      score++;
+    } else {
+      revealDiv.classList.add('incorrect');
+      revealDiv.classList.remove('correct');
+      revealDiv.innerHTML += `<div style="margin-top:6px;" class="reveal-false">Auto-check: Incorrect</div>`;
+    }
+  });
+  const percent = Math.round((score / shortList.length) * 100);
+  const out = document.getElementById('short-score');
+  out.innerHTML = `Short answer score: <strong style="color:var(--accent)">${score} / ${shortList.length}</strong> (${percent}%)`;
+}
+
+/* Exam submit - reveal model answer for that question only */
+function submitExam(id){
+  const model = examList.find(x=>x.id===id);
+  const modelDiv = document.getElementById(`exam-model-${id}`);
+  const feedback = document.getElementById(`exam-feedback-${id}`);
+  // do not hide once revealed
+  if(modelDiv.style.display === 'block') return;
+  // show model answer
+  modelDiv.style.display = 'block';
+  modelDiv.innerHTML = `<strong>Model answer:</strong>\n\n${escapeHtml(model.modelAnswer)}`;
+  feedback.innerHTML = `Model answer revealed for Q${id}.`;
+}
+
+/* Helpers */
+function isNumeric(s){
+  if(s === null || s === undefined) return false;
+  return !isNaN(s) && s.trim() !== '';
+}
+
+/* Initialize render */
+renderMCQs();
+renderShorts();
+renderExam();
+
+</script>
+</body>
+</html>
