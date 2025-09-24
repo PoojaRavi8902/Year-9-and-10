@@ -2,14 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My GitHub Website</title>
+  <title>Index Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ABE2, #5563DE);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      list-style: none;
+      padding: 0;
+    }
+    .nav-links li {
+      margin: 15px 0;
+    }
+    .nav-links a {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 1.2em;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px 25px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .nav-links a:hover {
+      background: #fff;
+      color: #5563DE;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to My Website</h1>
-  <p>Select a page to view:</p>
-  <ul>
-    <li><a href="IG-1-dataRepresentation.html">Open File 1</a></li>
-    <li><a href="1-assessment-data-rep.html">Open File 2</a></li>
-  </ul>
+  <div class="container">
+    <h1>Computer Science Navigation</h1>
+    <ul class="nav-links">
+      <li><a href="IG-1-dataRepresentation.html">Data Representation Notes</a></li>
+      <li><a href="1-assessment-data-rep.html">Assessment: Data Representation</a></li>
+      <li><a href="data-rep-book-quest.html">Book Questions: Data Representation</a></li>
+    </ul>
+  </div>
 </body>
 </html>
