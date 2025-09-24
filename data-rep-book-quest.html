@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>IGCSE ICT — Exam-style Questions & Model Answers</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--accent:#0b5cff;--muted:#6b7280}
+    body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f9;margin:0;padding:20px;color:#0b1220}
+    header{background:#0b2340;color:#fff;padding:18px;border-radius:8px;margin-bottom:18px;box-shadow:0 4px 12px rgba(11,18,32,0.08)}
+    header h1{margin:0;font-size:1.4rem}
+    header .by{margin-top:6px;color:#cfe1ff;font-size:0.95rem}
+    .container{max-width:1000px;margin:0 auto}
+    .question{background:#fff;border-radius:8px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(12,20,40,0.04)}
+    .qtitle{color:var(--accent);font-weight:700;margin-bottom:8px}
+    .answer{background:#f7fbff;border-left:4px solid var(--accent);padding:10px;border-radius:6px}
+    pre{background:#0b1220;color:#e6f0ff;padding:10px;border-radius:6px;overflow:auto}
+    code{font-family:monospace;background:#eef2f8;padding:2px 6px;border-radius:4px}
+    .small{color:var(--muted);font-size:0.95rem}
+    .note{background:#fff8e6;border-left:4px solid #ffb020;padding:10px;border-radius:6px;margin-top:8px}
+    table{border-collapse:collapse;width:100%;margin-top:8px}
+    th,td{border:1px solid #e6eefc;padding:6px;text-align:left}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>IGCSE ICT — Exam-style Questions & Model Answers</h1>
+      <div class="by">Prepared by Ravi Raju</div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Q1 -->
+    <section class="question" id="q1">
+      <div class="qtitle">Question 1 — Sound sampling, image resolution, colour depth, compression</div>
+
+      <div class="answer">
+        <div><strong>1(a)(i) [1]</strong> <em>What is meant by sampling resolution?</em></div>
+        <div class="small" style="margin-top:6px"><strong>Answer:</strong> The sampling resolution (bit depth) is the number of bits used to record each audio sample — the number of bits used to represent the amplitude of each sampled point. Higher bit depth gives finer amplitude precision.</div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>1(a)(ii) [2]</strong> <em>Describe how sampling resolution affects accuracy of digitised sound.</em></div>
+        <div class="small" style="margin-top:6px">
+          <ol>
+            <li>Higher sampling resolution (more bits per sample) reduces quantisation error and records amplitude more precisely — resulting in more accurate, less noisy digital sound. (1 mark)</li>
+            <li>Lower sampling resolution increases rounding (quantisation) error so stored sound is less faithful to the original. (1 mark)</li>
+          </ol>
+        </div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>1(b)(i) [1]</strong> <em>Explain the term image resolution.</em></div>
+        <div class="small" style="margin-top:6px"><strong>Answer:</strong> Image resolution is the number of pixels in an image, usually given as width × height (for example, 1024 × 768). It indicates how many picture points (pixels) are used to form the image.</div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>1(b)(ii) [1]</strong> <em>16-colour bitmap — how many bits per pixel?</em></div>
+        <div class="small" style="margin-top:6px"><strong>Answer:</strong> 16 colours → needs log₂(16) = 4 bits per pixel. So <code>4 bits/pixel</code>.</div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>1(b)(iii) [3]</strong> <em>Image size calculation</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Given:</strong> width = 16 384 px, height = 512 px, saved as 256-colour bitmap → 8 bits/pixel.<br><br>
+
+          <strong>Working:</strong><br>
+          Total pixels = 16 384 × 512 = <strong>8 388 608</strong> pixels.<br>
+          Total bits = 8 388 608 × 8 = <strong>67 108 864</strong> bits.<br>
+          Bytes = 67 108 864 ÷ 8 = <strong>8 388 608</strong> bytes.<br>
+          Convert to GiB: 8 388 608 ÷ 1 073 741 824 = <strong>0.0078125 GiB</strong> = <em>1/128 GiB</em>.<br><br>
+          <strong>Answer:</strong> <code>0.0078125 GiB</code>.
+        </div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>1(b)(iv) [3]</strong> <em>Describe file compression techniques the developer may use.</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer (3 marks):</strong>
+          <ul>
+            <li><strong>Lossless:</strong> RLE (run-length encoding), LZW, PNG compression. Reduce file size without losing any pixel data — use when exact pixel values are required (e.g., icons, sprites).</li>
+            <li><strong>Lossy:</strong> JPEG — reduces file size by discarding some information (perceptually less important detail). Good for photographic backgrounds where small visual loss is acceptable.</li>
+            <li><strong>Choice guidance:</strong> Use lossless when exact reproduction is required (game sprites, palette-sensitive images); use lossy (JPEG) when large size reduction is priority and small quality loss is acceptable (photographic textures/backgrounds).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q2 -->
+    <section class="question" id="q2">
+      <div class="qtitle">Question 2 — Music sampling, compression and RLE</div>
+
+      <div class="answer">
+        <div><strong>2(a) [3]</strong> <em>Describe how sampling is used to record the music clips.</em></div>
+        <div class="small" style="margin-top:6px">
+          <ol>
+            <li>Analogue sound waves are measured at regular time intervals (the <strong>sampling frequency</strong>, e.g. 44.1 kHz) producing discrete samples. (1 mark)</li>
+            <li>Each sample’s amplitude is converted to a digital number using a chosen <strong>bit depth</strong> (sampling resolution) such as 16-bit. (1 mark)</li>
+            <li>The sequence of samples is stored; during playback the samples recreate the waveform (digital-to-analogue). (1 mark)</li>
+          </ol>
+        </div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>2(b) [2]</strong> <em>Which compression (lossy or lossless) should be used for email and why?</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> Use <strong>lossy compression</strong> (e.g. MP3, AAC) because it greatly reduces file size making email transfers practical while keeping acceptable audio quality for most uses. (2 marks)  
+          <span class="small">Note: If final mastering requires perfect fidelity, use lossless; for sending drafts by email, lossy is preferred.</span>
+        </div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>2(c)(i) [1]</strong> <em>What is meant by RLE?</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> Run-Length Encoding (RLE) stores consecutive repeated values as a single value plus a count, e.g. <code>(0,5)</code> for five consecutive zeros. (1 mark)
+        </div>
+
+        <hr style="margin:10px 0">
+
+        <div><strong>2(c)(ii) [3]</strong> <em>Show how RLE would be used to produce a compressed file for the (exam) image.</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Method & Example (3 marks):</strong>
+          <ol>
+            <li>RLE records runs row-by-row. For each row, encode as pairs <code>(value,count)</code> where value is pixel code (given: grey=0, white=1). (1 mark)</li>
+            <li>Example: if a row is <code>0 0 0 0 1 1</code> → RLE row encoding is <code>(0,4),(1,2)</code> or flat <code>0,4,1,2</code>. (1 mark)</li>
+            <li>For the actual exam image, list each row’s runs in sequence to form the compressed data. <em>(If you paste the image grid here I will produce the exact RLE sequence.)</em> (1 mark)</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q3 -->
+    <section class="question" id="q3">
+      <div class="qtitle">Question 3 — 8-bit register shifting</div>
+
+      <div class="answer">
+        <div><strong>Given register (MSB → LSB):</strong> <code>0 0 1 1 0 1 1 0</code> (i.e. <code>00110110</code>)</div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>3(a) [1]</strong> <em>Denary value of 00110110</em></div>
+        <div class="small" style="margin-top:6px">
+          Calculation: 32 + 16 + 4 + 2 = <strong>54</strong>.  
+          <strong>Answer:</strong> 54.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>3(b)(i) [1]</strong> <em>Logical right shift 1 place — show result</em></div>
+        <div class="small" style="margin-top:6px">
+          Right shift inserts 0 at left: <code>00110110</code> → <code>00011011</code>.  
+          <strong>Answer:</strong> <code>0 0 0 1 1 0 1 1</code>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>3(b)(ii) [1]</strong> <em>Denary value after right shift</em></div>
+        <div class="small" style="margin-top:6px">
+          <code>00011011</code> = 16 + 8 + 2 + 1 = <strong>27</strong>.  
+          <strong>Answer:</strong> 27.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>3(c)(i) [1]</strong> <em>Logical left shift two places — show result</em></div>
+        <div class="small" style="margin-top:6px">
+          Left shift 2: <code>00110110</code> << 2 → <code>11011000</code>.  
+          <strong>Answer:</strong> <code>1 1 0 1 1 0 0 0</code>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>3(c)(ii) [1]</strong> <em>Effect on denary value and reason</em></div>
+        <div class="small" style="margin-top:6px">
+          A left shift by 2 multiplies the value by 2² = 4 (unless overflow occurs). Original 54 × 4 = <strong>216</strong>. After shift register value = <code>11011000</code> = 216 — so multiplication by 4 succeeded with no overflow. (1 mark)
+        </div>
+      </div>
+    </section>
+
+    <!-- Q4 -->
+    <section class="question" id="q4">
+      <div class="qtitle">Question 4 — Binary conversions, addition, two's complement</div>
+
+      <div class="answer">
+        <div><strong>4(a)</strong> Convert denary → 8-bit binary</div>
+        <div class="small" style="margin-top:6px">
+          <ol>
+            <li><strong>123</strong → <code>01111011</code></li>
+            <li><strong>55</strong → <code>00110111</code></li>
+            <li><strong>180</strong → <code>10110100</code></li>
+          </ol>
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(b)(i)</strong> Add 123 + 55 using binary</div>
+        <div class="small" style="margin-top:6px">
+          <pre>
+  01111011  (123)
++ 00110111  (55)
+= 10110010  (178)
+          </pre>
+          <strong>Answer:</strong> <code>10110010</code> = 178 (no overflow).
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(b)(ii)</strong> Add 123 + 180</div>
+        <div class="small" style="margin-top:6px">
+          <pre>
+  01111011  (123)
++ 10110100  (180)
+= 00101111  (with carry-out)
+          </pre>
+          Sum = 303, 8-bit result = <code>00101111</code> = 47, <strong>overflow occurred</strong> (carry out).  
+          <strong>Answer:</strong> <code>00101111</code> (47), overflow.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(c)(i) [1]</strong> Two’s complement of <code>0 1 1 1 0 1 0 0</code> (01110100)</div>
+        <div class="small" style="margin-top:6px">
+          Invert → <code>10001011</code>, add 1 → <code>10001100</code>.  
+          <strong>Answer:</strong> <code>10001100</code>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(c)(ii)</strong> Binary value of −112 in 8-bit two’s complement</div>
+        <div class="small" style="margin-top:6px">
+          +112 = <code>01110000</code>. Invert → <code>10001111</code>, add 1 → <code>10010000</code>.  
+          <strong>Answer:</strong> <code>10010000</code>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(c)(iii)</strong> Two’s complement example — given <code>10111000</code></div>
+        <div class="small" style="margin-top:6px">
+          Leading 1 ⇒ negative. Invert → <code>01000111</code>, add 1 → <code>01001000</code> = 72. Value = <strong>−72</strong>.  
+          <strong>Answer (for 10111000):</strong> −72.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(d)(i)</strong> 104 to 8-bit two’s complement</div>
+        <div class="small" style="margin-top:6px">
+          +104 = <code>01101000</code>. (positive number same representation)  
+          <strong>Answer:</strong> <code>01101000</code>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>4(d)(ii)</strong> −104 in 8-bit two’s complement</div>
+        <div class="small" style="margin-top:6px">
+          Invert <code>01101000</code> → <code>10010111</code>, add 1 → <code>10011000</code>.  
+          <strong>Answer:</strong> <code>10011000</code>.
+        </div>
+      </div>
+    </section>
+
+    <!-- Q5 -->
+    <section class="question" id="q5">
+      <div class="qtitle">Question 5 — Bitmap image capacity on storage</div>
+
+      <div class="answer">
+        <div><strong>Given:</strong> resolution = 1140 × 1080 pixels, colour depth = 24 bits</div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>5(a) [1]</strong> <em>Explain pixel.</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> A pixel (picture element) is the smallest addressable element of an image — a single point that holds a colour value.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>5(b) [1]</strong> <em>Explain colour depth.</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> Colour depth (bits per pixel) is the number of bits used to store each pixel’s colour. For 24-bit colour, typically 8 bits for each of red, green and blue.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>5(c) [3]</strong> <em>How many images on 32 GiB stick?</em></div>
+        <div class="small" style="margin-top:6px">
+          Pixels/image = 1140 × 1080 = <strong>1 231 200</strong>.<br>
+          Bits/image = 1 231 200 × 24 = <strong>29 548 800</strong> bits.<br>
+          Bytes/image = 29 548 800 ÷ 8 = <strong>3 693 600</strong> bytes.<br>
+          32 GiB = 32 × 2³⁰ = 34 359 738 368 bytes.<br>
+          Number images = floor(34 359 738 368 ÷ 3 693 600) = <strong>9 302</strong> images.<br>
+          <strong>Answer:</strong> 9 302 images.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>5(d) [2]</strong> <em>How to increase number of images stored?</em></div>
+        <div class="small" style="margin-top:6px">
+          Two possible measures (each 1 mark):<br>
+          • Apply compression (e.g. JPEG) to reduce file size per image.<br>
+          • Reduce resolution or reduce colour depth (e.g. from 24-bit to 8-bit).
+        </div>
+      </div>
+    </section>
+
+    <!-- Q6 -->
+    <section class="question" id="q6">
+      <div class="qtitle">Question 6 — Image capture and email compression</div>
+
+      <div class="answer">
+        <div><strong>6(a) [4]</strong> <em>How captured images are converted to digital files</em></div>
+        <div class="small" style="margin-top:6px">
+          Stepwise (4 marks):<br>
+          1. The camera sensor (photosites) samples light intensity and colour as analogue voltages. (1 mark)<br>
+          2. Each analogue value is converted to a digital number using an ADC (quantisation). (1 mark)<br>
+          3. For colour, each pixel uses separate channels (RGB) or is reconstructed from Bayer data; pixels become digital triplets (e.g. 24-bit). (1 mark)<br>
+          4. Pixel data are stored in a file format (JPEG, PNG, RAW), often with compression and metadata (EXIF). (1 mark)
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>6(b) [2]</strong> <em>Which compression to email photos and why?</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> Use <strong>lossy compression (JPEG)</strong> because it achieves much smaller file sizes suitable for email, while maintaining acceptable photographic quality. (2 marks)
+        </div>
+      </div>
+    </section>
+
+    <!-- Q7 -->
+    <section class="question" id="q7">
+      <div class="qtitle">Question 7 — Stopwatch / BCD / registers</div>
+
+      <div class="answer">
+        <div><strong>Given time:</strong> 02 : 31 : 58 (Hours : Minutes : Seconds). Each pair stored in 8-bit packed BCD (tens nibble | ones nibble).</div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>7(a) [3]</strong> <em>Write 8-bit binary registers:</em></div>
+        <div class="small" style="margin-top:6px">
+          Hours 02 → tens=0 (0000), ones=2 (0010) → <code>00000010</code>.<br>
+          Minutes 31 → tens=3 (0011), ones=1 (0001) → <code>00110001</code>.<br>
+          Seconds 58 → tens=5 (0101), ones=8 (1000) → <code>01011000</code>.<br>
+          <strong>Answers:</strong> Hours <code>00000010</code>, Minutes <code>00110001</code>, Seconds <code>01011000</code>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>7(b) [3]</strong> <em>Registers now show 24 bits (given sequence)</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Given bits (24):</strong><br>
+          0 0 0 0 0 0 0 0   0 1 1 0 1 1 0 1   1 0 0 1 1 1 0 1<br><br>
+          Group into 3 bytes (left to right):<br>
+          Hours = <code>00000000</code> = 0 → Hours shown = <strong>0</strong>.<br>
+          Minutes = <code>01101101</code> → decimal = 64+32+8+4+1 = <strong>109</strong>.<br>
+          Seconds = <code>10011101</code> → decimal = 128+16+8+4+1 = <strong>157</strong>.<br><br>
+          <strong>Answer:</strong> Hours 0, Minutes 109, Seconds 157.<br>
+          <span class="small">Note: these numeric values are the raw denary values of the registers; if intended as BCD, 109/157 are invalid BCD times — the printed question asks for denary conversion of given registers.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q8 -->
+    <section class="question" id="q8">
+      <div class="qtitle">Question 8 — Memory stick, file reduction, RGB colour counts</div>
+
+      <div class="answer">
+        <div><strong>8(a) [2]</strong> <em>64 GiB stick — how many 10 KiB photos?</em></div>
+        <div class="small" style="margin-top:6px">
+          64 GiB = 64 × 1 048 576 KiB = <strong>67 108 864 KiB</strong>.<br>
+          Number of 10 KiB photos = 67 108 864 ÷ 10 = <strong>6 710 886</strong> photos.<br>
+          <strong>Answer:</strong> 6 710 886 photos.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>8(b)(i) [1]</strong> <em>One way to reduce file size:</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> Use lossy compression (convert to JPEG) or reduce image resolution.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>8(b)(ii) [2]</strong> <em>Two advantages of reducing image size:</em></div>
+        <div class="small" style="margin-top:6px">
+          1. Saves storage space (more images fit).<br>
+          2. Faster upload/transfer times (e.g., email, web).
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>8(b)(iii) [1]</strong> <em>One disadvantage:</em></div>
+        <div class="small" style="margin-top:6px">
+          <strong>Answer:</strong> Loss of image quality / irreversible detail loss if lossy compression is used.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>8(c)(i) [1]</strong> <em>Why 3 bytes per pixel in bitmap?</em></div>
+        <div class="small" style="margin-top:6px">
+          24-bit bitmap uses 8 bits for red, 8 bits for green, 8 bits for blue → 3 × 8 bits = <strong>24 bits = 3 bytes</strong> per pixel.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>8(c)(ii) [2]</strong> <em>How many different colours?</em></div>
+        <div class="small" style="margin-top:6px">
+          Colours = 256 × 256 × 256 = <strong>16 777 216</strong> colours. (Answer)
+        </div>
+      </div>
+    </section>
+
+    <!-- Q9 -->
+    <section class="question" id="q9">
+      <div class="qtitle">Question 9 — Matching calculations (diagram-based)</div>
+
+      <div class="answer">
+        <div class="small">
+          The original question asks you to draw arrows matching six calculations to eleven denary values. To produce the exact matching we need the <strong>exact list of left-hand calculations</strong> and the <strong>right-hand denary numbers</strong> shown in the paper.
+        </div>
+
+        <div class="note" style="margin-top:8px">
+          <strong>How I will solve it for you:</strong><br>
+          • Paste the six calculations and the eleven denary targets (as they appear on the paper) into a reply and I will produce the arrow matching and reasoning immediately.<br>
+          • If you prefer, I can show an example of how matching is performed (method: compute each left-hand expression, convert as needed, then pair with exact denary result).
+        </div>
+      </div>
+    </section>
+
+    <!-- Q10 -->
+    <section class="question" id="q10">
+      <div class="qtitle">Question 10 — Mixed short questions (two's complement, conversions, hex, additions)</div>
+
+      <div class="answer">
+        <div><strong>10(a)</strong> <em>Two’s complement denary of <code>00101101</code></em></div>
+        <div class="small" style="margin-top:6px">
+          Leading bit 0 → positive. <code>00101101</code> = 32 + 8 + 4 + 1 = <strong>45</strong>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>10(b)</strong> <em>Convert 59 055 800 320 bytes to GiB</em></div>
+        <div class="small" style="margin-top:6px">
+          GiB = bytes ÷ 2³⁰ = 59 055 800 320 ÷ 1 073 741 824 = <strong>55 GiB</strong>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>10(c)</strong> <em>If 2ˣ = 1 048 576, find x</em></div>
+        <div class="small" style="margin-top:6px">
+          1 048 576 = 2²⁰ ⇒ <strong>x = 20</strong>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>10(d)</strong> <em>Denary equivalent of hex <code>3F</code></em></div>
+        <div class="small" style="margin-top:6px">
+          3F hex = 3×16 + 15 = 48 + 15 = <strong>63</strong>.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>10(e)</strong> <em>Binary addition</em></div>
+        <div class="small" style="margin-top:6px">
+          <pre>
+   00010011  (0x13 = 19)
+ + 00011011  (0x1B = 27)
+ = 00101110  (decimal 46)
+          </pre>
+          <strong>Answer:</strong> 46.
+        </div>
+
+        <hr style="margin:8px 0">
+
+        <div><strong>10(f)</strong> <em>Convert denary list → hex (table)</em></div>
+        <div class="small" style="margin-top:6px">
+          <table>
+            <thead><tr><th>Denary</th><th>Hex</th></tr></thead>
+            <tbody>
+              <tr><td>40</td><td>0x28</td></tr>
+              <tr><td>44</td><td>0x2C</td></tr>
+              <tr><td>16</td><td>0x10</td></tr>
+              <tr><td>20</td><td>0x14</td></tr>
+              <tr><td>28</td><td>0x1C</td></tr>
+              <tr><td>45</td><td>0x2D</td></tr>
+              <tr><td>46</td><td>0x2E</td></tr>
+              <tr><td>55</td><td>0x37</td></tr>
+              <tr><td>57</td><td>0x39</td></tr>
+              <tr><td>60</td><td>0x3C</td></tr>
+              <tr><td>63</td><td>0x3F</td></tr>
+              <tr><td>80</td><td>0x50</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="question">
+      <div class="qtitle">Final notes & actions</div>
+      
+    </section>
+
+  </main>
+</body>
+</html>
