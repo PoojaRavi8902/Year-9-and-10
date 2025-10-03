@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Data Transmission — Packet Switching & Transmission Modes (Exam Revision)</title>
+  <style>
+    :root{--bg:#0f1724;--card:#071026;--accent:#3b82f6;--muted:#94a3b8;--glass:rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#041026 0%,#071833 100%);color:#e6eef8}
+    header{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:grid;place-items:center;font-weight:700;color:#022;box-shadow:0 6px 18px rgba(59,130,246,0.14)}
+    nav a{color:var(--muted);text-decoration:none;margin-left:16px}
+    main{display:grid;grid-template-columns:320px 1fr;gap:20px;padding:20px}
+    aside{background:var(--card);padding:16px;border-radius:12px;height:calc(100vh - 140px);overflow:auto}
+    section{background:var(--glass);padding:20px;border-radius:12px;min-height:400px}
+    h1,h2,h3{margin:6px 0}
+    .note{background:linear-gradient(90deg,rgba(59,130,246,0.06),rgba(125,211,252,0.03));border-left:4px solid var(--accent);padding:10px;border-radius:6px;color:#dff4ff}
+    .card{background:#031122;padding:14px;border-radius:8px;margin:12px 0}
+    .flex{display:flex;gap:12px;align-items:center}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:8px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left;font-size:14px}
+    pre{white-space:pre-wrap;background:#021425;padding:12px;border-radius:8px;color:#cfeefd;font-size:14px}
+    .interactive{margin-top:12px;background:#021625;padding:12px;border-radius:8px}
+    button{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:#022;font-weight:600;cursor:pointer}
+    input,textarea,select{background:#071526;border:1px solid rgba(255,255,255,0.03);color:#dbeefe;padding:8px;border-radius:6px;width:100%}
+    .small{font-size:13px;color:var(--muted)}
+    .kbd{background:#071b28;padding:6px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03)}
+    .diagram{background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    .question{margin:12px 0;padding:12px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);}
+    footer{padding:14px 20px;color:var(--muted);font-size:13px}
+    @media(max-width:900px){main{grid-template-columns:1fr}aside{height:auto}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">DT</div>
+      <div>
+        <div style="font-size:18px;font-weight:700">Data Transmission — Exam Revision</div>
+        <div class="small">Packet Switching • Transmission Modes • USB • CRC • Practice</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#packets">Packets</a>
+      <a href="#switching">Packet Switching</a>
+      <a href="#modes">Transmission Modes</a>
+      <a href="#usb">USB</a>
+      <a href="#practice">Practice</a>
+    </nav>
+  </header>
+  <main>
+    <aside>
+      <div class="card">
+        <strong>Contents</strong>
+        <ul class="small" style="margin:8px 0 0 16px;padding:0">
+          <li><a href="#packets">2.1.1 Data Packets</a></li>
+          <li><a href="#structure">Packet Structure</a></li>
+          <li><a href="#crc">Error Checking (CRC)</a></li>
+          <li><a href="#switching">Packet Switching</a></li>
+          <li><a href="#hop">Hop Numbers</a></li>
+          <li><a href="#modes">Modes of Data Transmission</a></li>
+          <li><a href="#usb">USB</a></li>
+          <li><a href="#comparison">Serial vs Parallel</a></li>
+          <li><a href="#practice">Exam Practice</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <strong>Exam Tips</strong>
+        <div class="small" style="margin-top:8px;line-height:1.45">
+          • Be able to explain CRC step-by-step.<br>
+          • Draw/describe packet structure (header, payload, trailer).<br>
+          • Describe packet switching with example & state advantages/disadvantages.<br>
+          • Explain hop numbers' purpose.
+        </div>
+      </div>
+      <div class="card small">
+        <strong>Interactive tools</strong>
+        <ol style="padding-left:18px;margin:8px 0">
+          <li>CRC Checker — calculate & verify CRC values</li>
+          <li>Packet Reassembler — simulate arriving packets</li>
+          <li>Practice Quiz — MCQ & True/False</li>
+        </ol>
+      </div>
+    </aside>
+
+    <section>
+      <article id="packets">
+        <h1>2.1.1 Data Packets</h1>
+        <p>What are <strong>Data Packets</strong>?</p>
+        <ul>
+          <li>Data sent across long distances (e.g., across the internet) is not transmitted as one continuous stream.</li>
+          <li>Instead, it is broken into small units called data packets (also called datagrams).</li>
+          <li>Typical packet size: <strong>64 KiB</strong>.</li>
+          <li>Reason for splitting:
+            <ul>
+              <li>Small packets are easier to control and manage.</li>
+              <li>Different packets can take different routes to reach the same destination.</li>
+              <li>Helps avoid problems if one route is busy or fails.</li>
+            </ul>
+          </li>
+          <li><strong>Drawback:</strong> At the destination, packets must be reassembled in the correct order before use.</li>
+        </ul>
+
+        <h2 id="structure">Packet Structure</h2>
+        <p>A packet has three main parts:</p>
+        <ol>
+          <li><strong>Header (control information)</strong>
+            <ul>
+              <li>Source IP address (sender)</li>
+              <li>Destination IP address (receiver)</li>
+              <li>Sequence number (so packets can be reassembled correctly)</li>
+              <li>Packet size (to check if all packets have arrived correctly)</li>
+              <li>May include total number of packets in the transmission</li>
+            </ul>
+          </li>
+          <li><strong>Payload (the actual data)</strong>
+            <ul>
+              <li>Carries the main content, e.g., part of a file, image, or video.</li>
+              <li>Typically about <strong>64 KiB</strong> in size.</li>
+            </ul>
+          </li>
+          <li><strong>Trailer (end and error-checking information)</strong>
+            <ul>
+              <li>Identifies end of packet (important so packets don’t merge in transmission).</li>
+              <li>Contains error-checking data (e.g., CRC – Cyclic Redundancy Check).</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3 id="crc">Error Checking with CRC (Cyclic Redundancy Check)</h3>
+        <div class="note">
+          <strong>CRC (simple conceptual explanation for exams)</strong><br>
+          • Sending computer adds up all the 1-bits in the payload.<br>
+          • Result is stored as a hex value in the trailer.<br>
+          • At destination: receiving computer repeats the calculation. If values match → no error. If values differ → packet is corrupt → must be re-sent.
+        </div>
+        <p><strong>Exam Tip:</strong> Be able to explain how CRC works in step order for packet checking.</p>
+
+        <div class="diagram">
+          <strong>Packet diagram</strong>
+          <div style="margin-top:10px">
+            <div style="display:flex;gap:8px;align-items:center;overflow:auto">
+              <div style="padding:10px;background:#072032;border-radius:6px;min-width:160px"><strong>Header</strong><br><span class="small">Source, Destination, Seq#, Size</span></div>
+              <div style="padding:10px;background:#09263a;border-radius:6px;min-width:220px"><strong>Payload</strong><br><span class="small">Data (≈64 KiB)</span></div>
+              <div style="padding:10px;background:#072032;border-radius:6px;min-width:160px"><strong>Trailer</strong><br><span class="small">CRC, End marker</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="switching">Packet Switching</h2>
+        <p><strong>What is Packet Switching?</strong></p>
+        <ul>
+          <li>A method of sending data where the message is split into packets.</li>
+          <li>Each packet may travel through different routes across the network.</li>
+          <li>At the destination: packets are reassembled in the correct order using the sequence numbers in headers.</li>
+        </ul>
+
+        <h3>Role of Routers</h3>
+        <p>At every stage (node), routers inspect the header and decide which path is best for the packet:</p>
+        <ul>
+          <li>Based on network traffic (busy/available lines).</li>
+          <li>Packets may arrive at different times or out of order.</li>
+        </ul>
+
+        <h3>Example: Sending a Photograph</h3>
+        <ol>
+          <li>Photograph split into five packets.</li>
+          <li>Each packet travels independently:</li>
+          <ul>
+            <li>Packet 1 may take Route A → B → C → Destination.</li>
+            <li>Packet 2 may take Route A → D → E → Destination.</li>
+          </ul>
+          <li>At the end, packets may arrive in the order 3, 1, 5, 4, 2.</li>
+          <li>Receiver uses sequence numbers to reassemble: 1, 2, 3, 4, 5.</li>
+        </ol>
+
+        <h3>Benefits of Packet Switching</h3>
+        <ul>
+          <li>No need for a single dedicated line.</li>
+          <li>Can re-route if a line is busy or faulty.</li>
+          <li>Easy to expand and scale networks.</li>
+          <li>Supports high data transmission rates.</li>
+        </ul>
+
+        <h3>Drawbacks of Packet Switching</h3>
+        <ul>
+          <li>Packets may be lost → need re-sending.</li>
+          <li>Real-time streaming (e.g., live sports, video calls) may face delays or errors.</li>
+          <li>Packets may arrive out of order, causing slight delays while reassembling.</li>
+        </ul>
+
+        <h3 id="hop">Hop Numbers</h3>
+        <p>Problem: Sometimes packets keep bouncing between routers without reaching the destination → network overload.</p>
+        <p><strong>Solution: Hop Count (Hop Number)</strong></p>
+        <ul>
+          <li>Each packet has a maximum hop number in its header.</li>
+          <li>Every time it passes through a router, hop number reduces by 1.</li>
+          <li>If hop number = 0 → packet is deleted.</li>
+          <li>Receiver notices missing packet → requests re-send.</li>
+        </ul>
+        <p><strong>Exam Tip:</strong> Be ready to explain the purpose of hop numbers: To prevent endless circulation of lost packets and reduce network congestion.</p>
+
+        <h3>Summary Table: Packet Switching</h3>
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>Explanation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Packet</td><td>Small unit of data (~64 KiB) sent across a network.</td></tr>
+            <tr><td>Header</td><td>Contains source, destination, sequence number, size, total packets.</td></tr>
+            <tr><td>Payload</td><td>Actual data being transmitted.</td></tr>
+            <tr><td>Trailer</td><td>Contains error-checking info (e.g., CRC) and packet end marker.</td></tr>
+            <tr><td>Packet Switching</td><td>Splitting message into packets, each taking independent routes.</td></tr>
+            <tr><td>Hop Number</td><td>Prevents packets from circulating endlessly.</td></tr>
+          </tbody>
+        </table>
+
+      </article>
+
+      <article id="modes" style="margin-top:18px">
+        <h2>2.1 Types and Methods of Data Transmission (continued)</h2>
+
+        <h3>Three Key Factors in Data Transmission</h3>
+        <ol>
+          <li><strong>Direction of transmission</strong> — Can data travel in one direction only, or both directions?</li>
+          <li><strong>Method of transmission</strong> — How many bits are sent at the same time (one at a time or multiple)?</li>
+          <li><strong>Synchronization</strong> — Ensures data arrives in the correct order and at the correct timing.</li>
+        </ol>
+        <p>These rules are defined by communication protocols (e.g., TCP/IP, USB protocol).</p>
+
+        <h3>Modes of Data Transmission</h3>
+        <h4>1. Simplex</h4>
+        <ul>
+          <li>Data travels in one direction only.</li>
+          <li>Example: Computer → Printer.</li>
+          <li>Sender transmits; receiver only receives.</li>
+          <li><strong>Exam Tip:</strong> Remember “Simplex = Single direction.”</li>
+        </ul>
+
+        <h4>2. Half-Duplex</h4>
+        <ul>
+          <li>Data can travel in both directions, but not at the same time.</li>
+          <li>Example: Walkie-talkie communication.</li>
+          <li>At one moment, only one side can send; the other waits.</li>
+        </ul>
+
+        <h4>3. Full-Duplex</h4>
+        <ul>
+          <li>Data travels in both directions simultaneously.</li>
+          <li>Example: Broadband internet connection, telephone calls.</li>
+          <li>Allows continuous two-way communication.</li>
+          <li><strong>Exam Tip:</strong> “Full-duplex = Fastest, both ways, at the same time.”</li>
+        </ul>
+
+        <h3>Types of Data Transmission</h3>
+        <h4>1. Serial Transmission</h4>
+        <ul>
+          <li>Data is sent one bit at a time over a single wire/channel.</li>
+          <li>Bits arrive in sequence → data is always synchronised.</li>
+          <li>Can be simplex, half-duplex, or full-duplex.</li>
+          <li>Advantages:
+            <ul>
+              <li>Cheaper (fewer wires).</li>
+              <li>Reliable over long distances.</li>
+              <li>No skewing (data stays in correct order).</li>
+            </ul>
+          </li>
+          <li>Disadvantage: Slower than parallel.</li>
+          <li>Example: USB connection (Computer ↔ Printer).</li>
+        </ul>
+
+        <h4>2. Parallel Transmission</h4>
+        <ul>
+          <li>Data is sent several bits at the same time (often 1 byte = 8 bits) using multiple wires.</li>
+          <li>Each wire carries one bit simultaneously.</li>
+          <li>Can be simplex, half-duplex, or full-duplex.</li>
+          <li>Advantages:
+            <ul>
+              <li>Faster transmission than serial.</li>
+              <li>Used inside a computer (short distances, e.g., between CPU and memory).</li>
+            </ul>
+          </li>
+          <li>Disadvantages:
+            <ul>
+              <li>Only reliable over short distances (<20m).</li>
+              <li>Skewing may occur (bits arrive out of sync).</li>
+              <li>More expensive (needs more hardware/wires).</li>
+            </ul>
+          </li>
+          <li>Example: Data buses inside computer circuits.</li>
+        </ul>
+
+        <div class="note small">📌 Exam Tip: “Serial = Long distance, reliable, slow.” “Parallel = Short distance, fast, but risk of skewing.”</div>
+
+        <h3 id="usb">Universal Serial Bus (USB)</h3>
+        <h4>Overview</h4>
+        <ul>
+          <li>A common method of serial data transmission.</li>
+          <li>Found on almost all modern computers.</li>
+          <li>Supports both half-duplex and full-duplex transmission.</li>
+        </ul>
+
+        <h4>USB Cable Structure (4 wires)</h4>
+        <ul>
+          <li>Red → +5V (power supply)</li>
+          <li>Black → Ground (negative)</li>
+          <li>White → Data+</li>
+          <li>Green → Data–</li>
+          <li>Shielding protects from interference.</li>
+        </ul>
+
+        <h4>How USB Works</h4>
+        <ol>
+          <li>Device is plugged into USB port.</li>
+          <li>Computer detects a device (small voltage change on data wires).</li>
+          <li>Computer loads the appropriate device driver software.
+            <ul>
+              <li>If already installed → device works immediately.</li>
+              <li>If not → system prompts user to install or download driver.</li>
+            </ul>
+          </li>
+          <li>Communication between device and computer begins.</li>
+        </ol>
+
+        <h4>USB Standards</h4>
+        <ul>
+          <li>USB 2.0 / 3.0 → Earlier versions with slower speeds.</li>
+          <li>USB-C (new standard):
+            <ul>
+              <li>24-pin, symmetrical design (works both ways).</li>
+              <li>Much smaller and thinner.</li>
+              <li>Provides up to 100 watts (20V) for charging laptops.</li>
+              <li>Supports 10 Gbps transmission speed.</li>
+              <li>Can deliver 4K video.</li>
+              <li>Backward compatible (with adapters).</li>
+              <li>Becoming the new universal standard.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>Exam Tip:</strong> USB questions often test benefits of USB-C and the role of device drivers.</p>
+
+        <h3 id="comparison">Comparison: Serial vs Parallel Transmission</h3>
+        <table>
+          <thead><tr><th>Feature</th><th>Serial Transmission</th><th>Parallel Transmission</th></tr></thead>
+          <tbody>
+            <tr><td>Wires/Channels</td><td>1 wire (one bit at a time)</td><td>Multiple wires (several bits at a time, e.g., 8/16)</td></tr>
+            <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+            <tr><td>Distance</td><td>Works well over long distances</td><td>Works well over short distances (&lt;20m)</td></tr>
+            <tr><td>Reliability</td><td>Very reliable (no skewing)</td><td>Prone to skewing (bits arrive out of sync)</td></tr>
+            <tr><td>Cost</td><td>Cheaper (fewer wires)</td><td>More expensive (more hardware)</td></tr>
+            <tr><td>Example Use</td><td>USB cables, telephone lines</td><td>Internal CPU buses, circuit boards</td></tr>
+          </tbody>
+        </table>
+
+      </article>
+
+      <article id="practice" style="margin-top:18px">
+        <h2>Exam Practice (Activity Style)</h2>
+        <div class="question">
+          <strong>1. Explain the following terms:</strong>
+          <ol>
+            <li>i) Serial, half-duplex data transmission</li>
+            <li>ii) Parallel, full-duplex data transmission</li>
+            <li>iii) Serial, simplex data transmission</li>
+          </ol>
+        </div>
+
+        <div class="question">
+          <strong>2. Identify the type of transmission (interactive):</strong>
+          <p class="small">Select an option for each — answers are checked instantly.</p>
+          <div class="interactive" id="mcq-area">
+            <label>i) One bit at a time, one direction only →
+              <select data-answer="Serial Simplex">
+                <option>-- choose --</option>
+                <option>Serial Simplex</option>
+                <option>Parallel Simplex</option>
+                <option>Serial Full-duplex</option>
+              </select>
+            </label>
+            <br><br>
+            <label>ii) 8 bits at a time, one direction only →
+              <select data-answer="Parallel Simplex">
+                <option>-- choose --</option>
+                <option>Parallel Simplex</option>
+                <option>Serial Simplex</option>
+                <option>Parallel Full-duplex</option>
+              </select>
+            </label>
+            <br><br>
+            <label>iii) 16 bits at a time, both directions simultaneously →
+              <select data-answer="Parallel Full-duplex">
+                <option>-- choose --</option>
+                <option>Parallel Full-duplex</option>
+                <option>Serial Full-duplex</option>
+                <option>Parallel Simplex</option>
+              </select>
+            </label>
+            <br><br>
+            <label>iv) One bit at a time, both directions simultaneously →
+              <select data-answer="Serial Full-duplex">
+                <option>-- choose --</option>
+                <option>Serial Full-duplex</option>
+                <option>Serial Half-duplex</option>
+                <option>Parallel Full-duplex</option>
+              </select>
+            </label>
+            <br><br>
+            <label>v) 16 bits at a time, one direction only →
+              <select data-answer="Parallel Simplex">
+                <option>-- choose --</option>
+                <option>Parallel Simplex</option>
+                <option>Serial Simplex</option>
+                <option>Parallel Full-duplex</option>
+              </select>
+            </label>
+            <br><br>
+            <button id="check-mcq">Check Answers</button>
+            <div id="mcq-result" class="small" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <div class="question">
+          <strong>3. True/False Revision (USB & Transmission)</strong>
+          <div class="interactive">
+            <ol>
+              <li><label><input type="checkbox" data-answer="true"> Packets have a header with sender and receiver IP addresses</label></li>
+              <li><label><input type="checkbox" data-answer="false"> Packets don’t require error checking</label></li>
+              <li><label><input type="checkbox" data-answer="true"> USBs use a protocol for error-free transmission</label></li>
+              <li><label><input type="checkbox" data-answer="false"> Serial data transmission suffers from skewing</label></li>
+              <li><label><input type="checkbox" data-answer="true"> Longest USB cable length ≤ 5m</label></li>
+              <li><label><input type="checkbox" data-answer="false"> Simplex means data transmitted one bit at a time</label></li>
+              <li><label><input type="checkbox" data-answer="false"> Full-duplex means sending 8 bits at a time</label></li>
+              <li><label><input type="checkbox" data-answer="true"> USB uses serial data transfer</label></li>
+              <li><label><input type="checkbox" data-answer="false"> Packet switching prevents data loss completely</label></li>
+              <li><label><input type="checkbox" data-answer="true"> USB supports both half-duplex and full-duplex</label></li>
+            </ol>
+            <button id="check-tf">Check True/False</button>
+            <div id="tf-result" class="small" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <div class="question">
+          <strong>Interactive: CRC Checker</strong>
+          <p class="small">Enter a binary payload (e.g., 1101001). The tool will count 1-bits and show a simple hex checksum stored in the trailer (conceptual checker for exam practice).</p>
+          <div class="interactive">
+            <label>Payload (binary):<br>
+              <input id="crc-payload" placeholder="e.g. 1101001"></input>
+            </label>
+            <br><br>
+            <label>Expected trailer hex (optional):<br>
+              <input id="crc-expected" placeholder="(leave blank to just compute)"></input>
+            </label>
+            <br><br>
+            <button id="crc-calc">Calculate CRC (count 1-bits & show hex)</button>
+            <div id="crc-out" class="small" style="margin-top:8px"></div>
+            <div class="small" style="margin-top:6px;color:var(--muted)">Note: This is a simplified CRC explanation for students — real CRC uses polynomial division. This tool uses the number-of-1-bits approach described in the notes.</div>
+          </div>
+        </div>
+
+        <div class="question">
+          <strong>Interactive: Packet Reassembler</strong>
+          <p class="small">Simulate packets arriving in random order. Enter sequence numbers separated by commas (e.g., 3,1,5,4,2). The tool will show the reassembled order and any missing packets.</p>
+          <div class="interactive">
+            <label>Arrived sequence (comma-separated):<br>
+              <input id="packets-in" placeholder="e.g. 3,1,5,4,2"></input>
+            </label>
+            <br><br>
+            <label>Total expected packets (optional):<br>
+              <input id="packets-total" placeholder="e.g. 5"></input>
+            </label>
+            <br><br>
+            <button id="reassemble">Reassemble</button>
+            <div id="reassemble-out" class="small" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+   This site is designed keeping your exam in mind. Most of the information are added. Hope it is useful for you. <P><b>Prepared by Ravi Raju</b></p>
+  </footer>
+
+  <script>
+    // MCQ checker
+    document.getElementById('check-mcq').addEventListener('click', ()=>{
+      const selects = document.querySelectorAll('#mcq-area select');
+      let correct = 0; let total=selects.length;
+      selects.forEach(s=>{ if(s.value===s.dataset.answer) correct++; });
+      const out = document.getElementById('mcq-result');
+      out.textContent = `Result: ${correct}/${total} correct.`;
+    });
+
+    // True/False checker
+    document.getElementById('check-tf').addEventListener('click', ()=>{
+      const checks = document.querySelectorAll('#practice input[type=checkbox]');
+      let correct=0, total=checks.length;
+      checks.forEach(c=>{ const ans = c.dataset.answer==='true'; if(c.checked===ans) correct++; });
+      document.getElementById('tf-result').textContent = `Result: ${correct}/${total} correct.`;
+    });
+
+    // CRC calculator (simplified - count of 1s -> hex)
+    document.getElementById('crc-calc').addEventListener('click', ()=>{
+      const payload = document.getElementById('crc-payload').value.trim();
+      if(!/^[01]+$/.test(payload)){
+        document.getElementById('crc-out').textContent = 'Enter a valid binary string (only 0 and 1).';
+        return;
+      }
+      const ones = (payload.match(/1/g)||[]).length;
+      const hex = ones.toString(16).toUpperCase();
+      const expected = document.getElementById('crc-expected').value.trim().toUpperCase();
+      let msg = `1-bits count = ${ones} → checksum (hex) = ${hex}`;
+      if(expected){ msg += ` — Expected: ${expected}. ` + (expected===hex? 'MATCH ✓' : 'MISMATCH ✗'); }
+      document.getElementById('crc-out').textContent = msg;
+    });
+
+    // Packet reassembler
+    document.getElementById('reassemble').addEventListener('click', ()=>{
+      const raw = document.getElementById('packets-in').value.trim();
+      if(!raw){ document.getElementById('reassemble-out').textContent='Enter sequence numbers.'; return; }
+      const arr = raw.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
+      if(arr.length===0){ document.getElementById('reassemble-out').textContent='No valid numbers found.'; return; }
+      const sorted = [...arr].slice().sort((a,b)=>a-b);
+      const totalStr = document.getElementById('packets-total').value.trim();
+      const total = totalStr? parseInt(totalStr): Math.max(...sorted);
+      const missing = [];
+      for(let i=1;i<=total;i++) if(!sorted.includes(i)) missing.push(i);
+      const out = `Arrived order: [${arr.join(', ')}]\nReassembled order (by sequence): [${sorted.join(', ')}]` + (missing.length? `\nMissing packets: [${missing.join(', ')}]` : '\nNo packets missing.');
+      document.getElementById('reassemble-out').textContent = out;
+    });
+
+  </script>
+
+<!-- ====== 2.2 Methods of Error Detection (Insert snippet) ====== -->
+<section id="error-detection" style="margin-top:20px;">
+  <h2>2.2 Methods of Error Detection</h2>
+
+  <h3>2.2.1 Why Check for Errors?</h3>
+  <p>
+    When data is transmitted there is a risk of corruption, loss, or extra data due to interference,
+    switching issues or skewing. Computers cannot “guess” corrupted bits, so error detection is vital.
+  </p>
+  <ul>
+    <li><strong>Causes:</strong> Interference, packet switching issues, skewing (parallel transmission).</li>
+    <li><strong>Why important:</strong> Computers need exact bits; errors must be detected and corrected or re-sent.</li>
+  </ul>
+
+  <h3>2.2.2 Parity Checks, Checksums, and Echo Checks</h3>
+
+  <article class="card">
+    <h4>Parity Checks (single-byte)</h4>
+    <p>
+      Parity looks at the number of <code>1</code> bits in a byte. One extra bit (parity bit) makes the total
+      number of 1s even (even parity) or odd (odd parity).
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 240px;gap:12px;align-items:start">
+      <div>
+        <p><strong>Examples:</strong></p>
+        <pre class="small">Data byte: 1101100
+Even parity -> parity bit = 0 -> 01101100 (4 ones)
+Odd parity  -> parity bit = 1 -> 11101100 (5 ones)</pre>
+
+        <p><strong>Limitations:</strong> If two or more bits flip, parity may not detect the error.</p>
+      </div>
+
+      <div style="background:#041826;padding:10px;border-radius:8px;">
+        <label class="small">Enter binary byte (7 bits or 8 bits without parity):<br>
+          <input id="parity-byte" placeholder="e.g. 1101100"></input>
+        </label>
+        <label class="small" style="margin-top:8px">Choose parity:
+          <select id="parity-type">
+            <option value="even">Even</option>
+            <option value="odd">Odd</option>
+          </select>
+        </label>
+        <div style="margin-top:8px">
+          <button id="parity-calc">Calculate Parity Bit</button>
+        </div>
+        <div id="parity-out" class="small" style="margin-top:8px;color:#dff4ff"></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" style="margin-top:12px;">
+    <h4>Parity Blocks (2D parity)</h4>
+    <p>
+      Arrange bytes in rows/columns with horizontal and vertical parity. If a row & column parity fails,
+      you can locate the erroneous bit (useful for single-bit correction).
+    </p>
+
+    <div class="small" style="margin-bottom:8px">Edit the table below (0/1) then click <em>Check Block</em>.</div>
+    <div style="overflow:auto;">
+      <table id="parity-block" style="min-width:420px;border-collapse:collapse">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Bit1</th><th>Bit2</th><th>Bit3</th><th>Bit4</th><th>Bit5</th><th>Bit6</th><th>Bit7</th><th>Row P</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- default 4x7 block; teacher can paste larger block if needed -->
+          <tr><td>Byte 1</td>
+            <td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="1" size="1"></td>
+            <td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="1" size="1"></td>
+            <td><input class="prow" value="1" size="1"></td>
+          </tr>
+          <tr><td>Byte 2</td>
+            <td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="0" size="1"></td>
+            <td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="0" size="1"></td>
+            <td><input class="prow" value="1" size="1"></td>
+          </tr>
+          <tr><td>Byte 3</td>
+            <td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="0" size="1"></td>
+            <td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="1" size="1"></td>
+            <td><input class="prow" value="1" size="1"></td>
+          </tr>
+          <tr><td>Byte 4</td>
+            <td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="0" size="1"></td>
+            <td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="1" size="1"></td><td><input class="bcell" value="0" size="1"></td><td><input class="bcell" value="1" size="1"></td>
+            <td><input class="prow" value="0" size="1"></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Col P</td>
+            <td><input class="pcol" value="1" size="1"></td><td><input class="pcol" value="1" size="1"></td><td><input class="pcol" value="0" size="1"></td>
+            <td><input class="pcol" value="1" size="1"></td><td><input class="pcol" value="0" size="1"></td><td><input class="pcol" value="0" size="1"></td><td><input class="pcol" value="1" size="1"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div style="margin-top:8px">
+      <button id="check-block">Check Block</button>
+      <button id="auto-fix" style="margin-left:8px">Attempt Single-bit Fix</button>
+      <div id="block-out" class="small" style="margin-top:8px"></div>
+    </div>
+  </article>
+
+  <article class="card" style="margin-top:12px;">
+    <h4>Checksums (block)</h4>
+    <p>
+      A checksum is calculated from a block of data using an agreed algorithm. The receiver recalculates
+      the checksum and compares. If mismatch → request re-send.
+    </p>
+
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="flex:1">
+        <label class="small">Enter bytes (decimal) separated by commas (e.g. 12,255,3):<br>
+          <input id="checksum-bytes" placeholder="e.g. 12,255,3,4"></input>
+        </label>
+        <div style="margin-top:8px">
+          <button id="checksum-calc">Calculate Checksum (simple sum → hex)</button>
+        </div>
+        <div id="checksum-out" class="small" style="margin-top:8px"></div>
+      </div>
+
+      <div style="width:300px;background:#041826;padding:10px;border-radius:8px">
+        <div class="small">Note: This tool uses a simple checksum (sum of bytes → mod 256 → show hex).
+        Real-world checksums may use other algorithms (CRC, MD5, etc.).</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" style="margin-top:12px;">
+    <h4>Echo Check (simulator)</h4>
+    <p>
+      Sender sends data and receiver returns the same data (echo). Sender compares to original.
+      This simulator lets you introduce an optional error during echo to show limitations.
+    </p>
+    <label class="small">Original data (text or binary):<br>
+      <input id="echo-original" placeholder="e.g. Hello123"></input>
+    </label>
+    <label class="small" style="margin-top:6px">Simulate error in echo? (type string to replace echo):<br>
+      <input id="echo-error" placeholder="leave blank for perfect echo"></input>
+    </label>
+    <div style="margin-top:8px">
+      <button id="echo-run">Send & Receive Echo</button>
+      <div id="echo-out" class="small" style="margin-top:8px"></div>
+    </div>
+  </article>
+
+  <article class="card" style="margin-top:12px;">
+    <h4>Check Digits (ISBN-13 & Modulo-11)</h4>
+    <p>
+      Check digits detect input/copy errors. Below are calculators for ISBN-13 and a Modulo-11
+      example (typical in VINs / product codes).
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:#041826;padding:10px;border-radius:8px;">
+        <strong>ISBN-13: Calculate check digit</strong>
+        <div class="small" style="margin-top:8px">Enter first 12 digits (no spaces):</div>
+        <input id="isbn-input" placeholder="e.g. 978034098382">
+        <div style="margin-top:8px"><button id="isbn-calc">Compute ISBN-13 Check Digit</button></div>
+        <div id="isbn-out" class="small" style="margin-top:8px"></div>
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:8px 0">
+        <div class="small">Verify full 13-digit ISBN:</div>
+        <input id="isbn-verify" placeholder="e.g. 9780340983829">
+        <div style="margin-top:8px"><button id="isbn-verify-btn">Verify ISBN</button></div>
+        <div id="isbn-ver-out" class="small" style="margin-top:8px"></div>
+      </div>
+
+      <div style="background:#041826;padding:10px;border-radius:8px;">
+        <strong>Modulo-11 (example)</strong>
+        <div class="small" style="margin-top:8px">Enter digits (without check digit) and starting weighting (e.g. start=8 for 7-digit number):</div>
+        <input id="mod11-input" placeholder="e.g. 4156710">
+        <label class="small" style="display:block;margin-top:6px">Start weighting:
+          <input id="mod11-start" placeholder="e.g. 8" size="4"></input>
+        </label>
+        <div style="margin-top:8px"><button id="mod11-calc">Compute Modulo-11 Check Digit</button></div>
+        <div id="mod11-out" class="small" style="margin-top:8px"></div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:8px 0">
+        <div class="small">Verify full code (enter full code including check digit):</div>
+        <input id="mod11-verify" placeholder="e.g. 41567102">
+        <div style="margin-top:8px"><button id="mod11-verify-btn">Verify Modulo-11</button></div>
+        <div id="mod11-ver-out" class="small" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" style="margin-top:12px;">
+    <h4>Activities (student practice)</h4>
+    <ol>
+      <li><strong>Find the parity bits</strong> (use parity calculator above)
+        <ul>
+          <li>1101101 (even) → ?</li>
+          <li>0001111 (even) → ?</li>
+          <li>1110100 (odd) → ?</li>
+        </ul>
+      </li>
+      <li><strong>Activity 2.5 – Detecting errors</strong> — use parity block tool to practice locating a wrong bit.</li>
+      <li><strong>Activity 2.7</strong>
+        <ol>
+          <li>Using ISBN-13 algorithm, calculate the check digit for: <code>978151045759</code></li>
+          <li>Find check digits using both Modulo-11 and ISBN-13 methods for:
+            <ul>
+              <li>i. <code>213111000428</code></li>
+              <li>ii. <code>909812123544</code></li>
+            </ul>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <div class="small" style="margin-top:8px;color:var(--muted)">Use the calculators above to check answers. Teachers: you can also paste activity numbers into the input fields to demonstrate in class.</div>
+  </article>
+</section>
+
+<!-- ========== Interactive JS for this snippet ========== -->
+<script>
+(function(){
+  // Parity calculator
+  document.getElementById('parity-calc').addEventListener('click', function(){
+    const raw = document.getElementById('parity-byte').value.trim();
+    const type = document.getElementById('parity-type').value;
+    if(!/^[01]+$/.test(raw)){
+      document.getElementById('parity-out').textContent = 'Enter a valid binary string (0 and 1 only).';
+      return;
+    }
+    // Count ones
+    const ones = (raw.match(/1/g)||[]).length;
+    const wantEven = (type==='even');
+    const parityBit = ((ones % 2 === 0) === wantEven) ? 0 : 1;
+    const combined = (parityBit + raw).slice(0, (parityBit + raw).length); // show parity bit + data
+    document.getElementById('parity-out').textContent = `1-bits = ${ones}. ${type} parity -> parity bit = ${parityBit}. Byte with parity (parity first): ${parityBit}${raw}`;
+  });
+
+  // Parity block checker & auto-fix (simple single-bit locate)
+  function readBlock(){
+    const cells = Array.from(document.querySelectorAll('#parity-block tbody tr'));
+    const block = [];
+    const rowParity = [];
+    cells.forEach((tr, rIdx) => {
+      const inputs = Array.from(tr.querySelectorAll('input.bcell')).map(i=>i.value.trim());
+      block.push(inputs.map(v => (v==='1'?1:0)));
+      const rp = tr.querySelector('input.prow')?.value.trim();
+      rowParity.push(rp===''?null:(rp==='1'?1:0));
+    });
+    const pcols = Array.from(document.querySelectorAll('#parity-block tfoot input.pcol')).map(i=>i.value.trim()).map(v => v===''?null:(v==='1'?1:0));
+    return {block, rowParity, pcols};
+  }
+
+  document.getElementById('check-block').addEventListener('click', function(){
+    const {block,rowParity,pcols} = readBlock();
+    const rows = block.length, cols = block[0].length;
+    const rowErrors=[], colErrors=[];
+    for(let r=0;r<rows;r++){
+      const sum = block[r].reduce((a,b)=>a+b,0);
+      const expected = rowParity[r];
+      if(expected===null) continue;
+      if((sum % 2) !== expected) rowErrors.push(r+1);
+    }
+    for(let c=0;c<cols;c++){
+      const sum = block.reduce((a,b)=>a + (b[c]||0),0);
+      const expected = pcols[c];
+      if(expected===null) continue;
+      if((sum % 2) !== expected) colErrors.push(c+1);
+    }
+    let out='';
+    if(!rowErrors.length && !colErrors.length) out='No parity errors detected.';
+    else {
+      out = `Row parity mismatch at rows: ${rowErrors.join(', ') || 'none'}. Column parity mismatch at columns: ${colErrors.join(', ') || 'none' }.`;
+      out += ' (If both a single row and column mismatch, the intersection bit is likely the error.)';
+    }
+    document.getElementById('block-out').textContent = out;
+  });
+
+  document.getElementById('auto-fix').addEventListener('click', function(){
+    const {block,rowParity,pcols} = readBlock();
+    const rows = block.length, cols = block[0].length;
+    const rowErrors=[], colErrors=[];
+    for(let r=0;r<rows;r++){
+      const sum = block[r].reduce((a,b)=>a+b,0);
+      const expected = rowParity[r];
+      if(expected===null) continue;
+      if((sum % 2) !== expected) rowErrors.push(r);
+    }
+    for(let c=0;c<cols;c++){
+      const sum = block.reduce((a,b)=>a + (b[c]||0),0);
+      const expected = pcols[c];
+      if(expected===null) continue;
+      if((sum % 2) !== expected) colErrors.push(c);
+    }
+    if(rowErrors.length===1 && colErrors.length===1){
+      const r = rowErrors[0], c = colErrors[0];
+      // Flip the bit in the HTML input
+      const tr = document.querySelectorAll('#parity-block tbody tr')[r];
+      const inputCells = tr.querySelectorAll('input.bcell');
+      const cell = inputCells[c];
+      cell.value = cell.value.trim()==='1' ? '0' : '1';
+      document.getElementById('block-out').textContent = `Single-bit error fixed at Byte ${r+1}, Bit ${c+1} (value flipped). Re-check to confirm.`;
+    } else {
+      document.getElementById('block-out').textContent = 'Auto-fix requires exactly one row error and one column error (single-bit). Multiple errors cannot be auto-fixed.';
+    }
+  });
+
+  // Checksum simple (sum -> mod256 -> hex)
+  document.getElementById('checksum-calc').addEventListener('click', function(){
+    const raw = document.getElementById('checksum-bytes').value.trim();
+    if(!raw) { document.getElementById('checksum-out').textContent = 'Enter comma-separated decimal byte values.'; return; }
+    const parts = raw.split(',').map(s=>s.trim()).filter(s=>s!=='');
+    const nums = parts.map(p => parseInt(p,10));
+    if(nums.some(n=>isNaN(n) || n<0)) { document.getElementById('checksum-out').textContent = 'All entries must be valid non-negative integers.'; return; }
+    const sum = nums.reduce((a,b)=>a+(b|0),0);
+    const mod = sum & 0xFF; // mod 256
+    const hex = mod.toString(16).toUpperCase().padStart(2,'0');
+    document.getElementById('checksum-out').textContent = `Sum=${sum}. Checksum (mod256) = ${mod} -> 0x${hex}`;
+  });
+
+  // Echo check simulator
+  document.getElementById('echo-run').addEventListener('click', function(){
+    const orig = document.getElementById('echo-original').value;
+    const err = document.getElementById('echo-error').value;
+    if(orig===''){ document.getElementById('echo-out').textContent='Enter original data to send.'; return; }
+    const echo = err==='' ? orig : err;
+    const ok = echo === orig;
+    document.getElementById('echo-out').textContent = `Echo returned: "${echo}" — ${ok? 'Match ✓ (no error detected)' : 'Mismatch ✗ (error detected)'}`;
+  });
+
+  // ISBN-13 calculator & verifier
+  function computeIsbn13CheckDigit(digits12){
+    if(!/^\d{12}$/.test(digits12)) return null;
+    const arr = digits12.split('').map(d=>parseInt(d,10));
+    const oddSum = arr.filter((_,i)=>i%2===0).reduce((a,b)=>a+b,0);
+    const evenSum = arr.filter((_,i)=>i%2===1).reduce((a,b)=>a+b,0);
+    const total = oddSum + evenSum*3;
+    const rem = total % 10;
+    const check = rem === 0 ? 0 : (10 - rem);
+    return check;
+  }
+
+  document.getElementById('isbn-calc').addEventListener('click', function(){
+    const d = document.getElementById('isbn-input').value.trim();
+    const check = computeIsbn13CheckDigit(d);
+    if(check===null) document.getElementById('isbn-out').textContent = 'Enter exactly 12 digits.';
+    else document.getElementById('isbn-out').textContent = `Check digit for ${d} is ${check}. Full ISBN-13: ${d}${check}`;
+  });
+
+  document.getElementById('isbn-verify-btn').addEventListener('click', function(){
+    const s = document.getElementById('isbn-verify').value.trim();
+    if(!/^\d{13}$/.test(s)){ document.getElementById('isbn-ver-out').textContent='Enter exactly 13 digits.'; return; }
+    const first12 = s.slice(0,12);
+    const expected = computeIsbn13CheckDigit(first12);
+    const actual = parseInt(s[12],10);
+    document.getElementById('isbn-ver-out').textContent = expected === actual ? 'ISBN is valid ✓' : `Invalid ISBN ✗ (expected check digit ${expected}, found ${actual})`;
+  });
+
+  // Modulo-11 (weights descending)
+  function computeMod11CheckDigit(digits, startWeight){
+    if(!/^\d+$/.test(digits)) return null;
+    let w = parseInt(startWeight,10);
+    if(isNaN(w) || w<2) return null;
+    const arr = digits.split('').map(d=>parseInt(d,10));
+    let total = 0;
+    for(let i=0;i<arr.length;i++){
+      total += arr[i] * (w - i);
+    }
+    const rem = total % 11;
+    const check = (11 - rem) % 11; // if rem=0 => check 0; if rem=1 => check 10 -> usually 'X'
+    return check;
+  }
+
+  document.getElementById('mod11-calc').addEventListener('click', function(){
+    const d = document.getElementById('mod11-input').value.trim();
+    const start = document.getElementById('mod11-start').value.trim();
+    const ch = computeMod11CheckDigit(d, start);
+    if(ch===null) { document.getElementById('mod11-out').textContent = 'Enter digits and a valid start weighting (≥2).'; return; }
+    const display = ch===10? 'X' : ch;
+    document.getElementById('mod11-out').textContent = `Check digit = ${display}. Full code: ${d}${display}`;
+  });
+
+  document.getElementById('mod11-verify-btn').addEventListener('click', function(){
+    const s = document.getElementById('mod11-verify').value.trim();
+    if(!/^\d+[0-9Xx]$/.test(s)){ document.getElementById('mod11-ver-out').textContent = 'Enter full code (digits + check digit, X allowed).'; return; }
+    // Infer weighting: assume length n -> weights from n-1 down to 1 (common method). We'll reconstruct start accordingly.
+    const digits = s.slice(0, -1);
+    const checkChar = s.slice(-1).toUpperCase();
+    const start = digits.length + 1; // weights start at n+? For a 7-digit original with start 8, this matches example.
+    const ch = computeMod11CheckDigit(digits, start);
+    if(ch===null){ document.getElementById('mod11-ver-out').textContent = 'Verification failed: could not compute.'; return; }
+    const expectedChar = (ch===10)? 'X' : String(ch);
+    document.getElementById('mod11-ver-out').textContent = (expectedChar===checkChar) ? 'Code is valid ✓' : `Invalid code ✗ (expected ${expectedChar}, found ${checkChar})`;
+  });
+
+})();
+</script>
+<!-- ====== End of snippet ====== -->
+<!-- Section 2.2.4: Automatic Repeat Request (ARQ) -->
+<section id="arq">
+  <h2>2.2.4 Automatic Repeat Request (ARQ)</h2>
+  <p><strong>Automatic Repeat Request (ARQ)</strong> is a protocol used to ensure reliable transmission of data. 
+     It works by using acknowledgements and timeouts.</p>
+
+  <h3>Process</h3>
+  <ol>
+    <li>Data is sent with an error detection code (often CRC).</li>
+    <li>The receiver checks the data:
+      <ul>
+        <li>If <strong>no error detected</strong> → sends a <em>positive acknowledgement</em>.</li>
+        <li>If <strong>error detected</strong> → sends a <em>negative acknowledgement</em>, requesting re-transmission.</li>
+      </ul>
+    </li>
+    <li>The sender waits for a response (timeout period):
+      <ul>
+        <li>If no acknowledgement → data is re-sent.</li>
+        <li>If negative acknowledgement → data is re-sent.</li>
+      </ul>
+    </li>
+    <li>Process continues until:
+      <ul>
+        <li>A positive acknowledgement is received ✅</li>
+        <li>Or a maximum number of re-transmissions is reached ❌</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p><strong>Uses:</strong> ARQ is widely used in mobile phone networks and internet communications to guarantee data integrity.</p>
+
+  <h3>Exam Pointers</h3>
+  <ul>
+    <li>Be able to explain each method (checksum, echo check, check digits, ARQ).</li>
+    <li>Perform check digit calculations (ISBN-13 and Modulo-11).</li>
+    <li>Compare advantages and disadvantages of each method.</li>
+    <li>Expect scenario-based questions (e.g., supermarket scanning, ISBN verification, mobile data).</li>
+  </ul>
+</section>
+
+<!-- Section 2.3: Symmetric and Asymmetric Encryption -->
+<section id="encryption">
+  <h2>2.3 Symmetric and Asymmetric Encryption</h2>
+
+  <h3>2.3.1 The Purpose of Encryption</h3>
+  <ul>
+    <li>Data transmitted over a public network (wired or wireless) is at risk of interception by hackers (eavesdroppers).</li>
+    <li>Encryption reduces this risk by converting data into unreadable form.</li>
+    <li>Encryption does not stop interception, but makes data meaningless without the decryption method.</li>
+    <li>Important for protecting sensitive data:
+      <ul>
+        <li>Credit card / bank details</li>
+        <li>Medical history</li>
+        <li>Legal documents</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p><strong>Plaintext:</strong> original readable data.<br>
+     <strong>Ciphertext:</strong> encrypted, unreadable version of plaintext.</p>
+
+  <pre>
+Plaintext → [Encryption Algorithm + Key] → Ciphertext
+Ciphertext → [Decryption Algorithm + Key] → Plaintext
+  </pre>
+
+  <h3>2.3.2 Symmetric and Asymmetric Encryption</h3>
+
+  <h4>1. Symmetric Encryption</h4>
+  <ul>
+    <li>Uses the same key for both encryption and decryption.</li>
+    <li>Example with a 10-digit denary key: <code>4 2 9 1 3 6 2 8 5 6</code></li>
+    <li>Each letter is shifted across the alphabet by these values in sequence.</li>
+  </ul>
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>Plaintext</th><td>C</td><td>O</td><td>M</td><td>P</td><td>U</td><td>T</td><td>E</td><td>R</td><td>S</td><td>C</td><td>I</td><td>E</td><td>N</td><td>C</td><td>E</td><td>I</td><td>S</td><td>E</td><td>X</td><td>C</td><td>I</td><td>T</td><td>I</td><td>N</td><td>G</td>
+    </tr>
+    <tr>
+      <th>Key (+)</th><td>4</td><td>2</td><td>9</td><td>1</td><td>3</td><td>6</td><td>2</td><td>8</td><td>5</td><td>6</td><td>4</td><td>2</td><td>9</td><td>1</td><td>3</td><td>6</td><td>2</td><td>8</td><td>5</td><td>6</td><td>4</td><td>2</td><td>9</td><td>1</td><td>3</td>
+    </tr>
+    <tr>
+      <th>Ciphertext</th><td>G</td><td>Q</td><td>V</td><td>Q</td><td>X</td><td>Z</td><td>G</td><td>Z</td><td>X</td><td>I</td><td>M</td><td>G</td><td>W</td><td>D</td><td>H</td><td>O</td><td>U</td><td>M</td><td>C</td><td>I</td><td>M</td><td>V</td><td>R</td><td>O</td><td>J</td>
+    </tr>
+  </table>
+
+  <p><em>Decryption:</em> Apply the same key but in reverse (−4, −2, −9, etc.).</p>
+
+  <p><strong>Weakness:</strong> Key must be shared between sender and receiver → risk of interception.  
+     Modern systems use 256-bit binary keys (≈ 2<sup>256</sup> possibilities).</p>
+
+  <h4>2. Asymmetric Encryption</h4>
+  <ul>
+    <li>Developed to solve key-sharing problem of symmetric encryption.</li>
+    <li>Uses two mathematically linked keys:
+      <ul>
+        <li><strong>Public Key</strong> → available to everyone.</li>
+        <li><strong>Private Key</strong> → known only to the owner.</li>
+      </ul>
+    </li>
+    <li>Both keys are required for encryption and decryption.</li>
+  </ul>
+
+  <h5>Example: Tom and Jane</h5>
+  <ol>
+    <li>Jane generates a <em>public</em> and <em>private</em> key pair.</li>
+    <li>Jane shares her public key with Tom.</li>
+    <li>Tom encrypts his document using Jane’s public key and sends ciphertext.</li>
+    <li>Jane decrypts ciphertext using her private key.</li>
+  </ol>
+
+  <pre>
+Step 1 – Key generation
+Jane: Public Key (shared) + Private Key (secret)
+
+Step 2 – Sharing the public key
+Tom  ←  Jane's Public Key  ←  Jane
+
+Step 3 – Encryption with public key
+Tom's Document → [Encrypt with Jane's Public Key] → Ciphertext → Sent to Jane
+
+Step 4 – Decryption with private key
+Ciphertext → [Decrypt with Jane's Private Key] → Plaintext Document
+  </pre>
+
+  <p><strong>Result:</strong>  
+     Tom never needed Jane’s private key. Even if the public key is intercepted, the hacker cannot decrypt without Jane’s private key.</p>
+</section>
+<section id="exam-questions">
+  <h2>Exam-Style Questions and Answers (Q1–Q8)</h2>
+  
+  <details>
+    <summary><b>Q1. Vending Machines and Error Checking</b></summary>
+    <p><b>(a)(i) Echo Checks [2]</b><br>
+    • Data sent is echoed back for comparison.<br>
+    • Not very suitable for vending machines, since errors could occur in either direction. ARQ is better.<br>
+    ✅ Marks: description (1), suitability (1)</p>
+
+    <p><b>(a)(ii) ARQ [3]</b><br>
+    • Uses ACK/NAK and timeouts.<br>
+    • Receiver checks CRC → ACK if correct, NAK if error, timeout triggers resend.<br>
+    ✅ Marks: ack (1), error detect/resend (1), timeout (1)</p>
+
+    <p><b>(b) Checksum vs Check Digit [3]</b><br>
+    <table border="1" cellpadding="5">
+      <tr><th>Checksum</th><th>Check Digit</th></tr>
+      <tr><td>Calculated from block of data</td><td>Calculated from digits in one number</td></tr>
+      <tr><td>Detects transmission errors</td><td>Detects entry/typing errors</td></tr>
+      <tr><td>Needs algorithm on both ends</td><td>Single digit appended & verified</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary><b>Q2. Explanation of Computer Terms [10]</b></summary>
+    <p>(i) Packet Switching – Data split into packets, reassembled at destination. (2)<br>
+    (ii) CRC – Data ÷ binary divisor, remainder sent for checking. (2)<br>
+    (iii) Data Skewing – Signals arrive at different times → sync errors. (2)<br>
+    (iv) USB – Standard for peripherals, plug & play, power + data. (2)<br>
+    (v) Parity Bit – Extra bit to ensure even/odd number of 1s. (2)</p>
+  </details>
+
+  <details>
+    <summary><b>Q3. Matching Descriptions to Error-Checking Methods [8]</b></summary>
+    <p>✓ Extra bit → Parity Check<br>
+    ✓ Timeout + ack → ARQ<br>
+    ✓ Resend request → ARQ<br>
+    ✓ Check changed packet → Checksum<br>
+    ✓ Re-calculation check → Checksum<br>
+    ✓ Transmission in packets → Checksum<br>
+    ✓ Identify changed bit → Parity Check<br>
+    ✓ Extra value at end → Checksum</p>
+  </details>
+
+  <details>
+    <summary><b>Q4. Error-Checking Sequences</b></summary>
+    <p>(a) ARQ: iii → i → ii → iv (3)<br>
+    (b) Checksum: v → ii → iii → iv → i (4)<br>
+    (c) Parity: ii → iii → i → iv → v (4)<br>
+    (d) Check digit: v → ii → vi → iv → iii → i (5)</p>
+  </details>
+
+  <details>
+    <summary><b>Q5. Encryption Questions</b></summary>
+    <p>(a) Symmetric – Same key for encryption/decryption. (2)<br>
+    (b) Asymmetric – Public + Private key. RSA example. (3)<br>
+    (c) Use – Prevents intercepted data being understood. (2)</p>
+  </details>
+
+  <details>
+    <summary><b>Q6. Match Descriptions to Computer Terms [6]</b></summary>
+    <ol>
+      <li>Full-duplex</li>
+      <li>Serial</li>
+      <li>Data skewing</li>
+      <li>USB</li>
+      <li>Encryption</li>
+      <li>Checksum</li>
+    </ol>
+  </details>
+
+  <details>
+    <summary><b>Q8. Duplex and USB</b></summary>
+    <p>(a) Duplex Statements:<br>
+    ✓ True, ✗ False, ✗ False, ✓ True, ✗ False</p>
+    <p>(b) IC method → Parallel transmission (1)</p>
+    <p>(c) Benefits of USB:<br>
+    • Plug & play<br>
+    • Universal compatibility<br>
+    • Hot-swappable<br>
+    • Fast transfer speed</p>
+  </details>
+</section>
+
+<footer style="background:#004080; color:white; text-align:center; padding:15px; margin-top:30px; font-size:14px;">
+  Prepared by <b>Ravi Raju</b>
+</footer>
+
+</body>
+</html>
