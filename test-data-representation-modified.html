@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Data Representation — IGCSE 0478 — Year 10 Test</title>
+<style>
+  :root{
+    --bg:#f6fbff;
+    --card:#ffffff;
+    --accent:#1f78d1;
+    --muted:#6b7280;
+    --success:#2e7d32;
+    --danger:#c62828;
+    --box-shadow: 0 6px 18px rgba(31,120,209,0.08);
+    --radius:10px;
+    --mono: "Segoe UI Mono", Consolas, monospace;
+  }
+  body{
+    margin:0; font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg, #f3f8ff 0%, var(--bg) 100%);
+    color:#0f1724; padding:32px;
+  }
+  .container{max-width:1100px;margin:0 auto;}
+  header{background:transparent;padding:18px 20px 10px 20px}
+  .centered{ text-align:center; }
+  h1{margin:4px 0 2px 0;font-size:20px;letter-spacing:1px}
+  h2{margin:0;font-size:14px;color:var(--muted)}
+  .left-info{margin-top:12px;padding:8px 2px;}
+  .meta{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .teacher, .student{width:100%}
+  .student input{width:60%;padding:8px;border:1px solid #d7e6fb;border-radius:6px}
+  .card{
+    background:var(--card); box-shadow:var(--box-shadow); border-radius:var(--radius);
+    padding:18px;margin:18px 0;
+  }
+  .section-title{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+  }
+  .section-title h3{margin:0;font-size:16px;color:var(--accent)}
+  .mcq qnum{font-family:var(--mono)}
+  .question{padding:12px;border-radius:8px;border:1px solid rgba(31,120,209,0.06);margin-bottom:12px}
+  .opts{margin-top:8px; display:flex;flex-direction:column; gap:6px}
+  label.option{
+    display:inline-flex;align-items:center;gap:10px;padding:8px;border-radius:6px;
+    cursor:pointer;border:1px solid transparent;
+  }
+  label.option input{transform:scale(1.1)}
+  label.option.correct{outline:2px solid rgba(46,125,50,0.10);background:#f1fff3}
+  label.option.wrong{outline:2px solid rgba(198,40,40,0.10);background:#fff3f3}
+  .btn{
+    background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;border:none;font-weight:600;
+    cursor:pointer;box-shadow: 0 6px 14px rgba(31,120,209,0.14);
+  }
+  .btn:disabled{opacity:0.5;cursor:not-allowed}
+  .feedback{margin-top:8px;font-weight:600}
+  .correct{color:var(--success)}
+  .incorrect{color:var(--danger)}
+  textarea, input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefb;background:#fbfeff}
+  .small{font-size:13px;color:var(--muted)}
+  footer{margin:22px 0;text-align:center;color:#667085}
+  .score-box{background:linear-gradient(90deg,rgba(31,120,209,0.06),transparent);padding:12px;border-radius:8px;font-weight:700}
+  .model-answer{background:#f8fbff;padding:10px;border-left:4px solid var(--accent);border-radius:6px;margin-top:8px}
+  @media (min-width:860px){
+    .meta{flex-direction:row}
+    .teacher{width:40%}
+    .student{width:60%}
+  }
+</style>
+
+<!-- Include EmailJS SDK -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  emailjs.init("YOUR_PUBLIC_KEY"); // replace with your EmailJS public key
+</script>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="centered">
+        <h1>MODERN ENGLISH SCHOOL CAIRO</h1>
+        <h2>YEAR 10 COMPUTER SCIENCE TEST – DATA REPRESENTATION</h2>
+      </div>
+
+      <div class="left-info">
+        <div class="meta">
+          <div class="teacher"><strong>Teacher:</strong> RAVI RAJU</div>
+          <div class="student"><strong>Name of the Student:</strong> <input id="studentName" placeholder="Enter full name" /></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- MCQ Section -->
+      <section class="card" id="mcqSection">
+        <div class="section-title">
+          <h3>Section A — Multiple Choice Questions (30 × 1 mark)</h3>
+          <div class="small">Select one option for each question. Click <strong>Submit MCQs</strong> to reveal answers.</div>
+        </div>
+        <div id="mcqList"></div>
+        <div style="text-align:right;margin-top:6px">
+          <button id="submitMcqs" class="btn">Submit MCQs</button>
+        </div>
+        <div id="mcqFeedback" class="feedback"></div>
+      </section>
+
+      <!-- Short Answer Section -->
+      <section class="card" id="shortSection">
+        <div class="section-title">
+          <h3>Section B — Short Answer Questions (5 × 2 marks)</h3>
+          <div class="small">Answer briefly. Click <strong>Submit Short Answers</strong> to reveal model answers and marks.</div>
+        </div>
+        <div id="shortList"></div>
+        <div style="text-align:right;margin-top:6px">
+          <button id="submitShorts" class="btn">Submit Short Answers</button>
+        </div>
+        <div id="shortFeedback" class="feedback"></div>
+      </section>
+
+      <!-- Scenario Section -->
+      <section class="card" id="scenarioSection">
+        <div class="section-title">
+          <h3>Section C — Scenario-Based Questions (2 × 5 marks)</h3>
+          <div class="small">Write a clear answer. Click <strong>Submit Scenario Questions</strong> to reveal model answers and marks.</div>
+        </div>
+        <div id="scenarioList"></div>
+        <div style="text-align:right;margin-top:6px">
+          <button id="submitScenarios" class="btn">Submit Scenario Questions</button>
+        </div>
+        <div id="scenarioFeedback" class="feedback"></div>
+      </section>
+
+      <!-- Score -->
+      <section class="card">
+        <div class="section-title">
+          <h3>Total Score</h3>
+          <div class="small">Score is out of <strong>50 marks</strong>. MCQs = 30, Shorts = 10, Scenarios = 10.</div>
+        </div>
+        <div class="score-box" id="totalScore">Not yet graded. Submit the sections to calculate the total.</div>
+      </section>
+
+      <!-- Send Results Button -->
+      <div style="text-align:center;margin:20px 0">
+        <button id="sendResults" class="btn">Send Results to Teacher</button>
+      </div>
+
+      <footer>
+        © R. Ravi — Modern English School Cairo
+      </footer>
+    </main>
+  </div>
+
+<script>
+/* ====== QUIZ DATA & RENDERING ====== */
+// (Paste your existing mcqsMaster, shortQuestions, scenarioQuestions arrays here)
+
+function shuffle(array){
+  for(let i = array.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Clone and shuffle MCQs
+let mcqs = JSON.parse(JSON.stringify(mcqsMaster));
+mcqs = shuffle(mcqs).slice(0,30);
+const mcqListEl = document.getElementById('mcqList');
+mcqs.forEach((m, idx)=>{
+  const idPrefix = `mcq_${idx}`;
+  const qDiv = document.createElement('div');
+  qDiv.className = 'question';
+  qDiv.id = idPrefix;
+  let html = `<div><strong>Q${idx+1}.</strong> ${m.q}</div><div class="opts">`;
+  m.choices.forEach((opt, i)=>{
+    const optId = `${idPrefix}_opt${i}`;
+    html += `<label class="option" id="${optId}_label"><input type="radio" name="${idPrefix}_choice" value="${i}" /> <span>${String.fromCharCode(65+i)}. ${opt}</span></label>`;
+  });
+  html += `</div>`;
+  qDiv.innerHTML = html;
+  mcqListEl.appendChild(qDiv);
+});
+
+// Render Short questions
+const shortListEl = document.getElementById('shortList');
+shortQuestions.forEach((s, idx)=>{
+  const sid = `short_${idx}`;
+  const div = document.createElement('div');
+  div.className='question';
+  div.id = sid;
+  div.innerHTML = `<div><strong>Q${idx+1}.</strong> ${s.q}</div>
+                   <div style="margin-top:8px"><input type="text" id="${sid}_input" placeholder="Type your short answer here" /></div>
+                   <div id="${sid}_model" class="model-answer" style="display:none"></div>`;
+  shortListEl.appendChild(div);
+});
+
+// Render Scenario questions
+const scenarioListEl = document.getElementById('scenarioList');
+scenarioQuestions.forEach((s, idx)=>{
+  const sid = `scen_${idx}`;
+  const div = document.createElement('div');
+  div.className='question';
+  div.id = sid;
+  div.innerHTML = `<div><strong>Q${idx+1}.</strong> ${s.q}</div>
+                   <div style="margin-top:8px"><textarea id="${sid}_input" rows="6" placeholder="Write your answer here (show working)"></textarea></div>
+                   <div id="${sid}_model" class="model-answer" style="display:none"></div>`;
+  scenarioListEl.appendChild(div);
+});
+
+// Grading state
+let mcqScore = null;
+let shortScore = null;
+let scenarioScore = null;
+
+/* ====== GRADING FUNCTIONS ====== */
+function showModel(elementId, text){
+  const el = document.getElementById(elementId);
+  if(!el) return;
+  el.style.display='block';
+  el.textContent = text;
+}
+
+// MCQs grading
+document.getElementById('submitMcqs').addEventListener('click', ()=>{
+  let score=0;
+  mcqs.forEach((m, idx)=>{
+    const idPrefix = `mcq_${idx}`;
+    const radios = document.getElementsByName(`${idPrefix}_choice`);
+    let selected=-1;
+    radios.forEach(r=>{if(r.checked) selected=parseInt(r.value)});
+    const correct = m.answer;
+    const optLabel = document.getElementById(`${idPrefix}_opt${correct}_label`);
+    optLabel.classList.add('correct');
+    if(selected===correct){score++} else if(selected!==-1){
+      const selLabel = document.getElementById(`${idPrefix}_opt${selected}_label`);
+      selLabel.classList.add('wrong');
+    }
+  });
+  mcqScore = score;
+  document.getElementById('mcqFeedback').textContent = `MCQs scored: ${score} / 30`;
+  calculateTotal();
+});
+
+// Short answers grading
+document.getElementById('submitShorts').addEventListener('click', ()=>{
+  let score=0;
+  shortQuestions.forEach((s, idx)=>{
+    const userAns = document.getElementById(`short_${idx}_input`).value.trim().toLowerCase();
+    const correctAns = s.a.toLowerCase();
+    const modelId = `short_${idx}_model`;
+    showModel(modelId, `Model Answer: ${s.a}`);
+    if(userAns===correctAns){score+=2;}
+  });
+  shortScore = score;
+  document.getElementById('shortFeedback').textContent = `Short Answers scored: ${score} / 10`;
+  calculateTotal();
+});
+
+// Scenario answers grading (manual or using keyword matching)
+document.getElementById('submitScenarios').addEventListener('click', ()=>{
+  let score=0;
+  scenarioQuestions.forEach((s, idx)=>{
+    const userAns = document.getElementById(`scen_${idx}_input`).value.trim().toLowerCase();
+    const modelId = `scen_${idx}_model`;
+    showModel(modelId, `Model Answer: ${s.a}`);
+    // For demo, we do keyword check for 5 marks each
+    if(userAns.includes(s.key.toLowerCase())) score+=5;
+  });
+  scenarioScore = score;
+  document.getElementById('scenarioFeedback').textContent = `Scenario Questions scored: ${score} / 10`;
+  calculateTotal();
+});
+
+function calculateTotal(){
+  if(mcqScore===null || shortScore===null || scenarioScore===null) return;
+  const total = mcqScore + shortScore + scenarioScore;
+  document.getElementById('totalScore').textContent = `Student scored: ${total} / 50`;
+}
+
+/* ====== SEND RESULTS VIA EMAILJS ====== */
+document.getElementById('sendResults').addEventListener('click', ()=>{
+  const studentName = document.getElementById('studentName').value.trim();
+  if(studentName===""){alert("Please enter student's full name"); return;}
+  if(mcqScore===null || shortScore===null || scenarioScore===null){
+    alert("Please submit all sections before sending results."); return;
+  }
+
+  const templateParams = {
+    student_name: studentName,
+    score_text: document.getElementById('totalScore').textContent
+  };
+
+  emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID", templateParams)
+    .then(res=>{alert("Results sent successfully!");})
+    .catch(err=>{alert("Failed to send results: "+JSON.stringify(err));});
+});
+</script>
+</body>
+</html>
