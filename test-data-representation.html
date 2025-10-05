@@ -1,0 +1,429 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Data Representation — IGCSE 0478 — Year 10 Test</title>
+<style>
+  :root{
+    --bg:#f6fbff;
+    --card:#ffffff;
+    --accent:#1f78d1;
+    --muted:#6b7280;
+    --success:#2e7d32;
+    --danger:#c62828;
+    --box-shadow: 0 6px 18px rgba(31,120,209,0.08);
+    --radius:10px;
+    --mono: "Segoe UI Mono", Consolas, monospace;
+  }
+  body{
+    margin:0; font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg, #f3f8ff 0%, var(--bg) 100%);
+    color:#0f1724; padding:32px;
+  }
+  .container{max-width:1100px;margin:0 auto;}
+  header{background:transparent;padding:18px 20px 10px 20px}
+  .centered{ text-align:center; }
+  h1{margin:4px 0 2px 0;font-size:20px;letter-spacing:1px}
+  h2{margin:0;font-size:14px;color:var(--muted)}
+  .left-info{margin-top:12px;padding:8px 2px;}
+  .meta{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .teacher, .student{width:100%}
+  .student input{width:60%;padding:8px;border:1px solid #d7e6fb;border-radius:6px}
+  .card{
+    background:var(--card); box-shadow:var(--box-shadow); border-radius:var(--radius);
+    padding:18px;margin:18px 0;
+  }
+  .section-title{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+  }
+  .section-title h3{margin:0;font-size:16px;color:var(--accent)}
+  .mcq qnum{font-family:var(--mono)}
+  .question{padding:12px;border-radius:8px;border:1px solid rgba(31,120,209,0.06);margin-bottom:12px}
+  .opts{margin-top:8px; display:flex;flex-direction:column; gap:6px}
+  label.option{
+    display:inline-flex;align-items:center;gap:10px;padding:8px;border-radius:6px;
+    cursor:pointer;border:1px solid transparent;
+  }
+  label.option input{transform:scale(1.1)}
+  label.option.correct{outline:2px solid rgba(46,125,50,0.10);background:#f1fff3}
+  label.option.wrong{outline:2px solid rgba(198,40,40,0.10);background:#fff3f3}
+  .btn{
+    background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;border:none;font-weight:600;
+    cursor:pointer;box-shadow: 0 6px 14px rgba(31,120,209,0.14);
+  }
+  .btn:disabled{opacity:0.5;cursor:not-allowed}
+  .feedback{margin-top:8px;font-weight:600}
+  .correct{color:var(--success)}
+  .incorrect{color:var(--danger)}
+  textarea, input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefb;background:#fbfeff}
+  .small{font-size:13px;color:var(--muted)}
+  footer{margin:22px 0;text-align:center;color:#667085}
+  .score-box{background:linear-gradient(90deg,rgba(31,120,209,0.06),transparent);padding:12px;border-radius:8px;font-weight:700}
+  .model-answer{background:#f8fbff;padding:10px;border-left:4px solid var(--accent);border-radius:6px;margin-top:8px}
+  @media (min-width:860px){
+    .meta{flex-direction:row}
+    .teacher{width:40%}
+    .student{width:60%}
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="centered">
+        <h1>MODERN ENGLISH SCHOOL CAIRO</h1>
+        <h2>YEAR 10 COMPUTER SCIENCE TEST – DATA REPRESENTATION</h2>
+      </div>
+
+      <div class="left-info">
+        <div class="meta">
+          <div class="teacher"><strong>Teacher:</strong> RAVI RAJU</div>
+          <div class="student"><strong>Name of the Student:</strong> <input id="studentName" placeholder="Enter full name" /></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- MCQ Section -->
+      <section class="card" id="mcqSection">
+        <div class="section-title">
+          <h3>Section A — Multiple Choice Questions (30 × 1 mark)</h3>
+          <div class="small">Select one option for each question. Click <strong>Submit MCQs</strong> to reveal answers.</div>
+        </div>
+        <div id="mcqList"></div>
+        <div style="text-align:right;margin-top:6px">
+          <button id="submitMcqs" class="btn">Submit MCQs</button>
+        </div>
+        <div id="mcqFeedback" class="feedback"></div>
+      </section>
+
+      <!-- Short Answer Section -->
+      <section class="card" id="shortSection">
+        <div class="section-title">
+          <h3>Section B — Short Answer Questions (5 × 2 marks)</h3>
+          <div class="small">Answer briefly. Click <strong>Submit Short Answers</strong> to reveal model answers and marks.</div>
+        </div>
+        <div id="shortList"></div>
+        <div style="text-align:right;margin-top:6px">
+          <button id="submitShorts" class="btn">Submit Short Answers</button>
+        </div>
+        <div id="shortFeedback" class="feedback"></div>
+      </section>
+
+      <!-- Scenario Section -->
+      <section class="card" id="scenarioSection">
+        <div class="section-title">
+          <h3>Section C — Scenario-Based Questions (2 × 5 marks)</h3>
+          <div class="small">Write a clear answer. Click <strong>Submit Scenario Questions</strong> to reveal model answers and marks.</div>
+        </div>
+        <div id="scenarioList"></div>
+        <div style="text-align:right;margin-top:6px">
+          <button id="submitScenarios" class="btn">Submit Scenario Questions</button>
+        </div>
+        <div id="scenarioFeedback" class="feedback"></div>
+      </section>
+
+      <!-- Score -->
+      <section class="card">
+        <div class="section-title">
+          <h3>Total Score</h3>
+          <div class="small">Score is out of <strong>50 marks</strong>. MCQs = 30, Shorts = 10, Scenarios = 10.</div>
+        </div>
+        <div class="score-box" id="totalScore">Not yet graded. Submit the sections to calculate the total.</div>
+      </section>
+
+      <footer>
+        © R. Ravi — Modern English School Cairo
+      </footer>
+    </main>
+  </div>
+
+<script>
+/*
+  Self-marking quiz for IGCSE Data Representation.
+  - MCQs: randomized and auto-checked (1 mark each).
+  - Short answers (2 marks each): auto-checked by keyword matching (simple heuristic).
+  - Scenario (5 marks each): auto-checked by keyword matching (proportional).
+  - No RESET buttons.
+*/
+
+/* --------------- QUESTION DATA --------------- */
+
+/* MCQs: array of {q, choices:[...], answer: index 0..3, topic (optional)} */
+const mcqsMaster = [
+  { q: "Which of the following is the binary representation of denary 13?", choices:["1101","1011","1110","1001"], answer:0 },
+  { q: "How many bits are in a byte?", choices:["4","8","16","32"], answer:1 },
+  { q: "What is the hexadecimal equivalent of binary 1010 1111?", choices:["AF","5F","A7","BF"], answer:0 },
+  { q: "Which encoding uses 8 bits for basic characters but can be extended for many languages (ASCII vs Unicode)?", choices:["ASCII","UTF-8/Unicode","EBCDIC","ISO-8859-1"], answer:1 },
+  { q: "What is the result of 7 (0111) + 5 (0101) in 4-bit binary (ignoring overflow)?", choices:["1100","1000","0000","1110"], answer:0 },
+  { q: "Which of these is a lossy compression format commonly used for images?", choices:["PNG","JPEG","PNG-24","BMP"], answer:1 },
+  { q: "Which best describes 'sampling rate' in sound files?", choices:["Number of bits used per sample","Number of samples per second","Compression ratio","Number of channels"], answer:1 },
+  { q: "What is a 'nibble'?", choices:["1 bit","2 bits","4 bits","8 bits"], answer:2 },
+  { q: "Which of the following indicates 'overflow' in binary addition?", choices:["When an extra carry beyond the leftmost bit is generated","When a decimal point moves","When bits are shifted right","When there are negative numbers"], answer:0 },
+  { q: "How many different values can be represented by 5 bits?", choices:["16","32","64","8"], answer:1 },
+  { q: "Which is the correct denary value for hex '1A'?", choices:["26","30","16","24"], answer:0 },
+  { q: "In image representation, 'colour depth' refers to:", choices:["Number of pixels horizontally","Number of colours per pixel","Image file size in KB","Compression level"], answer:1 },
+  { q: "Which method detects single-bit errors by adding a single parity bit?", choices:["Checksum","Parity bit","CRC","Hamming code"], answer:1 },
+  { q: "Which is a correct advantage of lossless compression?", choices:["Smaller files than lossy always","Original data can be perfectly restored","Faster transmission than lossy always","Better quality for audio than lossly"], answer:1 },
+  { q: "Binary 1101 converted to denary is:", choices:["11","12","13","14"], answer:2 },
+  { q: "Which unit is 1024 bytes?", choices:["Kilobit","Kilobyte (KiB)","Megabyte","Gigabyte"], answer:1 },
+  { q: "What is the purpose of using two's complement?", choices:["Represent fractional numbers","Represent negative integers","Compress images","Count parity errors"], answer:1 },
+  { q: "Which hexadecimal digit equals decimal 12?", choices:["A","B","C","D"], answer:2 },
+  { q: "If an image is 800 × 600 pixels with 24-bit colour depth, approximate uncompressed size in bytes is:", choices:["14,400 bytes","1,440,000 bytes","14,400,000 bytes","1,440 bytes"], answer:2 },
+  { q: "Which value is the 8-bit two's complement representation of -5?", choices:["11111011","00000101","10000101","11111010"], answer:0 },
+  { q: "A checksum is used to:", choices:["Encrypt data","Detect errors in transmitted data","Convert data formats","Speed up transmission"], answer:1 },
+  { q: "What does 'bit depth' of an audio file describe?", choices:["Number of channels","Number of bits per sample","Duration of audio","Number of files"], answer:1 },
+  { q: "Which is the correct binary for denary 255?", choices:["11111111","10101010","01111111","11101111"], answer:0 },
+  { q: "Converting hex 3C to binary gives:", choices:["00111100","11110000","00001111","00110011"], answer:0 },
+  { q: "Which of these is an example of lossy audio compression?", choices:["FLAC","WAV","MP3","WMA Lossless"], answer:2 },
+  { q: "What is the primary benefit of using hexadecimal in computing?", choices:["More compact human-readable representation of binary","Faster processing by CPU","Error correction","Smaller file sizes"], answer:0 },
+  { q: "Which is true about Unicode compared to ASCII?", choices:["Supports more characters and languages","Supports fewer characters","Is always 7 bits","Cannot represent emojis"], answer:0 },
+  { q: "A 4-bit unsigned number has a maximum value of:", choices:["7","8","15","16"], answer:2 },
+  { q: "Which represents the denary fraction 0.5 in binary?", choices:["0.1","0.01","1.0","0.101"], answer:0 }
+];
+
+/* Short questions: array of {q, model (short string), keywords: [...], marks} */
+const shortQuestions = [
+  { q: "1. Define 'bit' and 'byte'.", model: "A bit is a binary digit (0 or 1). A byte is a group of 8 bits used to represent data (e.g., a character).", keywords:["bit","binary digit","0 or 1","byte","8 bits"], marks:2 },
+  { q: "2. Convert denary 45 to binary.", model: "45 in binary is 101101.", keywords:["101101"], marks:2 },
+  { q: "3. State one advantage of lossless compression.", model: "Original data can be perfectly restored; no loss of quality.", keywords:["perfect","restore","original","no loss"], marks:2 },
+  { q: "4. Explain what 'sampling rate' means for audio.", model: "Sampling rate is the number of samples taken per second (Hz) when digitizing sound.", keywords:["samples per second","sampling rate","hz","samples/sec"], marks:2 },
+  { q: "5. What is the hexadecimal representation of denary 200?", model: "200 decimal = C8 hexadecimal.", keywords:["c8","C8"], marks:2 }
+];
+
+/* Scenario questions: array of {q, model:string, keywords:[{k,pts}], marks} */
+const scenarioQuestions = [
+  { q: `1. (5 marks) A school wants to store short audio clips for its website. Each clip is 8 seconds long, uses a sampling rate of 44 100 Hz, and a bit depth of 16 bits per sample. The clips are mono (1 channel). Calculate the uncompressed file size in kilobytes (KB). Show your working and state any assumptions.`, 
+    model: `Calculation: samples per second × seconds × bit depth × channels = 44,100 × 8 × 16 × 1 = 5,644,800 bits. In bytes = 5,644,800 / 8 = 705,600 bytes ≈ 689.06 KB (using 1 KB = 1024 bytes). You can state ≈ 690 KB (approx).`, 
+    keywords: [
+      {k:["44100","44,100","44100.0"], pts:2},
+      {k:["8 × 16","8*16","16 × 8","705600"], pts:2},
+      {k:["705600","689","690","1024"], pts:1}
+    ],
+    marks:5
+  },
+  { q: `2. (5 marks) An image has a resolution of 400 × 300 pixels and a colour depth of 8 bits per pixel. The image is saved using lossless compression that achieves a 2:1 compression ratio. Calculate the compressed file size in kilobytes (KB). Show steps and final answer.`, 
+    model: `Uncompressed size = 400×300 × 8 bits = 960,000 bits = 120,000 bytes. Compressed at 2:1 → 60,000 bytes. In KB ≈ 58.59 KB (60,000 / 1024) or ~59 KB.`, 
+    keywords: [
+      {k:["400","300","400x300","400×300"], pts:2},
+      {k:["400*300*8","960000","120000"], pts:2},
+      {k:["60000","60,000","58","59","1024"], pts:1}
+    ],
+    marks:5
+  }
+];
+
+
+/* --------------- RENDERING & LOGIC --------------- */
+
+function shuffle(array){
+  for(let i = array.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+/* Render MCQs randomized each load */
+let mcqs = JSON.parse(JSON.stringify(mcqsMaster)); // clone
+mcqs = shuffle(mcqs).slice(0,30); // ensure 30 (master already 30)
+const mcqListEl = document.getElementById('mcqList');
+
+mcqs.forEach((m, idx)=>{
+  const idPrefix = `mcq_${idx}`;
+  const qDiv = document.createElement('div');
+  qDiv.className = 'question';
+  qDiv.id = idPrefix;
+  let html = `<div><strong>Q${idx+1}.</strong> ${m.q}</div>`;
+  html += `<div class="opts">`;
+  m.choices.forEach((opt, i)=>{
+    const optId = `${idPrefix}_opt${i}`;
+    html += `<label class="option" id="${optId}_label"><input type="radio" name="${idPrefix}_choice" value="${i}" /> <span>${String.fromCharCode(65+i)}. ${opt}</span></label>`;
+  });
+  html += `</div>`;
+  qDiv.innerHTML = html;
+  mcqListEl.appendChild(qDiv);
+});
+
+/* Render Short questions */
+const shortListEl = document.getElementById('shortList');
+shortQuestions.forEach((s, idx)=>{
+  const sid = `short_${idx}`;
+  const div = document.createElement('div');
+  div.className='question';
+  div.id = sid;
+  div.innerHTML = `<div><strong>Q${idx+1}.</strong> ${s.q}</div>
+                   <div style="margin-top:8px"><input type="text" id="${sid}_input" placeholder="Type your short answer here" /></div>
+                   <div id="${sid}_model" class="model-answer" style="display:none"></div>`;
+  shortListEl.appendChild(div);
+});
+
+/* Render Scenario questions */
+const scenarioListEl = document.getElementById('scenarioList');
+scenarioQuestions.forEach((s, idx)=>{
+  const sid = `scen_${idx}`;
+  const div = document.createElement('div');
+  div.className='question';
+  div.id = sid;
+  div.innerHTML = `<div><strong>Q${idx+1}.</strong> ${s.q}</div>
+                   <div style="margin-top:8px"><textarea id="${sid}_input" rows="6" placeholder="Write your answer here (show working)"></textarea></div>
+                   <div id="${sid}_model" class="model-answer" style="display:none"></div>`;
+  scenarioListEl.appendChild(div);
+});
+
+/* Grading state */
+let mcqScore = null;
+let shortScore = null;
+let scenarioScore = null;
+
+/* Utility: show model answer text */
+function showModel(elementId, text){
+  const el = document.getElementById(elementId);
+  if(!el) return;
+  el.style.display='block';
+  el.textContent = text;
+}
+
+/* MCQ submit handler */
+document.getElementById('submitMcqs').addEventListener('click', function(){
+  if(mcqScore !== null) return; // prevent re-submission changing marks
+  let correct = 0;
+  mcqs.forEach((m, idx)=>{
+    const idPrefix = `mcq_${idx}`;
+    const radios = document.getElementsByName(`${idPrefix}_choice`);
+    let chosen = null;
+    radios.forEach(r => { if(r.checked) chosen = parseInt(r.value); });
+    const qDiv = document.getElementById(idPrefix);
+    // highlight choices
+    m.choices.forEach((opt, i)=>{
+      const label = document.getElementById(`${idPrefix}_opt${i}_label`);
+      label.classList.remove('correct','wrong');
+      if(i === m.answer){
+        label.classList.add('correct');
+      }
+      if(chosen !== null && i === chosen && i !== m.answer){
+        label.classList.add('wrong');
+      }
+    });
+    if(chosen === m.answer) correct++;
+    // if no answer chosen, mark wrong visually by adding wrong class to nothing (we only show correct)
+    if(chosen === null){
+      // leave as-is but user can see correct highlighted
+    }
+  });
+  mcqScore = correct; // 30 marks possible
+  const fb = document.getElementById('mcqFeedback');
+  fb.innerHTML = `MCQs graded: <span class="correct">${mcqScore}</span> / 30`;
+  updateTotal();
+});
+
+/* SHORT answer submit handler (keyword matching) */
+document.getElementById('submitShorts').addEventListener('click', function(){
+  if(shortScore !== null) return;
+  let total = 0;
+  shortQuestions.forEach((s, idx)=>{
+    const sid = `short_${idx}`;
+    const input = document.getElementById(`${sid}_input`).value.trim().toLowerCase();
+    // simple keyword matching: check if any of the keywords appear
+    let got = 0;
+    s.keywords.forEach(k=>{
+      const phrase = k.toLowerCase();
+      if(input.includes(phrase) || input === phrase){
+        got++;
+      }
+    });
+    // Basic scoring rule:
+    // If exact model phrase present => full marks
+    // Else if one or more keywords matched => award proportional marks (at least 1)
+    let awarded = 0;
+    if(input.length === 0){
+      awarded = 0;
+    } else {
+      // If specific binary answer (like 101101) and contains that exact string -> full marks
+      const hasExact = s.keywords.some(kw => input.includes(kw.toLowerCase()));
+      if(hasExact){
+        // proportional: number of matched distinct keywords capped at marks
+        const uniqueMatches = s.keywords.reduce((acc, kw)=>{
+          const lk = kw.toLowerCase();
+          if(input.includes(lk) && !acc.includes(lk)) acc.push(lk);
+          return acc;
+        }, []);
+        awarded = Math.min(s.marks, Math.max(1, uniqueMatches.length));
+      } else {
+        awarded = 0;
+      }
+    }
+    total += awarded;
+    // show model answer and awarded marks
+    showModel(`${sid}_model`, `Model answer: ${s.model} — Marks awarded: ${awarded} / ${s.marks}`);
+  });
+  shortScore = total; // out of 10
+  document.getElementById('shortFeedback').innerHTML = `Short answers graded: <span class="correct">${shortScore}</span> / 10`;
+  updateTotal();
+});
+
+/* Scenario submit handler (proportional keyword matching) */
+document.getElementById('submitScenarios').addEventListener('click', function(){
+  if(scenarioScore !== null) return;
+  let total = 0;
+  scenarioQuestions.forEach((s, idx)=>{
+    const sid = `scen_${idx}`;
+    const input = document.getElementById(`${sid}_input`).value.toLowerCase();
+    // For each keyword entry, if any of its keyword forms exist, award pts.
+    let awarded = 0;
+    s.keywords.forEach(obj=>{
+      const phrases = Array.isArray(obj.k) ? obj.k : [obj.k];
+      let matched = false;
+      phrases.forEach(p=>{
+        if(input.includes(String(p).toLowerCase())) matched = true;
+      });
+      if(matched) awarded += obj.pts;
+    });
+    awarded = Math.min(s.marks, awarded);
+    total += awarded;
+    showModel(`${sid}_model`, `Model answer (key points): ${s.model} — Marks awarded: ${awarded} / ${s.marks}`);
+  });
+  scenarioScore = total; // out of 10
+  document.getElementById('scenarioFeedback').innerHTML = `Scenario questions graded: <span class="correct">${scenarioScore}</span> / 10`;
+  updateTotal();
+});
+
+/* Update total score display when sections graded */
+function updateTotal(){
+  const box = document.getElementById('totalScore');
+  const mc = (mcqScore === null) ? null : mcqScore;
+  const sh = (shortScore === null) ? null : shortScore;
+  const sc = (scenarioScore === null) ? null : scenarioScore;
+  // show partial totals if available
+  const parts = [];
+  if(mc !== null) parts.push(`MCQs: ${mc} / 30`);
+  if(sh !== null) parts.push(`Shorts: ${sh} / 10`);
+  if(sc !== null) parts.push(`Scenarios: ${sc} / 10`);
+  if(mc !== null && sh !== null && sc !== null){
+    const total = mc + sh + sc;
+    box.innerHTML = `<span style="font-size:18px">${total} / 50</span> — ${parts.join(' · ')}`;
+  } else {
+    box.innerHTML = `Partial grading — ${parts.join(' · ')}<div class="small" style="margin-top:6px">Complete all sections to see total out of 50.</div>`;
+  }
+}
+
+/* Prevent accidental form reloads or resubmission via Enter key */
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    // do nothing to avoid submitting when typing in short/scenario fields
+    const active = document.activeElement;
+    if(active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')){
+      e.preventDefault();
+    }
+  }
+});
+
+/* Accessibility: Focus first input */
+document.getElementById('studentName').focus();
+
+/* END OF SCRIPT */
+</script>
+</body>
+</html>
