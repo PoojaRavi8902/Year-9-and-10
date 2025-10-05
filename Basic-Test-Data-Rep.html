@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>IGCSE CS (0478) — Data Representation Test</title>
+<style>
+  :root{
+    --bg:#f4f8ff;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#0b67d0;
+    --success:#d1f7dd;
+    --danger:#ffe0e0;
+    --radius:12px;
+    --card-pad:16px;
+    --shadow: 0 6px 18px rgba(12, 44, 88, 0.06);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:var(--bg);
+    color:#0f172a;
+    padding:28px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+  }
+
+  header{
+    text-align:center;
+    margin-bottom:18px;
+  }
+  header h1{
+    margin:0;
+    font-size:20px;
+    color:var(--accent);
+  }
+  header p{
+    margin:6px 0 0;
+    color:var(--muted);
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:var(--card-pad);
+    box-shadow:var(--shadow);
+    margin-bottom:14px;
+  }
+
+  .meta{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .meta input[type="text"]{
+    flex:1;
+    min-width:220px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #e6eefb;
+  }
+
+  .section-title{
+    font-weight:600;
+    color:#0f172a;
+    margin:10px 0 12px;
+  }
+
+  .question{
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:10px;
+    border:1px solid #eef6ff;
+    transition:background .18s, border-color .18s;
+  }
+  .question.correct{ background:var(--success); border-color:#a9e6b8; }
+  .question.wrong  { background:var(--danger);  border-color:#f5bdbd; }
+
+  .q-text{ margin:0 0 8px; font-weight:600; color:#073763; }
+  .opts label{ display:block; margin-bottom:6px; cursor:pointer; font-weight:500; color:#0f172a; }
+  .opts input{ margin-right:8px; }
+
+  textarea, input[type="text"]{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #e6eefb;
+    resize:vertical;
+    font-size:14px;
+  }
+
+  .submit-row{
+    text-align:center;
+    margin-top:10px;
+  }
+  .btn{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    font-weight:600;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+  }
+  .btn:active{ transform:translateY(1px) }
+
+  .result{
+    margin-top:12px;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #dbeafe;
+    background:linear-gradient(180deg,#f8fbff,#ffffff);
+  }
+  .result h3{ margin:0 0 6px; color:#0b3a66;}
+  .result p{ margin:6px 0; color:var(--muted); }
+
+  footer{
+    text-align:center;
+    margin-top:22px;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  details { margin-top:10px; }
+  summary { cursor:pointer; font-weight:600; color:#0b3a66; }
+
+  /* responsive */
+  @media (max-width:640px){
+    body{ padding:18px }
+    .wrap{ padding:0 6px }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>IGCSE Computer Science (0478)</h1>
+      <p>Chapter 1 — Data Representation (Self-marking test)</p>
+    </header>
+
+    <div class="card">
+      <div class="meta">
+        <div style="flex:1;min-width:260px;">
+          <label style="font-weight:600;color:#0b3a66;">Student name</label>
+          <input id="studentName" type="text" placeholder="Type student name..." />
+        </div>
+        <div style="min-width:220px;">
+          <label style="font-weight:600;color:#0b3a66;">Total marks</label>
+          <div style="margin-top:6px;font-size:18px;font-weight:700;color:#0b3a66;">50</div>
+        </div>
+      </div>
+
+      <div class="section-title">Instructions</div>
+      <p style="margin:0;color:var(--muted);line-height:1.5;">
+        Answer all questions. Multiple-choice questions = 1 mark each (30). Short questions = 2 marks each (5 × 2 = 10). Two long questions = 5 marks each (2 × 5 = 10). Click <strong>SUBMIT</strong> once to auto-mark. Short/long answers are matched by keywords (case-insensitive).
+      </p>
+    </div>
+
+    <!-- Test container -->
+    <div id="testArea" class="card"></div>
+
+    <div class="submit-row">
+      <button class="btn" id="submitBtn">SUBMIT</button>
+    </div>
+
+    <div id="resultBox" class="result" style="display:none;"></div>
+
+    <footer>
+      Prepared by Ravi Raju
+    </footer>
+  </div>
+
+<script>
+/* =========================
+   Questions data
+   - type: mcq | short | long
+   - for mcq: options[] and answer string (exact match)
+   - for short/long: keywords[] an array of required keywords (matching any gives marks; for long, partial marking allowed)
+   ========================= */
+
+const questions = [
+  // 30 MCQs (covering numbers, binary arithmetic, text, images, sound, compression)
+  { q: "1. Binary equivalent of decimal 10?", type:"mcq",
+    options:["1010","1100","1001","1110"], answer:"1010" },
+
+  { q: "2. How many bits in a byte?", type:"mcq",
+    options:["4","8","16","32"], answer:"8" },
+
+  { q: "3. Which is NOT a data type?", type:"mcq",
+    options:["Integer","Boolean","Character","Algorithm"], answer:"Algorithm" },
+
+  { q: "4. ASCII stands for?", type:"mcq",
+    options:["American Standard Code for Information Interchange","Advanced System Code","Automatic Coding Interface","None"], answer:"American Standard Code for Information Interchange" },
+
+  { q: "5. Binary 1011 in decimal?", type:"mcq",
+    options:["11","10","12","9"], answer:"11" },
+
+  { q: "6. Hexadecimal for decimal 255?", type:"mcq",
+    options:["FF","FE","AA","F0"], answer:"FF" },
+
+  { q: "7. 1 kilobyte (KB) in common binary terms equals?", type:"mcq",
+    options:["1000 bytes","1024 bytes","100 bytes","102 bytes"], answer:"1024 bytes" },
+
+  { q: "8. How many bits needed to represent 256 distinct values?", type:"mcq",
+    options:["7","8","9","10"], answer:"8" },
+
+  { q: "9. Base of binary number system?", type:"mcq",
+    options:["2","10","16","8"], answer:"2" },
+
+  { q: "10. Octal digits range from?", type:"mcq",
+    options:["0-7","0-8","0-9","1-8"], answer:"0-7" },
+
+  { q: "11. Binary for decimal 7?", type:"mcq",
+    options:["0111","1110","1010","1001"], answer:"0111" },
+
+  { q: "12. Decimal value of binary 1101?", type:"mcq",
+    options:["12","13","14","15"], answer:"13" },
+
+  { q: "13. A nibble equals how many bits?", type:"mcq",
+    options:["2 bits","4 bits","8 bits","16 bits"], answer:"4 bits" },
+
+  { q: "14. Which is the base of hexadecimal?", type:"mcq",
+    options:["10","12","16","8"], answer:"16" },
+
+  { q: "15. Which is NOT a valid binary number?", type:"mcq",
+    options:["1010","1101","1021","1001"], answer:"1021" },
+
+  // Binary addition / overflow & arithmetic
+  { q: "16. 1111 (binary) + 0001 (binary) = ?", type:"mcq",
+    options:["1111","10000","0000","1110"], answer:"10000" },
+
+  { q: "17. Largest unsigned 8-bit number in decimal is?", type:"mcq",
+    options:["255","256","128","127"], answer:"255" },
+
+  { q: "18. What does the 'bit depth' of an image control?", type:"mcq",
+    options:["Number of pixels","Number of colours per pixel","Image resolution","Compression level"], answer:"Number of colours per pixel" },
+
+  { q: "19. Which is a lossless compression format?", type:"mcq",
+    options:["JPEG","MP3","PNG","MP4"], answer:"PNG" },
+
+  { q: "20. Which is a lossy audio format?", type:"mcq",
+    options:["WAV","FLAC","MP3","None"], answer:"MP3" },
+
+  // Text representation related
+  { q: "21. ASCII code for uppercase 'A' is?", type:"mcq",
+    options:["65","97","64","66"], answer:"65" },
+
+  { q: "22. Unicode is used to represent?", type:"mcq",
+    options:["Only English characters","All writing systems","Only numbers","Only symbols"], answer:"All writing systems" },
+
+  { q: "23. If an image has width 800px and height 600px with 24-bit colour, approximate uncompressed size (bytes)?", type:"mcq",
+    options:["1.44 MB","13.8 MB","3.2 MB","4.6 MB"], answer:"1.44 MB" },
+
+  { q: "24. For digital audio, sampling rate affects?", type:"mcq",
+    options:["Number of samples per second","Colour depth","Compression ratio","Bit depth"], answer:"Number of samples per second" },
+
+  { q: "25. With 16-bit stereo audio sampled at 44.1 kHz, what increases file size most?", type:"mcq",
+    options:["More channels","Lower sample rate","Less bit depth","Higher compression"], answer:"More channels" },
+
+  // Compression / file size basics
+  { q: "26. Lossless compression means:", type:"mcq",
+    options:["Some data lost but file smaller","Original data can be perfectly reconstructed","Only images can be compressed","Compression is faster"], answer:"Original data can be perfectly reconstructed" },
+
+  { q: "27. A single byte can store how many distinct values?", type:"mcq",
+    options:["8","16","256","1024"], answer:"256" },
+
+  { q: "28. 16-bit unsigned max decimal value is?", type:"mcq",
+    options:["65535","65536","32767","32768"], answer:"65535" },
+
+  { q: "29. The process of reducing an image's dimensions is called?", type:"mcq",
+    options:["Sampling","Downscaling / Resizing","Quantising","Encoding"], answer:"Downscaling / Resizing" },
+
+  { q: "30. Which affects audio fidelity most?", type:"mcq",
+    options:["Sampling rate & bit depth","File name","Image resolution","Colour depth"], answer:"Sampling rate & bit depth" },
+
+  // 31-35 short answer (2 marks each) - keyword lists
+  { q: "31. Convert decimal 18 to binary.", type:"short", keywords:["10010","10010.0"] },
+  { q: "32. Convert binary 10101 to decimal.", type:"short", keywords:["21"] },
+  { q: "33. Give the hexadecimal equivalent of decimal 45.", type:"short", keywords:["2d","2D"] },
+  { q: "34. Define 'bit' (brief).", type:"short", keywords:["smallest unit","0 or 1","binary digit","bit"] },
+  { q: "35. How many bytes in 1 KB (binary convention)?", type:"short", keywords:["1024"] },
+
+  // 36-37 long questions (5 marks each) - keywords arrays for partial scoring
+  { q: "36. (Image) An image is 300 × 200 pixels, 24-bit colour. Explain how to calculate the uncompressed file size (show key steps & result).",
+    type:"long",
+    keywords: ["300","200","24","bits","pixels","300x200","300 × 200","pixels ×","width","height","bytes","1.44","1.44mb","1.44 mb"] },
+
+  { q: "37. (Audio) A mono audio clip sampled at 8 kHz with 8-bit samples lasting 5 seconds. Explain how to calculate its uncompressed size (show steps & result).",
+    type:"long",
+    keywords: ["8000","8-bit","8 bit","5","seconds","5s","samples per second","bytes","40000","40000bytes","40000 bytes","40000 b","40000"] }
+];
+
+/* ========== Render UI ========== */
+const testArea = document.getElementById('testArea');
+
+function createMCQ(qObj, idx){
+  const el = document.createElement('div');
+  el.className = 'question';
+  el.id = 'q'+idx;
+  const qnum = `<div class="q-text">${qObj.q}</div>`;
+  const opts = qObj.options.map((opt,i) => {
+    return `<label><input type="radio" name="q${idx}" value="${escapeHtml(opt)}"> ${escapeHtml(opt)}</label>`;
+  }).join('');
+  el.innerHTML = qnum + `<div class="opts">${opts}</div>` +
+    `<div style="margin-top:8px;font-size:13px;color:var(--muted);">(MCQ - 1 mark)</div>`;
+  return el;
+}
+
+function createShort(qObj, idx){
+  const el = document.createElement('div');
+  el.className = 'question';
+  el.id = 'q'+idx;
+  el.innerHTML = `<div class="q-text">${qObj.q}</div>
+                  <textarea name="q${idx}" rows="2" placeholder="Type short answer..."></textarea>
+                  <div style="margin-top:8px;font-size:13px;color:var(--muted);">(Short - 2 marks; keyword matching)</div>`;
+  return el;
+}
+
+function createLong(qObj, idx){
+  const el = document.createElement('div');
+  el.className = 'question';
+  el.id = 'q'+idx;
+  el.innerHTML = `<div class="q-text">${qObj.q}</div>
+                  <textarea name="q${idx}" rows="4" placeholder="Give full steps / explanation..."></textarea>
+                  <div style="margin-top:8px;font-size:13px;color:var(--muted);">(Long - 5 marks; partial credit based on keywords)</div>`;
+  return el;
+}
+
+questions.forEach((q, i)=>{
+  let node;
+  if(q.type === 'mcq') node = createMCQ(q, i);
+  else if(q.type === 'short') node = createShort(q, i);
+  else node = createLong(q, i);
+  testArea.appendChild(node);
+});
+
+/* ========== Marking logic ========== */
+
+function normalizeText(s){
+  return (s||'').toString().toLowerCase().replace(/\s+/g,' ').trim();
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function markTest(){
+  const name = document.getElementById('studentName').value.trim();
+  if(!name){
+    alert('Please enter the student name before submitting.');
+    return;
+  }
+
+  let totalScore = 0;
+  const totalMarks = 50;
+
+  // clear previous classes
+  document.querySelectorAll('.question').forEach(el => {
+    el.classList.remove('correct','wrong');
+  });
+
+  // iterate questions
+  questions.forEach((q, i) => {
+    const qEl = document.getElementById('q'+i);
+    let awarded = 0;
+
+    if(q.type === 'mcq'){
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const val = selected ? normalizeText(selected.value) : '';
+      const correct = normalizeText(q.answer || q.answer);
+      if(val && val === correct){
+        awarded = 1;
+        qEl.classList.add('correct');
+      } else {
+        awarded = 0;
+        qEl.classList.add('wrong');
+      }
+    } else if(q.type === 'short'){
+      const txt = normalizeText(document.querySelector(`[name="q${i}"]`).value);
+      let matched = false;
+      if(txt.length>0 && Array.isArray(q.keywords)){
+        for(const kw of q.keywords){
+          if(kw && txt.indexOf(normalizeText(kw)) !== -1){
+            matched = true; break;
+          }
+        }
+      }
+      if(matched){
+        awarded = 2;
+        qEl.classList.add('correct');
+      } else {
+        awarded = 0;
+        qEl.classList.add('wrong');
+      }
+    } else if(q.type === 'long'){
+      const txt = normalizeText(document.querySelector(`[name="q${i}"]`).value);
+      let matches = 0;
+      if(txt.length>0 && Array.isArray(q.keywords) && q.keywords.length>0){
+        q.keywords.forEach(kw => {
+          if(kw && txt.indexOf(normalizeText(kw)) !== -1) matches++;
+        });
+      }
+      // Partial credit: proportion of matched keywords (max 5)
+      const maxKeywords = Math.max(1, q.keywords.length);
+      awarded = Math.round(5 * (matches / maxKeywords));
+      // Cap to 5
+      if(awarded > 5) awarded = 5;
+      if(awarded >= Math.max(1, Math.ceil(0.5 * 5))) qEl.classList.add('correct'); // half or more -> marked as correct visually
+      else qEl.classList.add('wrong');
+    }
+
+    totalScore += awarded;
+  });
+
+  // show results
+  const resultBox = document.getElementById('resultBox');
+  resultBox.style.display = 'block';
+  const percent = Math.round((totalScore / totalMarks) * 100);
+  const passMsg = percent >= 50 ? "Good work — keep going!" : "Review the chapter and try again.";
+  resultBox.innerHTML = `
+    <h3>Results for ${escapeHtml(name)}</h3>
+    <p><strong>Total Score:</strong> ${totalScore} / ${totalMarks} &nbsp; &nbsp; (<strong>${percent}%</strong>)</p>
+    <p style="margin-top:6px;color:var(--muted)">${passMsg}</p>
+
+    <details>
+      <summary>Show correct answers and notes</summary>
+      <div style="margin-top:10px;line-height:1.5;color:#0b3a66">
+        <ol>
+          ${questions.map((q, i) => {
+            if(q.type === 'mcq'){
+              return `<li style="margin-bottom:8px"><strong>${escapeHtml(q.q)}</strong><div style="margin-top:4px;color:var(--muted)">Answer: <strong>${escapeHtml(q.answer)}</strong></div></li>`;
+            } else if(q.type === 'short'){
+              return `<li style="margin-bottom:8px"><strong>${escapeHtml(q.q)}</strong><div style="margin-top:4px;color:var(--muted)">Acceptable keywords/answer examples: <strong>${escapeHtml((q.keywords || []).join(', '))}</strong></div></li>`;
+            } else {
+              return `<li style="margin-bottom:8px"><strong>${escapeHtml(q.q)}</strong><div style="margin-top:4px;color:var(--muted)">Look for steps & keywords such as: <strong>${escapeHtml((q.keywords || []).join(', '))}</strong></div></li>`;
+            }
+          }).join('')}
+        </ol>
+      </div>
+    </details>
+
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button id="retryBtn" class="btn" style="background:#0b67d0">Try Again (Reset)</button>
+      <button id="printBtn" class="btn" style="background:#0b5aa8">Print / Save</button>
+    </div>
+  `;
+
+  // attach retry & print handlers
+  document.getElementById('retryBtn').onclick = resetTest;
+  document.getElementById('printBtn').onclick = () => window.print();
+}
+
+/* Reset function */
+function resetTest(){
+  if(!confirm('Clear answers and try again?')) return;
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.querySelectorAll('textarea').forEach(t => t.value = '');
+  document.querySelectorAll('.question').forEach(q => q.classList.remove('correct','wrong'));
+  document.getElementById('resultBox').style.display = 'none';
+  // keep name
+}
+
+/* hook submit */
+document.getElementById('submitBtn').addEventListener('click', markTest);
+
+</script>
+</body>
+</html>
