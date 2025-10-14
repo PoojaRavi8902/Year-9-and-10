@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Software – Types of Programming Languages, Translators, and IDEs</title>
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f4faff;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    text-align: center;
+    background-color: #cce4ff;
+    padding: 20px;
+    border-bottom: 4px solid #0077cc;
+  }
+  h1 {
+    margin: 0;
+    font-size: 1.8em;
+  }
+  h2 {
+    color: #005a99;
+  }
+  section {
+    padding: 20px 40px;
+    border-bottom: 1px solid #ddd;
+  }
+  .activity, .exercise {
+    background-color: #e9f5ff;
+    padding: 15px;
+    border-left: 5px solid #0077cc;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+  summary {
+    font-weight: bold;
+    cursor: pointer;
+  }
+  footer {
+    text-align: center;
+    background-color: #cce4ff;
+    padding: 10px;
+    font-size: 0.9em;
+  }
+  .quiz-question {
+    margin-top: 10px;
+  }
+  button {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-top: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #005a99;
+  }
+  .answer {
+    display: none;
+    color: green;
+    margin-top: 5px;
+  }
+</style>
+<script>
+function toggleAnswer(id) {
+  var ans = document.getElementById(id);
+  ans.style.display = (ans.style.display === "none") ? "block" : "none";
+}
+</script>
+</head>
+
+<body>
+<header>
+  <h1>Modern English School Cairo</h1>
+  <h2>Ravi Raju</h2>
+  <h3>IGCSE Computer Science (0984) – Chapter 4: System Software</h3>
+</header>
+
+<section>
+  <h2>🎯 Lesson Objectives</h2>
+  <ul>
+    <li>Differentiate between high-level and low-level programming languages.</li>
+    <li>Explain the purpose of translators – compiler, interpreter, and assembler.</li>
+    <li>Understand the functions of an Integrated Development Environment (IDE).</li>
+    <li>Compare advantages and disadvantages of compilers and interpreters.</li>
+    <li>Apply knowledge through activities and problem-based tasks.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>🔹 Phase 1 – Starter (10 minutes): “Code or No Code?”</h2>
+  <div class="activity">
+    <p>Look at the following lines of code and decide which are:</p>
+    <ul>
+      <li>High-level language</li>
+      <li>Low-level language (Assembly)</li>
+      <li>Machine code</li>
+    </ul>
+
+    <pre>
+print("Hello World")
+10101010 01010101
+Sum := FirstNumber + SecondNumber
+LDA First
+ADD Second
+STO Sum
+    </pre>
+
+    <p><strong>Discuss in pairs:</strong></p>
+    <ul>
+      <li>Which looks easiest to understand?</li>
+      <li>Which might be understood directly by the computer?</li>
+    </ul>
+
+    <p><em>Transition:</em> “Just as we speak English or Arabic, computers have their own languages — today we’ll explore how these languages work and how we can make computers understand us.”</p>
+
+    <div class="exercise">
+      <strong>Quick Check:</strong>
+      <div class="quiz-question">1. Which of the above examples represents a high-level language?</div>
+      <button onclick="toggleAnswer('a1')">Show Answer</button>
+      <div id="a1" class="answer">print("Hello World")</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🔹 Phase 2 – Mini Lecture 1: “High-Level vs Low-Level Languages”</h2>
+  <details open>
+    <summary>Click to read notes</summary>
+    <p><strong>High-level languages:</strong> Closer to human language, easy to read and portable. Examples: Python, C++, Java.</p>
+    <p><strong>Low-level languages:</strong> Closer to machine code, hardware-specific. Example: Assembly.</p>
+
+    <table border="1" cellpadding="8">
+      <tr><th>Feature</th><th>High-Level</th><th>Low-Level</th></tr>
+      <tr><td>Readability</td><td>Easy for humans</td><td>Hard to read</td></tr>
+      <tr><td>Portability</td><td>Yes</td><td>No (hardware-specific)</td></tr>
+      <tr><td>Execution Speed</td><td>Slower</td><td>Faster</td></tr>
+    </table>
+
+    <pre>
+# High-level
+sum = first + second
+
+# Assembly
+LDA FIRST
+ADD SECOND
+STO SUM
+    </pre>
+  </details>
+
+  <div class="exercise">
+    <strong>Think & Respond:</strong>
+    Why do you think most programmers today prefer high-level languages?
+    <br><button onclick="toggleAnswer('a2')">Show Possible Answer</button>
+    <div id="a2" class="answer">They are easier to read, write, debug, and maintain, saving development time.</div>
+  </div>
+</section>
+
+<section>
+  <h2>🔹 Phase 3 – Activity 1: “Translator Match-Up”</h2>
+  <div class="activity">
+    <p>Match each program snippet with the correct translator type:</p>
+
+    <table border="1" cellpadding="8">
+      <tr><th>Program Statement</th><th>Translator</th></tr>
+      <tr><td>LDA A</td><td>?</td></tr>
+      <tr><td>print("Enter your name")</td><td>?</td></tr>
+      <tr><td>00011010 00010100</td><td>?</td></tr>
+    </table>
+
+    <p><strong>Extension:</strong> What happens if you use the wrong translator?</p>
+
+    <div class="exercise">
+      <button onclick="toggleAnswer('a3')">Show Answers</button>
+      <div id="a3" class="answer">
+        <ul>
+          <li>LDA A → Assembler</li>
+          <li>print("Enter your name") → Compiler or Interpreter</li>
+          <li>00011010 00010100 → Already in machine code (no translator needed)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🔹 Phase 4 – Mini Lecture 2: “Compilers, Interpreters & IDEs”</h2>
+  <details open>
+    <summary>Click to read notes</summary>
+    <h4>🧩 Translators</h4>
+    <ul>
+      <li><strong>Compiler:</strong> Translates the whole program to machine code at once; creates an executable file.</li>
+      <li><strong>Interpreter:</strong> Translates and executes line by line; stops when error occurs.</li>
+      <li><strong>Assembler:</strong> Converts assembly to machine code.</li>
+    </ul>
+
+    <table border="1" cellpadding="8">
+      <tr><th>Feature</th><th>Compiler</th><th>Interpreter</th></tr>
+      <tr><td>Translation</td><td>Entire program</td><td>One line at a time</td></tr>
+      <tr><td>Execution Speed</td><td>Fast</td><td>Slow</td></tr>
+      <tr><td>Debugging</td><td>Harder</td><td>Easier</td></tr>
+      <tr><td>Reusability</td><td>Executable file</td><td>Needs re-interpretation</td></tr>
+    </table>
+
+    <h4>🧰 IDE (Integrated Development Environment)</h4>
+    <p>Provides tools for writing, testing, and debugging code.</p>
+    <ul>
+      <li>Code editor</li>
+      <li>Debugger & runtime environment</li>
+      <li>Error diagnostics</li>
+      <li>Auto-completion & formatting</li>
+      <li>Translator (compiler/interpreter)</li>
+    </ul>
+  </details>
+
+  <div class="exercise">
+    <strong>Quick Quiz:</strong><br>
+    1. Which translator produces an executable file?<br>
+    <button onclick="toggleAnswer('a4')">Show Answer</button>
+    <div id="a4" class="answer">Compiler</div>
+  </div>
+</section>
+
+<section>
+  <h2>🔹 Phase 5 – Activity 2: “Explore Your IDE”</h2>
+  <div class="activity">
+    <h4>Option A – If Computers Are Available:</h4>
+    <p>Open Python IDLE and type:</p>
+    <pre>
+name = input("Enter your name: ")
+print("Hello", name)
+    </pre>
+    <p>Identify:</p>
+    <ul>
+      <li>Where to type code (Editor)</li>
+      <li>Where output appears (Shell)</li>
+      <li>How to find/correct errors</li>
+    </ul>
+
+    <h4>Option B – If No Computers:</h4>
+    <p>Label a provided IDE screenshot with:</p>
+    <ul>
+      <li>Code editor</li>
+      <li>Error list</li>
+      <li>Output console</li>
+      <li>Debugger</li>
+      <li>Auto-completion hint</li>
+    </ul>
+  </div>
+
+  <div class="exercise">
+    <strong>Extension:</strong> How do features like auto-completion and error diagnostics help programmers?
+    <br><button onclick="toggleAnswer('a5')">Show Example Answer</button>
+    <div id="a5" class="answer">They reduce errors, save time, and improve coding efficiency.</div>
+  </div>
+</section>
+
+<section>
+  <h2>🔹 Exit Ticket / Homework</h2>
+  <ul>
+    <li>What’s the difference between a compiler and an interpreter?</li>
+    <li>Name two IDE features that help programmers.</li>
+    <li>Why do some programmers still use assembly language?</li>
+  </ul>
+  <h4>Homework:</h4>
+  <p>Research three IDEs (e.g. Visual Studio, PyCharm, Eclipse) and identify their features and supported languages.</p>
+</section>
+
+<footer>
+  © 2025 Modern English School Cairo | Prepared by Ravi Raju
+</footer>
+</body>
+</html>
