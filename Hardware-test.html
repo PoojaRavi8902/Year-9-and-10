@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGCSE Computer Science (0984) - Chapter 3: Hardware Assessment</title>
+<style>
+  body {font-family: 'Segoe UI', sans-serif; margin: 40px; background: #f8f9fa; color: #333;}
+  h1, h2 {text-align: center;}
+  section {margin-top: 20px;}
+  .question {margin-bottom: 15px; padding: 10px; background: #fff; border-radius: 8px; box-shadow: 0 0 3px rgba(0,0,0,0.1);}
+  label {display: block; margin-bottom: 6px;}
+  input[type="text"] {width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 5px;}
+  button {display: block; margin: 20px auto; padding: 10px 20px; border: none; border-radius: 6px; background: #007bff; color: white; font-size: 16px; cursor: pointer;}
+  button:disabled {background: #ccc; cursor: not-allowed;}
+  .correct {color: green; font-weight: bold;}
+  .wrong {color: red; font-weight: bold;}
+  hr {margin: 30px 0; border: 1px solid #ddd;}
+</style>
+</head>
+<body>
+<h1>IGCSE Computer Science (0984)</h1>
+<h2>Chapter 3 — Hardware Assessment</h2>
+<p><strong>Student Name:</strong> <input type="text" id="studentName" placeholder="Enter your full name" oninput="checkStart()"></p>
+<hr>
+<section id="sectionA">
+<h3>🅐 Section A – Multiple Choice (1 mark each)</h3>
+<div id="mcqContainer"></div>
+</section>
+<hr>
+<section id="sectionB">
+<h3>🅑 Section B – Short Answer (2 marks each)</h3>
+<div id="saqContainer"></div>
+</section>
+<button id="submitBtn" onclick="submitTest()" disabled>Submit Test</button>
+<div id="result"></div>
+
+<script>
+const mcqs = [
+  {q: 'Which component performs arithmetic and logic operations?', a: 'A', options: ['A) ALU', 'B) CU', 'C) RAM', 'D) ROM']},
+  {q: 'Which bus carries data between the processor and memory?', a: 'C', options: ['A) Address bus', 'B) Control bus', 'C) Data bus', 'D) System bus']},
+  {q: 'The main memory that loses its content when power is off is called?', a: 'A', options: ['A) Volatile', 'B) Non-volatile', 'C) Secondary', 'D) ROM']},
+  {q: 'Which register holds the address of the next instruction?', a: 'B', options: ['A) CIR', 'B) PC', 'C) MAR', 'D) MDR']},
+  {q: 'What is the purpose of the Control Unit?', a: 'C', options: ['A) Perform calculations', 'B) Store data', 'C) Manage instruction execution', 'D) Transfer data']},
+  {q: 'Which of these is an output device?', a: 'D', options: ['A) Keyboard', 'B) Scanner', 'C) Microphone', 'D) Printer']},
+  {q: 'ROM is best described as?', a: 'B', options: ['A) Temporary storage', 'B) Permanent storage', 'C) Flash memory', 'D) Cache']},
+  {q: 'Which memory has the fastest access speed?', a: 'C', options: ['A) Hard disk', 'B) RAM', 'C) Cache', 'D) Flash drive']},
+  {q: 'The fetch-execute cycle is controlled by the?', a: 'A', options: ['A) Control Unit', 'B) ALU', 'C) Clock', 'D) Bus']},
+  {q: 'Which storage device uses magnetic technology?', a: 'C', options: ['A) SSD', 'B) Optical disc', 'C) Hard disk', 'D) Flash drive']},
+  {q: 'In the CPU, what does MAR stand for?', a: 'B', options: ['A) Memory Access Register', 'B) Memory Address Register', 'C) Main Address Register', 'D) Master Access Register']},
+  {q: 'What is the function of the MDR?', a: 'C', options: ['A) Stores address', 'B) Controls signals', 'C) Holds data temporarily', 'D) Executes instructions']},
+  {q: 'Which device converts digital data into analog signals?', a: 'D', options: ['A) Modem', 'B) Router', 'C) NIC', 'D) DAC']},
+  {q: 'Which device is used to enter voice commands?', a: 'A', options: ['A) Microphone', 'B) Speaker', 'C) Joystick', 'D) Webcam']},
+  {q: 'Cache memory is located between?', a: 'B', options: ['A) CPU and secondary storage', 'B) CPU and main memory', 'C) RAM and ROM', 'D) Input and output']},
+  {q: 'Which is a type of secondary storage?', a: 'C', options: ['A) RAM', 'B) ROM', 'C) Hard Disk', 'D) Cache']},
+  {q: 'BIOS is stored in?', a: 'B', options: ['A) RAM', 'B) ROM', 'C) Hard disk', 'D) Cache']},
+  {q: 'What is an example of solid-state storage?', a: 'A', options: ['A) Flash drive', 'B) CD-ROM', 'C) Magnetic tape', 'D) Floppy disk']},
+  {q: 'Which of the following is not input?', a: 'D', options: ['A) Keyboard', 'B) Scanner', 'C) Mouse', 'D) Speaker']},
+  {q: 'Which register temporarily stores data fetched from memory?', a: 'C', options: ['A) MAR', 'B) PC', 'C) MDR', 'D) CIR']},
+  {q: 'Which component decodes instructions?', a: 'D', options: ['A) ALU', 'B) MAR', 'C) MDR', 'D) Control Unit']},
+  {q: 'Which is an example of volatile memory?', a: 'A', options: ['A) RAM', 'B) ROM', 'C) Flash memory', 'D) Hard disk']},
+  {q: 'A barcode reader is an example of?', a: 'C', options: ['A) Output', 'B) Storage', 'C) Input', 'D) Processing']},
+  {q: 'Which device uses a laser to read data?', a: 'D', options: ['A) Flash drive', 'B) Hard disk', 'C) SSD', 'D) Optical disc']},
+  {q: 'Which of these stores firmware?', a: 'B', options: ['A) Hard drive', 'B) ROM', 'C) RAM', 'D) Cache']},
+  {q: 'The CPU and main memory are connected by?', a: 'A', options: ['A) System bus', 'B) Internet cable', 'C) USB', 'D) Expansion slot']},
+  {q: 'Which device produces hard copies?', a: 'D', options: ['A) Monitor', 'B) Projector', 'C) Speaker', 'D) Printer']},
+  {q: 'Which component stores the currently executing instruction?', a: 'C', options: ['A) MAR', 'B) MDR', 'C) CIR', 'D) PC']},
+  {q: 'The ALU performs?', a: 'A', options: ['A) Arithmetic and logic', 'B) Input control', 'C) Output display', 'D) Memory addressing']},
+  {q: 'What is the main function of buses?', a: 'D', options: ['A) Store data', 'B) Perform logic', 'C) Decode instructions', 'D) Transfer data']},
+  {q: 'A touchscreen acts as?', a: 'B', options: ['A) Input only', 'B) Both input and output', 'C) Output only', 'D) None'],},
+  {q: 'Secondary storage is needed because?', a: 'C', options: ['A) It is faster', 'B) It is volatile', 'C) It stores data permanently', 'D) It increases CPU speed']},
+  {q: 'Which register holds data to be written to memory?', a: 'D', options: ['A) PC', 'B) CIR', 'C) MAR', 'D) MDR']},
+  {q: 'The clock speed of a CPU is measured in?', a: 'A', options: ['A) Hertz', 'B) Bytes', 'C) Bits', 'D) Instructions']},
+  {q: 'Which is an input device?', a: 'B', options: ['A) Monitor', 'B) Mouse', 'C) Speaker', 'D) Printer']},
+  {q: 'Which bus carries control signals?', a: 'C', options: ['A) Data bus', 'B) Address bus', 'C) Control bus', 'D) System bus']},
+  {q: 'What does the PC store?', a: 'D', options: ['A) Instruction', 'B) Data', 'C) Address of data', 'D) Address of next instruction']},
+  {q: 'SSD stands for?', a: 'A', options: ['A) Solid State Drive', 'B) Smart Storage Device', 'C) Standard Storage Disk', 'D) Static System Drive']},
+  {q: 'Optical storage uses?', a: 'B', options: ['A) Magnetism', 'B) Laser technology', 'C) Electrical charge', 'D) Mechanical movement']},
+  {q: 'Cache memory improves?', a: 'C', options: ['A) Input accuracy', 'B) Output resolution', 'C) Processing speed', 'D) Storage capacity']}
+];
+
+const saqs = [
+  {q: 'Explain the role of the Control Unit in the CPU.', keywords: ['control', 'manage', 'fetch', 'decode', 'execute']},
+  {q: 'Describe what happens during the Fetch-Execute Cycle.', keywords: ['fetch', 'decode', 'execute', 'instruction', 'memory']},
+  {q: 'State the difference between RAM and ROM.', keywords: ['temporary', 'volatile', 'permanent', 'non-volatile']},
+  {q: 'Explain why secondary storage is needed.', keywords: ['permanent', 'long-term', 'save', 'data', 'storage']},
+  {q: 'Describe the purpose of the ALU.', keywords: ['arithmetic', 'logic', 'calculations', 'operations']}
+];
+
+const mcqContainer = document.getElementById('mcqContainer');
+const saqContainer = document.getElementById('saqContainer');
+const submitBtn = document.getElementById('submitBtn');
+const studentName = document.getElementById('studentName');
+
+function renderQuestions() {
+  mcqs.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.classList.add('question');
+    div.innerHTML = `<p><strong>Q${index+1}.</strong> ${item.q}</p>` +
+      item.options.map(opt => `<label>${opt}</label>`).join('') +
+      `<input type='text' id='mcq${index}' placeholder='Your answer (A/B/C/D)' maxlength='1' oninput='checkAllAnswered()'>`;
+    mcqContainer.appendChild(div);
+  });
+  saqs.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.classList.add('question');
+    div.innerHTML = `<p><strong>Q${index+41}.</strong> ${item.q}</p>` +
+      `<input type='text' id='saq${index}' placeholder='Your short answer here' oninput='checkAllAnswered()'>`;
+    saqContainer.appendChild(div);
+  });
+}
+
+function checkStart() {
+  if(studentName.value.trim() !== '') checkAllAnswered();
+  else submitBtn.disabled = true;
+}
+
+function checkAllAnswered() {
+  const allMcq = mcqs.every((_,i)=>document.getElementById(`mcq${i}`).value.trim() !== '');
+  const allSaq = saqs.every((_,i)=>document.getElementById(`saq${i}`).value.trim() !== '');
+  submitBtn.disabled = !(studentName.value.trim() !== '' && allMcq && allSaq);
+}
+
+function submitTest() {
+  let mcqScore = 0, saqScore = 0;
+  mcqs.forEach((item,i)=>{
+    const ans = document.getElementById(`mcq${i}`).value.trim().toUpperCase();
+    const correct = ans === item.a;
+    if(correct) mcqScore++;
+    document.getElementById(`mcq${i}`).style.borderColor = correct? 'green' : 'red';
+  });
+  saqs.forEach((item,i)=>{
+    const ans = document.getElementById(`saq${i}`).value.toLowerCase();
+    const matched = item.keywords.some(k=>ans.includes(k));
+    if(matched) saqScore += 2;
+    document.getElementById(`saq${i}`).style.borderColor = matched? 'green' : 'red';
+  });
+  const total = mcqScore + saqScore;
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = `<h3>Score: ${total}/50 (MCQs: ${mcqScore}/40, SAQs: ${saqScore}/10)</h3><p>Student: ${studentName.value}</p>`;
+  window.print();
+}
+
+renderQuestions();
+</script>
+</body>
+</html>
