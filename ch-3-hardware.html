@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IGCSE Computer Science (0984) — Chapter 3: Hardware (Section 3.1)</title>
+  <style>
+    :root{--bg:#ffffff;--card:#fbfdff;--accent:#1f6feb;--muted:#6b7280;--text:#0f172a;--glass:rgba(31,111,235,0.06)}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; color:var(--text);background:linear-gradient(180deg,#f6f8fb 0%,#ffffff 40%)}
+    .wrap{max-width:1100px;margin:28px auto;padding:28px}
+    header{display:flex;align-items:flex-start;gap:18px}
+    .logo{width:84px;height:84px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;box-shadow:0 6px 20px rgba(31,111,235,0.12)}
+    h1{margin:0;font-size:22px}
+    p.lead{margin:6px 0 18px;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:22px;margin-top:20px}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 22px rgba(12,20,35,0.04);}
+
+    /* content styling */
+    .section h2{margin:6px 0 10px;color:var(--accent)}
+    .section p{margin:8px 0;color:#263248}
+    .flex-row{display:flex;gap:8px;align-items:center}
+    .pill{background:var(--glass);padding:6px 10px;border-radius:999px;color:var(--accent);font-weight:600}
+
+    /* diagrams */
+    svg{max-width:100%;height:auto}
+    .diagram-box{border:1px dashed rgba(15,23,42,0.05);padding:12px;border-radius:10px;margin:12px 0}
+
+    /* interactive flashcards & quiz */
+    .flashcard{perspective:1000px}
+    .card-inner{position:relative;width:100%;min-height:120px;transform-style:preserve-3d;transition:transform .5s}
+    .card-face{position:absolute;inset:0;border-radius:8px;padding:16px;background:#fff;box-shadow:0 6px 18px rgba(12,20,35,0.06);backface-visibility:hidden}
+    .card-back{transform:rotateY(180deg);}
+    .flipped .card-inner{transform:rotateY(180deg)}
+    .flash-list{display:grid;grid-template-columns:repeat(1,1fr);gap:10px}
+
+    .quiz .choice{display:block;padding:10px;border-radius:8px;background:#f8fafc;border:1px solid rgba(15,23,42,0.03);margin:8px 0;cursor:pointer}
+    .choice.correct{border-color:rgba(16,185,129,0.2);background:linear-gradient(90deg,rgba(16,185,129,0.06),transparent)}
+    .choice.wrong{border-color:rgba(239,68,68,0.12);background:linear-gradient(90deg,rgba(239,68,68,0.04),transparent)}
+
+    /* teacher notes */
+    .teacher{background:#fff8e6;border-left:4px solid #ffc857;padding:10px;margin-top:12px;border-radius:6px;color:#5b4526}
+
+    /* utilities */
+    .muted{color:var(--muted);font-size:13px}
+    .small{font-size:13px}
+    button.primary{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer}
+    .controls{display:flex;gap:8px;justify-content:flex-end}
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
+
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">0984</div>
+      <div>
+        <h1>IGCSE Computer Science (0984) — Chapter 3: Hardware</h1>
+        <p class="lead">Section 3.1 — <strong>Computer Architecture</strong>. A concise, interactive one-stop revision page for students and teachers.</p>
+        <div class="flex-row small muted"><div class="pill">Topic: CPU, Buses, Memory, Fetch–Decode–Execute, Embedded Systems</div></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- main content -->
+      <main>
+        <section class="card section" id="learning-focus">
+          <h2>🎯 Learning Focus</h2>
+          <ul>
+            <li>Explain the structure and purpose of the <strong>CPU</strong> and its components.</li>
+            <li>Describe the <strong>Von Neumann architecture</strong>.</li>
+            <li>Understand the roles of <strong>buses</strong>, <strong>registers</strong>, and <strong>memory</strong>.</li>
+            <li>Explain the <strong>Fetch–Decode–Execute</strong> cycle.</li>
+            <li>Understand how <strong>clock speed</strong>, <strong>cores</strong>, and <strong>cache</strong> affect performance.</li>
+            <li>Identify the nature and applications of <strong>embedded systems</strong>.</li>
+          </ul>
+          <div class="teacher small"><strong>Teacher note:</strong> Use this page in class as the lesson scaffold. The interactive diagrams can be projected while you narrate the Fetch–Decode–Execute cycle.</div>
+        </section>
+
+        <section class="card section" id="cpu">
+          <h2>🧠 3.1.1 — The Central Processing Unit (CPU)</h2>
+          <p>The <strong>CPU</strong> (microprocessor) is the brain of the computer. It executes instructions and processes data. Modern CPUs are single microchips containing the control unit, arithmetic/logic unit and registers.</p>
+
+          <div class="diagram-box" aria-hidden="false">
+            <!-- Simple SVG CPU schematic -->
+            <svg viewBox="0 0 800 260" role="img" aria-label="CPU schematic with ALU, CU and Registers">
+              <rect x="12" y="12" width="776" height="236" rx="12" fill="#fff" stroke="#e6eefc" stroke-width="1.5"/>
+              <rect x="40" y="34" width="320" height="192" rx="8" fill="#f8fbff" stroke="#dbeeff"/>
+              <text x="200" y="64" text-anchor="middle" font-size="16" fill="#0f172a" font-weight="700">CPU</text>
+
+              <rect x="56" y="68" width="120" height="56" rx="6" fill="#fff" stroke="#d3e7ff"/>
+              <text x="116" y="104" text-anchor="middle" font-size="13" fill="#0f172a">Control Unit (CU)</text>
+
+              <rect x="196" y="68" width="120" height="56" rx="6" fill="#fff" stroke="#d3e7ff"/>
+              <text x="256" y="104" text-anchor="middle" font-size="13" fill="#0f172a">ALU</text>
+
+              <rect x="56" y="132" width="260" height="40" rx="6" fill="#fff" stroke="#d3e7ff"/>
+              <text x="186" y="158" text-anchor="middle" font-size="13" fill="#0f172a">Registers (PC, MAR, MDR, CIR, ACC)</text>
+
+              <!-- Buses and Memory -->
+              <rect x="390" y="34" width="350" height="192" rx="8" fill="#fff" stroke="#eef6ff"/>
+              <text x="565" y="64" text-anchor="middle" font-size="16" fill="#0f172a" font-weight="700">Memory & Buses</text>
+
+              <g id="buses" transform="translate(440,90)">
+                <rect x="0" y="0" width="268" height="36" rx="6" fill="#f6fbff" stroke="#e0f0ff"/>
+                <text x="134" y="22" text-anchor="middle" font-size="13" fill="#0f172a">Address Bus (uni)</text>
+                <rect x="0" y="50" width="268" height="36" rx="6" fill="#f6fbff" stroke="#e0f0ff"/>
+                <text x="134" y="72" text-anchor="middle" font-size="13" fill="#0f172a">Data Bus (bi)</text>
+                <rect x="0" y="100" width="268" height="36" rx="6" fill="#f6fbff" stroke="#e0f0ff"/>
+                <text x="134" y="122" text-anchor="middle" font-size="13" fill="#0f172a">Control Bus (bi)</text>
+              </g>
+
+              <line x1="220" y1="98" x2="392" y2="98" stroke="#cfe6ff" stroke-width="6" stroke-linecap="round"/>
+              <line x1="220" y1="150" x2="392" y2="150" stroke="#cfe6ff" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+            <p class="muted small">Hover over items during class. Use the CPU diagram to point out CU, ALU, Registers and how buses connect to memory.</p>
+          </div>
+
+          <div class="teacher small"><strong>Teacher prompt:</strong> Ask students: "Which register stores the address of the next instruction?" (Answer: PC)</div>
+        </section>
+
+        <section class="card section" id="von-neumann">
+          <h2>🧩 3.1.2 — Von Neumann Architecture</h2>
+          <p>Von Neumann introduced the <em>stored-program</em> concept: programs and data share the same memory, the CPU fetches instructions sequentially and executes them. This architecture uses the Address, Data and Control buses to coordinate actions.</p>
+
+          <div class="diagram-box">
+            <svg viewBox="0 0 760 220" role="img" aria-label="Von Neumann architecture diagram">
+              <rect x="20" y="20" width="720" height="180" rx="12" fill="#fff" stroke="#eef6ff"/>
+              <rect x="36" y="36" width="300" height="148" rx="8" fill="#f8fbff" stroke="#e6f0ff"/>
+              <text x="186" y="64" text-anchor="middle" font-size="14" fill="#0f172a" font-weight="700">CPU</text>
+              <rect x="380" y="36" width="336" height="148" rx="8" fill="#fff" stroke="#eef6ff"/>
+              <text x="548" y="64" text-anchor="middle" font-size="14" fill="#0f172a">Main Memory (Programs + Data)</text>
+
+              <line x1="336" y1="100" x2="380" y2="100" stroke="#cfe6ff" stroke-width="8"/>
+              <text x="360" y="88" text-anchor="middle" font-size="12" fill="#6b7280">System Bus</text>
+
+              <g transform="translate(60,92)">
+                <rect x="0" y="0" width="120" height="36" rx="6" fill="#fff" stroke="#dbeeff"/>
+                <text x="60" y="22" text-anchor="middle" font-size="11" fill="#0f172a">PC</text>
+              </g>
+            </svg>
+            <p class="muted small">Tip: emphasize the stored-program idea for exam answers — they expect you to mention programs and data are stored together in memory.</p>
+          </div>
+        </section>
+
+        <section class="card section" id="registers-buses">
+          <h2>🔌 Registers, Buses & Memory</h2>
+          <p>Registers are tiny storage inside the CPU used by the Fetch–Decode–Execute cycle. Buses are collections of wires used to transfer addresses, data and control signals.</p>
+
+          <ul>
+            <li><strong>PC</strong> — Program Counter: address of next instruction.</li>
+            <li><strong>MAR</strong> — Memory Address Register: holds address being accessed.</li>
+            <li><strong>MDR</strong> — Memory Data Register: holds data read from/written to memory.</li>
+            <li><strong>CIR</strong> — Current Instruction Register: holds current instruction.</li>
+            <li><strong>ACC</strong> — Accumulator: stores intermediate ALU results.</li>
+          </ul>
+
+          <div class="diagram-box" id="mem-sim">
+            <h3 class="small">Memory Read / Write Simulation</h3>
+            <p class="small muted">Click the buttons to simulate MAR/MDR changes (binary values shown for illustration).</p>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="flex:1">
+                <div style="background:#f6fbff;padding:12px;border-radius:8px">
+                  <div><strong>MAR</strong>: <span id="mar">11110001</span></div>
+                  <div><strong>MDR</strong>: <span id="mdr">01011011</span></div>
+                </div>
+              </div>
+              <div style="width:220px">
+                <button class="primary" onclick="doRead()">Simulate READ</button>
+                <button style="margin-left:8px;padding:10px;border-radius:8px;border:1px solid #e6eefc;background:#fff;cursor:pointer" onclick="doWrite()">Simulate WRITE</button>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="card section" id="fdec">
+          <h2>🔁 Fetch — Decode — Execute</h2>
+          <p>Step-by-step sequence the CPU follows for each instruction. Use the flowchart below when explaining the cycle in exams.</p>
+
+          <div class="diagram-box">
+            <!-- simple flowchart -->
+            <svg viewBox="0 0 760 200" role="img" aria-label="Fetch decode execute flowchart">
+              <rect x="50" y="30" width="660" height="140" rx="8" fill="#fff" stroke="#eef6ff"/>
+
+              <rect x="88" y="50" width="140" height="36" rx="6" fill="#f8fbff" stroke="#dbeeff"/>
+              <text x="158" y="74" text-anchor="middle" font-size="12" fill="#0f172a">PC -> MAR</text>
+
+              <rect x="268" y="50" width="140" height="36" rx="6" fill="#f8fbff" stroke="#dbeeff"/>
+              <text x="338" y="74" text-anchor="middle" font-size="12" fill="#0f172a">MDR <- Memory</text>
+
+              <rect x="448" y="50" width="140" height="36" rx="6" fill="#f8fbff" stroke="#dbeeff"/>
+              <text x="518" y="74" text-anchor="middle" font-size="12" fill="#0f172a">CIR <- MDR</text>
+
+              <line x1="228" y1="68" x2="268" y2="68" stroke="#cfe6ff" stroke-width="6"/>
+              <line x1="408" y1="68" x2="448" y2="68" stroke="#cfe6ff" stroke-width="6"/>
+
+              <rect x="268" y="110" width="140" height="36" rx="6" fill="#fff8f1" stroke="#ffeacc"/>
+              <text x="338" y="134" text-anchor="middle" font-size="12" fill="#9a5b1f">Decode — CU interprets</text>
+
+              <rect x="448" y="110" width="140" height="36" rx="6" fill="#f8fbff" stroke="#dbeeff"/>
+              <text x="518" y="134" text-anchor="middle" font-size="12" fill="#0f172a">Execute — ALU / I/O</text>
+
+              <line x1="408" y1="128" x2="448" y2="128" stroke="#cfe6ff" stroke-width="6"/>
+            </svg>
+          </div>
+
+          <div class="teacher small">Teacher cue: Walk through a single instruction live — change MAR -> show read -> move to CIR -> decode -> execute. Students can sketch this during the lesson.</div>
+        </section>
+
+        <section class="card section" id="cores-cache-clock">
+          <h2>⏱️ Cores, Cache & Clock Speed</h2>
+          <p>Factors affecting CPU performance:</p>
+          <ul>
+            <li><strong>Clock speed</strong> — number of cycles per second (GHz). Faster clock → more cycles per second but not always faster overall (bottlenecks exist).</li>
+            <li><strong>Cache</strong> — tiny, extremely fast memory inside the CPU storing frequently-used data.</li>
+            <li><strong>Cores</strong> — multiple cores allow parallelism (dual-core, quad-core). Communication overhead reduces perfect scaling.</li>
+          </ul>
+
+          <div class="teacher small">Exam tip: When asked to explain performance, mention bus width, cache and cores — not just clock speed.</div>
+        </section>
+
+        <section class="card section" id="instruction-set">
+          <h2>🔤 Instruction Set</h2>
+          <p>An <em>instruction</em> is made of an <strong>opcode</strong> (what to do) and an <strong>operand</strong> (which data/address to use). The whole set of opcodes a CPU understands is its <strong>instruction set</strong> (e.g., X86).</p>
+          <p class="small muted">Note: instruction sets are low-level machine instructions — they are not the same as high-level programming languages.</p>
+        </section>
+
+        <section class="card section" id="embedded">
+          <h2>⚙️ Embedded Systems</h2>
+          <p>Embedded systems are hardware+software solutions designed to perform dedicated tasks. They range from tiny microcontrollers to complex SoCs.</p>
+
+          <table style="width:100%;border-collapse:collapse;margin-top:8px">
+            <tr><th style="text-align:left;padding:8px;border-bottom:1px solid #eef6ff">Type</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eef6ff">Description</th></tr>
+            <tr><td style="padding:8px">Microcontroller</td><td style="padding:8px">CPU + RAM + ROM + peripherals on one chip — e.g., simple appliances</td></tr>
+            <tr><td style="padding:8px">Microprocessor</td><td style="padding:8px">CPU only — needs external memory and I/O</td></tr>
+            <tr><td style="padding:8px">System on Chip (SoC)</td><td style="padding:8px">Complete system on a chip (CPU, memory, I/O)</td></tr>
+          </table>
+
+          <p style="margin-top:10px">Examples: cars (engine control, ABS), set-top boxes, smart thermostats, washing machines.</p>
+        </section>
+
+        <section class="card section" id="review">
+          <h2>🧩 Interactive Revision — Flashcards & Quiz</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <h4>Flashcards</h4>
+              <div class="flash-list" id="flashcards">
+                <!-- JS will populate flashcards -->
+              </div>
+            </div>
+
+            <div>
+              <h4>Quick Quiz</h4>
+              <div class="quiz" id="quiz">
+                <!-- JS will populate quiz -->
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="small muted">Use the flashcards to reinforce key terms. The quiz gives instant feedback — great for short class starters.</div>
+        </section>
+
+      </main>
+
+      <!-- right column -->
+      <aside>
+        <div class="card">
+          <h3>At a glance</h3>
+          <ul class="small muted">
+            <li>CPU = CU + ALU + Registers</li>
+            <li>Von Neumann = stored-program architecture</li>
+            <li>Buses: Address (uni), Data (bi), Control (bi)</li>
+            <li>Fetch→Decode→Execute uses PC, MAR, MDR, CIR</li>
+          </ul>
+          <hr style="border:none;border-top:1px solid #eef6ff;margin:12px 0" />
+          <h4>Teacher Tools</h4>
+          <div class="controls">
+            <button class="primary" onclick="downloadHTML()">Download HTML</button>
+            <button onclick="print()" style="padding:10px;border-radius:8px;border:1px solid #e6eefc;background:#fff;cursor:pointer">Print</button>
+          </div>
+          <p class="muted small" style="margin-top:8px">Includes speaker notes and interactive sims for classroom use.</p>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h4>Teacher notes (collapsed)</h4>
+          <div class="teacher small">Click on sections during the lesson to toggle discussion points. Use the memory simulation to show how MAR and MDR work live. The flashcards are editable via the page's JS.</div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Created for IGCSE Computer Science (0984) — Chapter 3: Hardware • Interactive revision resources included</footer>
+  </div>
+
+  <script>
+    // Memory simulation
+    function doRead(){
+      document.getElementById('mar').textContent = '11110001';
+      document.getElementById('mdr').textContent = '01011011';
+      flash('Performed READ: MDR loaded from memory.');
+    }
+    function doWrite(){
+      document.getElementById('mar').textContent = '11111101';
+      document.getElementById('mdr').textContent = '10010101';
+      flash('Performed WRITE: MDR content written to memory address in MAR.');
+    }
+
+    // Simple flash message
+    function flash(msg){
+      const el = document.createElement('div');
+      el.textContent = msg; el.style.position='fixed';el.style.right='18px';el.style.bottom='18px';el.style.padding='10px 14px';el.style.background='#0f172a';el.style.color='#fff';el.style.borderRadius='8px';el.style.boxShadow='0 8px 24px rgba(12,20,35,0.2)';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2600);
+    }
+
+    // Flashcards data
+    const cards = [
+      {q:'What does MAR store?', a:'The memory address of the location being accessed.'},
+      {q:'What is stored in MDR?', a:'The data read from memory or data to be written to memory.'},
+      {q:'Name three CPU components.', a:'Control Unit, ALU, Registers.'},
+      {q:'What does the PC hold?', a:'Address of the next instruction to fetch.'},
+      {q:'Define an embedded system.', a:'A hardware+software system designed to perform a dedicated task.'}
+    ];
+
+    const flashList = document.getElementById('flashcards');
+    cards.forEach((c,i)=>{
+      const wrapper = document.createElement('div'); wrapper.className='flashcard';
+      wrapper.innerHTML = `<div class='card-inner' id='fc-${i}'>
+        <div class='card-face card-front' style='border:1px solid rgba(15,23,42,0.03)'><strong>${c.q}</strong><div style='margin-top:8px' class='muted small'>Click to flip</div></div>
+        <div class='card-face card-back' style='border:1px solid rgba(15,23,42,0.03)'>${c.a}</div>
+      </div>`;
+      wrapper.addEventListener('click',()=> wrapper.classList.toggle('flipped'));
+      flashList.appendChild(wrapper);
+    });
+
+    // Quiz data
+    const quiz = [
+      {q:'Which bus is unidirectional?', choices:['Data bus','Address bus','Control bus'], answer:1},
+      {q:'Which register holds the current instruction?', choices:['MDR','CIR','PC'], answer:1},
+      {q:'What is the primary role of the ALU?', choices:['Store data','Perform calculations','Manage memory'], answer:1}
+    ];
+
+    const quizEl = document.getElementById('quiz');
+    quiz.forEach((item,idx)=>{
+      const container = document.createElement('div'); container.style.marginBottom='10px';
+      const qEl = document.createElement('div'); qEl.textContent = (idx+1)+'. '+item.q; qEl.style.fontWeight='700';
+      container.appendChild(qEl);
+      item.choices.forEach((c,i)=>{
+        const btn = document.createElement('div'); btn.className='choice'; btn.textContent=c;
+        btn.addEventListener('click',()=>{
+          if(i===item.answer){ btn.classList.add('correct'); flash('Correct'); }
+          else{ btn.classList.add('wrong'); flash('Try again'); }
+          // disable further clicks for this question
+          Array.from(container.querySelectorAll('.choice')).forEach(x=>x.style.pointerEvents='none');
+        });
+        container.appendChild(btn);
+      });
+      quizEl.appendChild(container);
+    });
+
+    // Download the page as HTML
+    function downloadHTML(){
+      const blob = new Blob([document.documentElement.outerHTML],{type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='IGCSE_0984_Chapter3_Hardware_Section3-1.html'; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
