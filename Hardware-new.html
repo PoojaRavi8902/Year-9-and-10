@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CPU — 60 minute lesson | Modern English School Cairo</title>
+  <style>
+    :root{
+      --bg: #ffffff;
+      --card: #f7f9fb;
+      --accent: #1f6feb;
+      --muted: #555;
+      --border: #e1e6ee;
+      --success: #1b7a3d;
+      --danger: #c0392b;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+    }
+    body{background:var(--bg);color:#111;margin:0;padding:20px}
+    header{margin-bottom:16px}
+    .school{font-size:clamp(20px,2.4vw,28px);font-weight:700}
+    .author{font-size:14px;color:var(--muted);margin-top:4px}
+    main{max-width:1100px;margin:0 auto}
+    .section{background:var(--card);border:1px solid var(--border);padding:14px;border-radius:10px;margin-bottom:12px}
+    h2{margin:0 0 8px 0;font-size:18px}
+    .small{font-size:13px;color:var(--muted)}
+    .icons{margin-right:8px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    /* Collapsible */
+    .collapsible{background:#fff;border:1px dashed var(--border);padding:8px;border-radius:8px}
+    .collapsible button{width:100%;text-align:left;padding:10px;background:transparent;border:none;cursor:pointer;font-weight:600}
+    .collapsible-content{padding:8px 12px;display:none;border-top:1px solid var(--border);margin-top:6px}
+
+    /* Quiz form styles */
+    .mcq{margin-bottom:8px;padding:8px;border-radius:6px}
+    .mcq label{display:block;cursor:pointer;padding:6px;border-radius:6px}
+    .mcq input[type=radio]{margin-right:8px}
+    .submit-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+    button.primary{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+    button.secondary{background:transparent;border:1px solid var(--border);padding:8px 12px;border-radius:8px;cursor:pointer}
+
+    .result{margin-top:10px;font-weight:700}
+    .answers{margin-top:8px;padding:8px;background:#fff;border-radius:6px;border:1px solid var(--border)}
+
+    /* Match table */
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:6px;border-bottom:1px dashed var(--border)}
+    select{padding:6px;border-radius:6px;border:1px solid var(--border)}
+
+    /* Responsive */
+    @media (max-width:800px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="school">🏫 Modern English School Cairo</div>
+      <div class="author">✍️ Prepared by Ravi Raju</div>
+    </header>
+
+    <!-- Phase 1: Starter activity (15 MCQs) -->
+    <section class="section" id="starter">
+      <h2>🧩 Starter — Prior Knowledge Check (15 MCQs) <span class="small">(10–12 minutes)</span></h2>
+      <p class="small">Attempt all 15 questions. Answers and score will be revealed only after you click <strong>SUBMIT</strong>. You must answer all questions.</p>
+
+      <form id="starter-form">
+        <!-- 15 MCQs -->
+        <div id="starter-questions">
+        </div>
+        <div class="submit-row">
+          <button type="button" class="primary" onclick="submitForm('starter')">SUBMIT</button>
+          <button type="button" class="secondary" onclick="resetForm('starter')">Reset</button>
+          <div id="starter-feedback" class="result" aria-live="polite"></div>
+        </div>
+        <div id="starter-answers" class="answers" style="display:none"></div>
+      </form>
+    </section>
+
+    <!-- Phase 2: Lecture collapsible -->
+    <section class="section" id="lecture">
+      <h2>💡 Lecture: CPU & Architecture (10–12 minutes)</h2>
+      <p class="small">Click each topic to expand a short, clear explanation and keywords.</p>
+
+      <div class="collapsible">
+        <button onclick="toggleCollapse(this)">CPU — What it is</button>
+        <div class="collapsible-content">
+          <p><strong>CPU (microprocessor):</strong> The brain of the computer — it executes instructions and processes data. Modern CPUs include the <em>Control Unit (CU)</em>, the <em>Arithmetic Logic Unit (ALU)</em>, and small fast storage called <em>registers</em>.</p>
+          <p class="small"><strong>Keywords:</strong> microprocessor, execute, process, CU, ALU, registers.</p>
+        </div>
+
+        <button onclick="toggleCollapse(this)">Von Neumann Architecture</button>
+        <div class="collapsible-content">
+          <p>Stored-program concept: both programs and data are stored together in main memory. The CPU fetches instructions from memory, decodes them and executes them using the system bus (Address, Data and Control buses).</p>
+          <p class="small"><strong>Keywords:</strong> stored-program, shared memory, system bus.</p>
+        </div>
+
+        <button onclick="toggleCollapse(this)">Registers & Buses</button>
+        <div class="collapsible-content">
+          <p><strong>Registers:</strong> tiny storage inside the CPU used during instruction processing. Examples: <em>PC</em> (Program Counter), <em>MAR</em>, <em>MDR</em>, <em>CIR</em>, <em>ACC</em>.
+          <br><strong>Buses:</strong> wires that transfer addresses, data and control signals. Address bus is usually unidirectional (CPU -> Memory), data and control buses are bi-directional.</p>
+          <p class="small"><strong>Keywords:</strong> PC, MAR, MDR, CIR, ACC, address bus, data bus, control bus.</p>
+        </div>
+
+        <button onclick="toggleCollapse(this)">Fetch–Decode–Execute Cycle</button>
+        <div class="collapsible-content">
+          <p>Sequence the CPU uses to run each instruction: <strong>Fetch</strong> the instruction (PC -> MAR -> MDR), <strong>Decode</strong> it in CU, and <strong>Execute</strong> it in the ALU or via I/O. Teachers can demonstrate with the on-page simulation controls.</p>
+          <p class="small"><strong>Keywords:</strong> fetch, decode, execute, CIR, PC, MAR, MDR.</p>
+        </div>
+
+        <button onclick="toggleCollapse(this)">Clock Speed, Cores & Cache</button>
+        <div class="collapsible-content">
+          <p>Clock speed (GHz) counts cycles per second. Cache is tiny, fast memory inside the CPU for frequently-used data. Cores let the CPU run tasks in parallel — more cores can improve performance but require good software and have communication overhead.</p>
+          <p class="small"><strong>Keywords:</strong> GHz, cache, L1/L2/L3, core, parallelism.</p>
+        </div>
+
+        <button onclick="toggleCollapse(this)">Instruction Set</button>
+        <div class="collapsible-content">
+          <p>An instruction contains an <em>opcode</em> (operation to perform) and an <em>operand</em> (data or address). The set of all opcodes a CPU supports is its instruction set architecture (ISA), e.g. x86 or ARM.</p>
+          <p class="small"><strong>Keywords:</strong> opcode, operand, ISA, machine code.</p>
+        </div>
+
+        <button onclick="toggleCollapse(this)">Embedded Systems</button>
+        <div class="collapsible-content">
+          <p>Embedded systems are dedicated hardware+software devices that perform specific tasks (e.g., microcontroller in a thermostat). Examples: engine control in cars, washing machine controllers, set-top boxes. They can be microcontrollers, microprocessors, or System on Chip (SoC) devices.</p>
+          <p class="small"><strong>Keywords:</strong> microcontroller, SoC, dedicated task, peripherals.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 3: Interactive quiz (10 questions) -->
+    <section class="section" id="interactive-quiz">
+      <h2>⚙️ Interactive Quiz — What we just taught (10 questions)</h2>
+      <p class="small">Answer all 10 questions. Results and correct answers shown after submission.</p>
+      <form id="quiz-form">
+        <div id="quiz-questions"></div>
+        <div class="submit-row">
+          <button type="button" class="primary" onclick="submitForm('quiz')">SUBMIT</button>
+          <button type="button" class="secondary" onclick="resetForm('quiz')">Reset</button>
+          <div id="quiz-feedback" class="result" aria-live="polite"></div>
+        </div>
+        <div id="quiz-answers" class="answers" style="display:none"></div>
+      </form>
+    </section>
+
+    <!-- Phase 4: Conclusion (collapsible) -->
+    <section class="section" id="conclusion">
+      <h2>🧠 Conclude — Key Points (10–12 minutes)</h2>
+      <p class="small">Use this short summary to wrap up the lesson. Expand points below if you want to narrate them while projecting the page.</p>
+      <div class="collapsible">
+        <button onclick="toggleCollapse(this)">Summary — CPU & Performance</button>
+        <div class="collapsible-content">
+          <ul>
+            <li>CPU executes instructions via the Fetch–Decode–Execute cycle.</li>
+            <li>Registers and buses are essential to move data and addresses quickly.</li>
+            <li>Clock speed, cache and cores affect performance differently — explain all three in exam answers.</li>
+            <li>Embedded systems are everywhere — identify them by their dedicated tasks.</li>
+          </ul>
+        </div>
+        <button onclick="toggleCollapse(this)">Exam Tips</button>
+        <div class="collapsible-content">
+          <p>Mention the stored-program idea for Von Neumann answers. When asked to explain performance, include bus width and cache as well as cores and clock speed. Use registers names when describing the fetch cycle.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 5: Match the following (10 pairs) -->
+    <section class="section" id="match">
+      <h2>📘 Match the Following — 10 pairs (10 minutes)</h2>
+      <p class="small">Match the left column with the correct item on the right. Select one answer per row. All pairs must be attempted before submission. Answers revealed after submission with score.</p>
+      <form id="match-form">
+        <table>
+          <thead>
+            <tr><th style="text-align:left">Term</th><th style="text-align:left">Choose</th></tr>
+          </thead>
+          <tbody id="match-rows"></tbody>
+        </table>
+        <div class="submit-row">
+          <button type="button" class="primary" onclick="submitForm('match')">SUBMIT</button>
+          <button type="button" class="secondary" onclick="resetForm('match')">Reset</button>
+          <div id="match-feedback" class="result" aria-live="polite"></div>
+        </div>
+        <div id="match-answers" class="answers" style="display:none"></div>
+      </form>
+    </section>
+
+    <footer style="margin-top:14px;text-align:center;color:var(--muted);font-size:13px">Use this page as your lesson scaffold — simulate the fetch cycle live while students sketch it.</footer>
+  </main>
+
+  <script>
+    /********* Questions data *********/
+    const starterQs = [
+      {q: 'Which component is considered the brain of the computer?', choices:['RAM','CPU','Hard disk','GPU'], a:1},
+      {q: 'Which register holds the address of the next instruction?', choices:['MAR','MDR','PC','ACC'], a:2},
+      {q: 'Which bus is usually unidirectional?', choices:['Data bus','Address bus','Control bus','Power bus'], a:1},
+      {q: 'What does MDR store?', choices:['Address to access','Current instruction','Data read from or to be written to memory','Next instruction address'], a:2},
+      {q: 'Which unit performs arithmetic and logic operations?', choices:['CU','ALU','ACC','MAR'], a:1},
+      {q: 'In Von Neumann architecture, where are programs stored?', choices:['CPU registers','Secondary storage','Main memory with data','Only in ROM'], a:2},
+      {q: 'Which is NOT a register?', choices:['PC','MAR','USB','ACC'], a:2},
+      {q: 'Fetch–Decode–Execute cycle starts by:', choices:['Executing the instruction','Decoding the instruction','Fetching instruction from memory','Writing result back to memory'], a:2},
+      {q: 'Which best describes cache?', choices:['Large slow memory','Tiny fast memory inside CPU','Secondary storage','Network storage'], a:1},
+      {q: 'More CPU cores generally mean:', choices:['Lower power consumption always','Better parallelism for suitable tasks','Slower single-threaded code','Less cache'], a:1},
+      {q: 'Instruction consists of:', choices:['Opcode only','Operand only','Opcode and operand','Register only'], a:2},
+      {q: 'Which device is an example of embedded system?', choices:['Desktop PC','Washing machine controller','Laptop','Gaming console'], a:1},
+      {q: 'Address bus transfers:', choices:['Data only','Addresses','Control signals only','Electric power'], a:1},
+      {q: 'Which register holds the current instruction?', choices:['CIR','PC','MDR','MAR'], a:0},
+      {q: 'What is the primary role of the Control Unit?', choices:['Perform calculations','Coordinate instruction fetching and control signals','Store files','Manage network traffic'], a:1}
+    ];
+
+    const quizQs = [
+      {q:'The PC is incremented when?', choices:['After fetch','Before fetch','During execute','Only on jumps'], a:0},
+      {q:'MAR is used to:', choices:['Hold data read from memory','Hold address of memory access','Hold current instruction','Hold ALU result'], a:1},
+      {q:'Which bus carries actual data?', choices:['Address bus','Data bus','Control bus','Clock bus'], a:1},
+      {q:'CIR stands for:', choices:['Current Instruction Register','Control Instruction Register','Central Instruction Register','Current I/O Register'], a:0},
+      {q:'Why cache improves performance?', choices:['Because it is larger','Because it is closer and faster than main memory','Because it compresses data','Because it replaces RAM'], a:1},
+      {q:'An opcode tells the CPU:', choices:['Where to find data','Which operation to perform','How much memory to allocate','Which program to run'], a:1},
+      {q:'Fetch step puts address into which register?', choices:['MDR','ACC','MAR','CIR'], a:2},
+      {q:'Embedded systems are designed to:', choices:['Run general-purpose software','Perform dedicated tasks','Replace desktop computers','Only connect to the internet'], a:1},
+      {q:'A multi-core CPU helps mostly with:', choices:['Single-thread latency','Parallel tasks and multitasking','Reducing cache size','Increasing voltage'], a:1},
+      {q:'Von Neumann weakness:', choices:['Programs and data in memory can conflict','Data cannot be modified','Only works with ROM','No buses used'], a:0}
+    ];
+
+    const matchPairs = [
+      {left:'PC', right:'Holds address of next instruction'},
+      {left:'MAR', right:'Holds address being accessed'},
+      {left:'MDR', right:'Holds data read from memory'},
+      {left:'CIR', right:'Holds current instruction'},
+      {left:'ACC', right:'Stores ALU intermediate result'},
+      {left:'Address bus', right:'Usually unidirectional (CPU → Memory)'},
+      {left:'Data bus', right:'Carries data between CPU and memory'},
+      {left:'Control Unit', right:'Decodes instructions and controls CPU'},
+      {left:'ALU', right:'Performs arithmetic and logic'},
+      {left:'Cache', right:'Tiny fast memory inside CPU'}
+    ];
+
+    /********* Render questions *********/
+    function renderMCQs(containerId, qs){
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      qs.forEach((item,i)=>{
+        const div = document.createElement('div');
+        div.className = 'mcq';
+        div.innerHTML = `<strong>Q${i+1}.</strong> ${item.q}`;
+        item.choices.forEach((choice,j)=>{
+          const id = `${containerId}-q${i}-c${j}`;
+          const label = document.createElement('label');
+          label.innerHTML = `<input type='radio' name='${containerId}-q${i}' value='${j}' id='${id}' /> ${choice}`;
+          div.appendChild(label);
+        });
+        container.appendChild(div);
+      });
+    }
+
+    function renderMatchRows(){
+      const tbody = document.getElementById('match-rows');
+      // create a shuffled array of right-hand options
+      const options = matchPairs.map((p,i)=>({i,text:p.right}));
+      // shuffle
+      for(let i=options.length-1;i>0;i--){
+        const r = Math.floor(Math.random()*(i+1));
+        [options[i],options[r]] = [options[r],options[i]];
+      }
+      tbody.innerHTML = '';
+      matchPairs.forEach((p,i)=>{
+        const tr = document.createElement('tr');
+        const tdLeft = document.createElement('td');
+        tdLeft.textContent = `${i+1}. ${p.left}`;
+        const tdRight = document.createElement('td');
+        const select = document.createElement('select');
+        select.name = `match-q${i}`;
+        select.dataset.index = i;
+        const empty = document.createElement('option'); empty.value=''; empty.text='-- select --'; select.appendChild(empty);
+        options.forEach(opt=>{
+          const o = document.createElement('option'); o.value = opt.i; o.text = opt.text; select.appendChild(o);
+        });
+        tdRight.appendChild(select);
+        tr.appendChild(tdLeft); tr.appendChild(tdRight);
+        tbody.appendChild(tr);
+      });
+    }
+
+    renderMCQs('starter-questions', starterQs);
+    renderMCQs('quiz-questions', quizQs);
+    renderMatchRows();
+
+    /********* Collapsible toggle *********/
+    function toggleCollapse(btn){
+      const content = btn.nextElementSibling;
+      if(!content) return;
+      const isOpen = content.style.display === 'block';
+      // close all siblings in this collapsible container
+      const parent = btn.parentElement;
+      Array.from(parent.querySelectorAll('.collapsible-content')).forEach(c=>c.style.display='none');
+      if(!isOpen) content.style.display = 'block';
+    }
+
+    /********* Form submission and validation *********/
+    function submitForm(type){
+      if(type==='starter'){
+        // check all answered
+        const total = starterQs.length;
+        const answers = [];
+        for(let i=0;i<total;i++){
+          const sel = document.querySelector(`input[name='starter-questions-q${i}']`);
+        }
+        // different naming used: name is starter-questions-q0 etc. Let's compute
+        let unanswered=false; let score=0; const breakdown=[];
+        for(let i=0;i<total;i++){
+          const els = document.getElementsByName(`starter-questions-q${i}`);
+          let chosen = null;
+          for(const el of els){ if(el.checked) chosen = parseInt(el.value); }
+          if(chosen===null) {unanswered=true; break}
+          const correct = starterQs[i].a;
+          if(chosen===correct) score++;
+          breakdown.push({chosen,correct});
+        }
+        if(unanswered){ alert('Please answer all 15 starter questions before submitting.'); return }
+        // show score and reveal answers
+        document.getElementById('starter-feedback').textContent = `You answered ${score} / ${total} correctly.`;
+        const answerDiv = document.getElementById('starter-answers');
+        answerDiv.style.display='block';
+        answerDiv.innerHTML = '<strong>Answer key:</strong><br>' + breakdown.map((b,i)=>{
+          return `Q${i+1}: Correct — ${starterQs[i].choices[starterQs[i].a]}; Your answer — ${starterQs[i].choices[b.chosen]}`;
+        }).join('<br>');
+      }
+
+      if(type==='quiz'){
+        const total = quizQs.length; let unanswered=false; let score=0; const breakdown=[];
+        for(let i=0;i<total;i++){
+          const els = document.getElementsByName(`quiz-questions-q${i}`);
+          let chosen = null;
+          for(const el of els){ if(el.checked) chosen = parseInt(el.value); }
+          if(chosen===null){unanswered=true; break}
+          const correct = quizQs[i].a;
+          if(chosen===correct) score++;
+          breakdown.push({chosen,correct});
+        }
+        if(unanswered){ alert('Please answer all 10 quiz questions before submitting.'); return }
+        document.getElementById('quiz-feedback').textContent = `You answered ${score} / ${total} correctly.`;
+        const answerDiv = document.getElementById('quiz-answers');
+        answerDiv.style.display='block';
+        answerDiv.innerHTML = '<strong>Answer key:</strong><br>' + breakdown.map((b,i)=>{
+          return `Q${i+1}: Correct — ${quizQs[i].choices[quizQs[i].a]}; Your answer — ${quizQs[i].choices[b.chosen]}`;
+        }).join('<br>');
+      }
+
+      if(type==='match'){
+        const total = matchPairs.length; const selects = document.querySelectorAll('#match-rows select');
+        let unanswered=false; let score=0; const breakdown=[];
+        const chosenIndices = [];
+        for(let i=0;i<selects.length;i++){
+          const v = selects[i].value;
+          if(v===''){ unanswered=true; break }
+          chosenIndices.push(parseInt(v));
+        }
+        if(unanswered){ alert('Please select an answer for all 10 matching rows before submitting.'); return }
+        // check duplicates — each right answer index should be used at most once for fairness
+        const dupCheck = new Set(chosenIndices);
+        if(dupCheck.size !== chosenIndices.length){ // duplicates found
+          // still allow but score only unique matches
+        }
+        for(let i=0;i<total;i++){
+          const chosen = chosenIndices[i];
+          const correctIndex = matchPairs.findIndex(p => p.right === matchPairs[i].right); // trivial
+          // However our options were randomized; original correct index is i (we filled options with indices corresponding to original order)
+          // So correct is when chosen === i
+          const correct = (chosen === i) ? 1 : 0;
+          if(correct) score++;
+          breakdown.push({chosen});
+        }
+        document.getElementById('match-feedback').textContent = `You matched ${score} / ${total} correctly.`;
+        const answerDiv = document.getElementById('match-answers');
+        answerDiv.style.display='block';
+        // Build readable answer key
+        let html = '<strong>Answer key (Left → Right):</strong><br>';
+        matchPairs.forEach((p,i)=>{
+          html += `${i+1}. ${p.left} → ${p.right}<br>`;
+        });
+        answerDiv.innerHTML = html;
+      }
+    }
+
+    function resetForm(type){
+      if(type==='starter'){
+        const inputs = document.querySelectorAll('#starter-form input[type=radio]');
+        inputs.forEach(i=>i.checked=false);
+        document.getElementById('starter-feedback').textContent='';
+        document.getElementById('starter-answers').style.display='none';
+      }
+      if(type==='quiz'){
+        const inputs = document.querySelectorAll('#quiz-form input[type=radio]');
+        inputs.forEach(i=>i.checked=false);
+        document.getElementById('quiz-feedback').textContent='';
+        document.getElementById('quiz-answers').style.display='none';
+      }
+      if(type==='match'){
+        const selects = document.querySelectorAll('#match-rows select');
+        selects.forEach(s=>s.value='');
+        document.getElementById('match-feedback').textContent='';
+        document.getElementById('match-answers').style.display='none';
+      }
+    }
+
+    // Note: rendering radio names include container id - ensure name attributes match code above
+    // But earlier rendering used name like 'starter-questions-q0'. Our submitForm expects starters with that naming.
+    // To be safe, we will set consistent names when rendering; code already used containerId prefix.
+
+    // Small accessibility: focus first question in each form
+    document.querySelectorAll('form').forEach(f=>{ const first = f.querySelector('input,select'); if(first) first.setAttribute('tabindex','0'); });
+
+  </script>
+</body>
+</html>
