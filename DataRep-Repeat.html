@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IGCSE 0984 — Chapter 1: Data Representation — 60-minute Lesson</title>
+  <style>
+    :root{
+      --bg: #fff8dc; /* soft yellow */
+      --fg: #006400; /* dark green */
+      --card: #f7f1d7;
+      --accent: #cfe8c6;
+      --muted: #3b6a3b;
+      --max-width: 980px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0; padding:20px; background:var(--bg); color:var(--fg); display:flex; justify-content:center; min-height:100%;
+    }
+    .container{width:100%; max-width:var(--max-width);} 
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    header h1{margin:0;font-size:20px}
+    .meta{font-size:13px;color:var(--muted)}
+    .phase{background:var(--card); border-left:6px solid var(--fg); padding:14px; margin-bottom:14px; border-radius:8px}
+    .phase h2{margin:0 0 8px 0}
+    .phase .note{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .question{margin:8px 0;padding:8px;border-radius:6px}
+    .mcq .option{display:block;margin:6px 0}
+    .btn{background:var(--fg); color:var(--bg); border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    .btn:disabled{opacity:0.5; cursor:default}
+    input[type="text"], textarea{padding:8px;border-radius:6px;border:1px solid var(--muted);width:100%;box-sizing:border-box}
+    .feedback{font-size:13px;margin-top:6px}
+    .correct{color:green;font-weight:600}
+    .incorrect{color:red;font-weight:600}
+    .small{font-size:13px}
+    .answers-revealed{background:#fff; padding:10px;border-radius:6px;margin-top:8px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .hide{display:none}
+    .center{text-align:center}
+    footer{font-size:12px;color:var(--muted);margin-top:18px}
+    /* simple responsive */
+    @media (max-width:640px){ header{flex-direction:column;align-items:flex-start} }
+    pre.example{background:#fff;padding:10px;border-radius:6px;overflow:auto}
+    /* hidden iframe for printing fallback */
+    iframe#print-frame{display:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>IGCSE 0984 — Chapter 1: Data Representation — 60-minute Lesson</h1>
+        <div class="meta">Modern English School Cairo — Structured 5-phase class. Theme: yellow background, green text.</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="meta">Teacher: Computer Science</div>
+        <div class="meta">Duration: 60 minutes</div>
+      </div>
+    </header>
+
+    <!-- Phase 1: Recap Activity (10 min) -->
+    <section id="phase1" class="phase">
+      <h2>Phase 1 — Recap Activity (10 minutes)</h2>
+      <div class="note">Quick check: 5 MCQs + 5 Fill-in-the-blanks. Instant feedback appears for each question.</div>
+
+      <div id="p1-questions">
+        <!-- 5 MCQs -->
+        <div class="question mcq" data-answer="b">
+          <strong>1.</strong> Which base is hexadecimal?
+          <div class="option"><label><input type="radio" name="p1q1" value="a"> a) Base 2</label></div>
+          <div class="option"><label><input type="radio" name="p1q1" value="b"> b) Base 16</label></div>
+          <div class="option"><label><input type="radio" name="p1q1" value="c"> c) Base 8</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="a">
+          <strong>2.</strong> How many bits are in a byte?
+          <div class="option"><label><input type="radio" name="p1q2" value="a"> a) 8</label></div>
+          <div class="option"><label><input type="radio" name="p1q2" value="b"> b) 16</label></div>
+          <div class="option"><label><input type="radio" name="p1q2" value="c"> c) 4</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="c">
+          <strong>3.</strong> Two's complement is commonly used to represent which of the following?
+          <div class="option"><label><input type="radio" name="p1q3" value="a"> a) Floating point numbers</label></div>
+          <div class="option"><label><input type="radio" name="p1q3" value="b"> b) Hexadecimal digits</label></div>
+          <div class="option"><label><input type="radio" name="p1q3" value="c"> c) Signed integers</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="a">
+          <strong>4.</strong> Which character set is older and uses 7 or 8-bit codes for characters?
+          <div class="option"><label><input type="radio" name="p1q4" value="a"> a) ASCII</label></div>
+          <div class="option"><label><input type="radio" name="p1q4" value="b"> b) Unicode</label></div>
+          <div class="option"><label><input type="radio" name="p1q4" value="c"> c) JPEG</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="b">
+          <strong>5.</strong> Which compression type discards some original data to reduce size?
+          <div class="option"><label><input type="radio" name="p1q5" value="a"> a) Lossless</label></div>
+          <div class="option"><label><input type="radio" name="p1q5" value="b"> b) Lossy</label></div>
+          <div class="option"><label><input type="radio" name="p1q5" value="c"> c) Uncompressed</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- 5 Fill-in-the-blanks -->
+        <div class="question" data-answer="hexadecimal">
+          <strong>6.</strong> Fill: The base used in hexadecimal is __________.
+          <div><input type="text" id="p1f1" placeholder="Type answer"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="8">
+          <strong>7.</strong> Fill: Number of bits in a byte = __________.
+          <div><input type="text" id="p1f2" placeholder="Type answer"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="overflow">
+          <strong>8.</strong> Fill: When a sum exceeds the maximum representable value in a fixed number of bits, it is called __________.
+          <div><input type="text" id="p1f3" placeholder="Type answer"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="unicode">
+          <strong>9.</strong> Fill: The character set that supports many world languages is __________.
+          <div><input type="text" id="p1f4" placeholder="Type answer"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="sample rate">
+          <strong>10.</strong> Fill: The number of times per second an analogue sound wave is measured is called __________.
+          <div><input type="text" id="p1f5" placeholder="Type answer"></div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px">
+        <button id="p1-check" class="btn">Check Answers</button>
+      </div>
+    </section>
+
+    <!-- Phase 2: Lecture 1 (10 min) -->
+    <section id="phase2" class="phase">
+      <h2>Phase 2 — Lecture 1 (10 minutes)</h2>
+      <div class="note">Complete, self-contained lecture. No external materials required.</div>
+
+      <div>
+        <h3>Hexadecimal (how &amp; why)</h3>
+        <p>
+          Hexadecimal (base 16) is a compact way of representing binary values. Each hex digit represents four binary bits (a nibble).
+          Because long binary numbers are hard to read, hex shortens notation. Example: the 8-bit binary <code>1111 1111</code> equals hex <code>FF</code> and decimal 255.
+        </p>
+        <p><strong>Conversions:</strong></p>
+        <ul>
+          <li>Binary to Hex: group binary in 4-bit groups from the right, convert each group to 0–15 and map 10→A ... 15→F.</li>
+          <li>Hex to Binary: convert each hex digit to its 4-bit binary equivalent.</li>
+          <li>Decimal to Hex: divide by 16 repeatedly (or convert via binary).</li>
+        </ul>
+        <p class="small">Example: binary <code>1010 1101</code> → groups <code>1010</code> and <code>1101</code> → hex <code>A</code> and <code>D</code> → <code>AD</code>.</p>
+
+        <h3>Binary addition &amp; overflow (8-bit)</h3>
+        <p>
+          Add binary numbers bit by bit with carries. For 8-bit unsigned numbers the range is 0 to 255. If the result requires a 9th bit it causes <strong>overflow</strong> for unsigned addition.
+        </p>
+        <p class="small">Example: <code>1001 0110 (150)</code> + <code>0110 1101 (109)</code> = <code>1 0000 0011</code>. The leftmost '1' is the carry into a 9th bit → overflow (true sum 259).</p>
+
+        <h3>Logical binary shifts on positive 8-bit integers</h3>
+        <p>
+          A left logical shift (<<) moves all bits left, inserting 0 at the right. Each left shift multiplies an unsigned integer by 2 (until overflow). A right logical shift (>>) moves bits right, inserting 0 at the left and dividing by 2 (integer division).
+        </p>
+        <p class="small">Example: <code>0001 0101 (21)</code> << 1 → <code>0010 1010 (42)</code>.</p>
+
+        <h3>Two's complement notation (represent positive &amp; negative)</h3>
+        <p>
+          Two's complement is the common method to represent signed integers. For an n-bit value:
+        </p>
+        <ol>
+          <li>Positive numbers are the same binary as unsigned (most significant bit = 0).</li>
+          <li>To get the negative of a number: invert the bits (1's complement) then add 1 → two's complement.</li>
+          <li>The range for 8-bit two's complement is −128 to +127.</li>
+        </ol>
+        <p class="small">Example: +5 = <code>0000 0101</code>. Invert → <code>1111 1010</code>, add 1 → <code>1111 1011</code> represents −5.</p>
+
+        <div class="note small">End of Lecture 1 — you can now attempt Phase 3 to apply these ideas.</div>
+      </div>
+    </section>
+
+    <!-- Phase 3: Practice Activity (10 min) -->
+    <section id="phase3" class="phase">
+      <h2>Phase 3 — Practice Activity (10 minutes)</h2>
+      <div class="note">Short interactive tasks that apply Lecture 1 concepts. Instant feedback is provided.</div>
+
+      <div id="p3-q1" class="question" data-answer="ad">
+        <strong>1.</strong> Convert binary <code>1010 1101</code> to hexadecimal: __________
+        <div><input type="text" id="p3f1" placeholder="Type hex (e.g., AD)"></div>
+        <div class="feedback"></div>
+      </div>
+
+      <div id="p3-q2" class="question" data-answer="259">
+        <strong>2.</strong> Add <code>1001 0110 (150)</code> + <code>0110 1101 (109)</code>. Type the decimal result (real sum): __________
+        <div><input type="text" id="p3f2" placeholder="Type decimal result"></div>
+        <div class="feedback"></div>
+      </div>
+
+      <div id="p3-q3" class="question" data-answer="42">
+        <strong>3.</strong> Logical left shift: <code>0001 0101</code> << 1 = decimal __________
+        <div><input type="text" id="p3f3" placeholder="Type decimal result"></div>
+        <div class="feedback"></div>
+      </div>
+
+      <div style="margin-top:10px">
+        <button id="p3-check" class="btn">Check Phase 3</button>
+      </div>
+    </section>
+
+    <!-- Phase 4: Lecture 2 (10 min) -->
+    <section id="phase4" class="phase">
+      <h2>Phase 4 — Lecture 2 (10 minutes)</h2>
+      <div class="note">Complete explanations on text, sound, images, storage and compression.</div>
+
+      <div>
+        <h3>Text representation — Character sets (ASCII &amp; Unicode)</h3>
+        <p>
+          Computers store text as numbers. Character sets map characters to numeric codes. <strong>ASCII</strong> originally used 7 bits (128 symbols) and extended ASCII uses 8 bits (256 symbols). ASCII covers basic English letters, digits and punctuation.
+          <strong>Unicode</strong> is a universal standard supporting many languages and symbols; UTF-8 is a common encoding that uses 1 to 4 bytes per character and is backward compatible with ASCII.
+        </p>
+        <p class="small">Example: in ASCII, uppercase 'A' = 65 (decimal). In Unicode, many scripts like Arabic, Chinese, and emoji are represented using larger code points.</p>
+
+        <h3>Sound representation</h3>
+        <p>
+          Sound is an analogue waveform. To store sound digitally we sample the waveform at regular intervals (sample rate) and measure each sample to a certain precision (bit depth / sample resolution). The sample rate is measured in hertz (samples per second), e.g., 44,100 Hz is CD quality.
+        </p>
+        <p class="small">Channels: mono = 1 channel, stereo = 2 channels. Bit depth (sample resolution) commonly 8-bit, 16-bit etc. Higher bit depth gives more amplitude resolution.
+        </p>
+        <p><strong>File size (sound):</strong></p>
+        <p class="small">file size (bytes) = (sample rate × bit depth × duration × channels) ÷ 8</p>
+        <p class="small">Example: 44,100 Hz, 16-bit, 2 channels, 5 seconds → bytes = (44100 × 16 × 5 × 2) ÷ 8 = 882000 bytes ≈ 861 KB.</p>
+
+        <h3>Image representation</h3>
+        <p>
+          An image is a grid of pixels. Each pixel stores colour information. Colour depth (bits per pixel) determines how many colours can be represented. Resolution is measured as width × height in pixels.
+        </p>
+        <p class="small">File size (bytes) = (width × height × colour depth) ÷ 8. Example: 800 × 600 image at 24-bit colour → bytes = (800×600×24) ÷ 8 = 1,440,000 bytes ≈ 1.37 MB.</p>
+        <p class="small">Increasing resolution or colour depth increases file size and often quality. Trade-offs exist between quality and storage or transmission time.</p>
+
+        <h3>Data storage and compression</h3>
+        <p>
+          Storage units: 1 byte = 8 bits. 1 KB = 1024 bytes (binary convention) or 1000 bytes (decimal convention). Larger units: MB, GB, TB.
+        </p>
+        <p class="small">Compression reduces file size: <strong>lossless</strong> preserves exact original data (e.g., ZIP, PNG) while <strong>lossy</strong> discards some data to achieve smaller sizes (e.g., JPEG for images, MP3 for audio). Choose based on whether exact original data must be preserved.</p>
+
+        <div class="note small">End of Lecture 2 — you may proceed to Phase 5 when ready. Enter your name before beginning the final test.</div>
+      </div>
+    </section>
+
+    <!-- Phase 5: Final Assessment (20 min) -->
+    <section id="phase5" class="phase">
+      <h2>Phase 5 — Final Test (20 minutes)</h2>
+      <div class="note">Enter your name below. The test contains 10 MCQs, 10 Fill-in-the-blanks, and 5 short-answer questions (2 marks each). When you click <strong>SUBMIT</strong> your score will appear beside your name and correct answers are revealed. A printable PDF window will open for you to save/print (no Reset).</div>
+
+      <div style="margin-bottom:10px">
+        <label><strong>Student name:</strong></label>
+        <div style="margin-top:6px"><input type="text" id="student-name" placeholder="Enter full name"></div>
+      </div>
+
+      <div id="assessment" aria-hidden="true">
+        <form id="test-form">
+          <h3>Section A — 10 MCQs (1 mark each)</h3>
+
+          <!-- MCQs 1-10 -->
+          <div class="question mcq" data-answer="a">
+            <strong>A1.</strong> Hexadecimal digit 'F' equals decimal:
+            <div class="option"><label><input type="radio" name="a1" value="a"> a) 15</label></div>
+            <div class="option"><label><input type="radio" name="a1" value="b"> b) 16</label></div>
+            <div class="option"><label><input type="radio" name="a1" value="c"> c) 14</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="b">
+            <strong>A2.</strong> 8-bit unsigned maximum value is:
+            <div class="option"><label><input type="radio" name="a2" value="a"> a) 127</label></div>
+            <div class="option"><label><input type="radio" name="a2" value="b"> b) 255</label></div>
+            <div class="option"><label><input type="radio" name="a2" value="c"> c) 512</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="c">
+            <strong>A3.</strong> Two's complement range for 8 bits is:
+            <div class="option"><label><input type="radio" name="a3" value="a"> a) -255 to +255</label></div>
+            <div class="option"><label><input type="radio" name="a3" value="b"> b) 0 to 255</label></div>
+            <div class="option"><label><input type="radio" name="a3" value="c"> c) -128 to +127</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="c">
+            <strong>A4.</strong> Logical right shift inserts which bit at the left for unsigned numbers?
+            <div class="option"><label><input type="radio" name="a4" value="a"> a) 1</label></div>
+            <div class="option"><label><input type="radio" name="a4" value="b"> b) the sign bit</label></div>
+            <div class="option"><label><input type="radio" name="a4" value="c"> c) 0</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="b">
+            <strong>A5.</strong> ASCII commonly uses how many bits per character in its extended form?
+            <div class="option"><label><input type="radio" name="a5" value="a"> a) 7</label></div>
+            <div class="option"><label><input type="radio" name="a5" value="b"> b) 8</label></div>
+            <div class="option"><label><input type="radio" name="a5" value="c"> c) 16</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="a">
+            <strong>A6.</strong> Sample rate is measured in:
+            <div class="option"><label><input type="radio" name="a6" value="a"> a) Hertz (Hz)</label></div>
+            <div class="option"><label><input type="radio" name="a6" value="b"> b) bits</label></div>
+            <div class="option"><label><input type="radio" name="a6" value="c"> c) pixels</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="c">
+            <strong>A7.</strong> Image file size depends on:
+            <div class="option"><label><input type="radio" name="a7" value="a"> a) sample rate</label></div>
+            <div class="option"><label><input type="radio" name="a7" value="b"> b) channels</label></div>
+            <div class="option"><label><input type="radio" name="a7" value="c"> c) resolution and colour depth</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="b">
+            <strong>A8.</strong> Lossless compression means:
+            <div class="option"><label><input type="radio" name="a8" value="a"> a) some original data is discarded</label></div>
+            <div class="option"><label><input type="radio" name="a8" value="b"> b) original data can be perfectly restored</label></div>
+            <div class="option"><label><input type="radio" name="a8" value="c"> c) file is encrypted</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="a">
+            <strong>A9.</strong> 24-bit colour gives how many colours approximately?
+            <div class="option"><label><input type="radio" name="a9" value="a"> a) 16,777,216</label></div>
+            <div class="option"><label><input type="radio" name="a9" value="b"> b) 256</label></div>
+            <div class="option"><label><input type="radio" name="a9" value="c"> c) 65,536</label></div>
+          </div>
+
+          <div class="question mcq" data-answer="b">
+            <strong>A10.</strong> In UTF-8 encoding an ASCII character typically uses:
+            <div class="option"><label><input type="radio" name="a10" value="a"> a) 2 bytes</label></div>
+            <div class="option"><label><input type="radio" name="a10" value="b"> b) 1 byte</label></div>
+            <div class="option"><label><input type="radio" name="a10" value="c"> c) 4 bytes</label></div>
+          </div>
+
+          <h3>Section B — 10 Fill-in-the-blanks (1 mark each)</h3>
+
+          <!-- B1-B10 -->
+          <div class="question" data-answer="16">
+            <strong>B1.</strong> Hexadecimal base = __________.
+            <div><input type="text" name="b1"></div>
+          </div>
+
+          <div class="question" data-answer="255">
+            <strong>B2.</strong> Maximum value for 8-bit unsigned = __________.
+            <div><input type="text" name="b2"></div>
+          </div>
+
+          <div class="question" data-answer="-128 to 127">
+            <strong>B3.</strong> Range for 8-bit two's complement = __________.
+            <div><input type="text" name="b3"></div>
+          </div>
+
+          <div class="question" data-answer="invert and add 1">
+            <strong>B4.</strong> To get two's complement negative: __________.
+            <div><input type="text" name="b4"></div>
+          </div>
+
+          <div class="question" data-answer="unicode">
+            <strong>B5.</strong> The universal character set that supports many languages = __________.
+            <div><input type="text" name="b5"></div>
+          </div>
+
+          <div class="question" data-answer="sample rate">
+            <strong>B6.</strong> Number of samples per second = __________.
+            <div><input type="text" name="b6"></div>
+          </div>
+
+          <div class="question" data-answer="bit depth">
+            <strong>B7.</strong> Number of bits used to represent each sample amplitude = __________.
+            <div><input type="text" name="b7"></div>
+          </div>
+
+          <div class="question" data-answer="width x height x colour depth / 8">
+            <strong>B8.</strong> Formula for image file size (bytes) = __________.
+            <div><input type="text" name="b8"></div>
+          </div>
+
+          <div class="question" data-answer="lossy">
+            <strong>B9.</strong> JPEG compression type = __________.
+            <div><input type="text" name="b9"></div>
+          </div>
+
+          <div class="question" data-answer="lossless">
+            <strong>B10.</strong> PNG compression type = __________.
+            <div><input type="text" name="b10"></div>
+          </div>
+
+          <h3>Section C — 5 Short Answer Questions (2 marks each)</h3>
+          <p class="small">Write concise answers (each worth 2 marks). After submission correct responses will be shown.</p>
+
+          <div class="question" data-answer="group into 4-bit nibbles and convert each to hex">
+            <strong>C1.</strong> Explain in short how to convert an 8-bit binary number into hexadecimal.
+            <div><textarea name="c1" rows="3"></textarea></div>
+          </div>
+
+          <div class="question" data-answer="overflow happens when sum requires more bits than available">
+            <strong>C2.</strong> Briefly define overflow in binary addition.
+            <div><textarea name="c2" rows="3"></textarea></div>
+          </div>
+
+          <div class="question" data-answer="higher sample rate and higher bit depth increase quality and file size">
+            <strong>C3.</strong> State how sample rate and sample resolution affect audio quality and file size.
+            <div><textarea name="c3" rows="3"></textarea></div>
+          </div>
+
+          <div class="question" data-answer="in two's complement invert bits then add one to get negative">
+            <strong>C4.</strong> How do you obtain the two's complement representation of a negative integer?
+            <div><textarea name="c4" rows="3"></textarea></div>
+          </div>
+
+          <div class="question" data-answer="lossless preserves original data; lossy discards some for smaller size">
+            <strong>C5.</strong> Difference between lossless and lossy compression (short answer).
+            <div><textarea name="c5" rows="3"></textarea></div>
+          </div>
+
+          <div style="margin-top:12px">
+            <button type="button" id="submit-test" class="btn" disabled>SUBMIT</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="result" class="hide">
+        <h3 id="result-head"></h3>
+        <div id="score-breakdown"></div>
+        <div id="answers-area" class="answers-revealed"></div>
+      </div>
+    </section>
+
+    <footer>
+      Tip: Boys and Girls, there is no point in repeating this again and again.This will be the last time repeating this chapter. The Submit action opens a printable report window (choose Save as PDF).
+    </footer>
+  </div>
+
+  <script>
+    // Utility functions
+    function normalizeText(s){return (s||'').toString().trim().toLowerCase();}
+
+    // PHASE 1 check
+    document.getElementById('p1-check').addEventListener('click', ()=>{
+      const container = document.getElementById('p1-questions');
+      const qs = container.querySelectorAll('.question');
+      qs.forEach(q=>{
+        const fb = q.querySelector('.feedback'); fb.textContent=''; fb.className='feedback';
+        if(q.classList.contains('mcq')){
+          const correct = q.dataset.answer;
+          const name = q.querySelector('input[type=radio]')?.name;
+          const sel = container.querySelector('input[name="'+name+'"]:checked');
+          if(!sel){ fb.textContent='Please select an option.'; fb.classList.add('incorrect'); }
+          else if(sel.value===correct){ fb.textContent='Correct.'; fb.classList.add('correct'); }
+          else{ fb.textContent='Incorrect. Correct answer: '+correct.toUpperCase(); fb.classList.add('incorrect'); }
+        } else {
+          const correct = normalizeText(q.dataset.answer);
+          const inp = q.querySelector('input');
+          const ans = normalizeText(inp.value);
+          if(ans===''){ fb.textContent='Please type an answer.'; fb.classList.add('incorrect'); }
+          else if(ans===correct){ fb.textContent='Correct.'; fb.classList.add('correct'); }
+          else{ fb.textContent='Incorrect. Correct answer: '+q.dataset.answer; fb.classList.add('incorrect'); }
+        }
+      });
+    });
+
+    // PHASE 3 check
+    document.getElementById('p3-check').addEventListener('click', ()=>{
+      const ids = ['p3-q1','p3-q2','p3-q3'];
+      ids.forEach(id=>{
+        const q = document.getElementById(id);
+        const fb = q.querySelector('.feedback'); fb.textContent=''; fb.className='feedback';
+        const correct = normalizeText(q.dataset.answer);
+        const inp = q.querySelector('input');
+        const ans = normalizeText(inp.value).replace(/^0+/, '');
+        if(ans===''){ fb.textContent='Please answer.'; fb.classList.add('incorrect'); }
+        else if(ans===correct){ fb.textContent='Correct.'; fb.classList.add('correct'); }
+        else{ fb.textContent='Incorrect. Correct: '+q.dataset.answer; fb.classList.add('incorrect'); }
+      });
+    });
+
+    // Phase 5: enable assessment after name entered
+    const nameInput = document.getElementById('student-name');
+    const assessment = document.getElementById('assessment');
+    const submitBtn = document.getElementById('submit-test');
+    nameInput.addEventListener('input', ()=>{
+      const v = nameInput.value.trim();
+      if(v.length>0){ assessment.removeAttribute('aria-hidden'); submitBtn.disabled=false; }
+      else{ assessment.setAttribute('aria-hidden','true'); submitBtn.disabled=true; }
+    });
+
+    // Assessment scoring and PDF (print) generation
+    submitBtn.addEventListener('click', ()=>{
+      // Disable button to prevent double submit
+      submitBtn.disabled = true;
+
+      const student = nameInput.value.trim();
+      const resultDiv = document.getElementById('result');
+      const head = document.getElementById('result-head');
+      const answersArea = document.getElementById('answers-area');
+      const breakdown = document.getElementById('score-breakdown');
+
+      // Scoring
+      let score = 0;
+      let total = 0;
+      const revealed = [];
+
+      // Section A MCQs
+      const mcqCount = 10; total += mcqCount;
+      for(let i=1;i<=mcqCount;i++){
+        const correct = document.querySelectorAll('#test-form .question.mcq')[i-1].dataset.answer;
+        const sel = document.querySelector('#test-form input[name="a'+i+'"]:checked');
+        const chosen = sel ? sel.value : '';
+        if(chosen === correct) score += 1;
+        revealed.push({q:'A'+i, type:'MCQ', chosen:chosen||'—', correct:correct});
+      }
+
+      // Section B fill-in-the-blanks
+      const fillCount = 10; total += fillCount;
+      for(let i=1;i<=fillCount;i++){
+        const el = document.querySelector('#test-form input[name="b'+i+'"]');
+        const user = normalizeText(el.value);
+        const correct = normalizeText(document.querySelectorAll('#test-form .question')[mcqCount + i - 1].dataset.answer);
+        if(user===correct) score +=1;
+        revealed.push({q:'B'+i, type:'Fill', chosen:el.value||'—', correct:document.querySelectorAll('#test-form .question')[mcqCount + i - 1].dataset.answer});
+      }
+
+      // Section C short answers (2 marks each)
+      const shortCount = 5; total += shortCount*2; // each 2 marks
+      for(let i=1;i<=shortCount;i++){
+        const ta = document.querySelector('#test-form textarea[name="c'+i+'"]');
+        const user = normalizeText(ta.value);
+        const correctText = normalizeText(document.querySelectorAll('#test-form .question')[mcqCount + fillCount + i - 1].dataset.answer);
+        // simple keyword scoring: if user's normalized text contains at least 3 words from the model answer give full marks
+        let marks = 0;
+        if(user.length>0){
+          const modelWords = correctText.split(/\s+/).filter(Boolean);
+          let matches = 0;
+          modelWords.forEach(w=>{ if(w.length>2 && user.includes(w)) matches++; });
+          // heuristic: if matches >= Math.min(2, modelWords.length) then full marks
+          if(matches >= Math.min(2, modelWords.length)) marks = 2;
+          else if(matches>=1) marks = 1;
+        }
+        score += marks;
+        revealed.push({q:'C'+i, type:'Short', chosen:ta.value||'—', correct:document.querySelectorAll('#test-form .question')[mcqCount + fillCount + i - 1].dataset.answer, marks:marks});
+      }
+
+      // Display results
+      head.textContent = student + ' — Score: ' + score + ' / ' + total;
+      breakdown.innerHTML = '<p class="small">Total marks possible: '+total+' (Section A: 10 ×1, Section B: 10 ×1, Section C: 5 ×2)</p>';
+
+      // Build answers reveal
+      let html = '<h4>Answers and responses</h4>';
+      html += '<ol>';
+      revealed.forEach(item=>{
+        if(item.type==='MCQ'){
+          html += '<li><strong>'+item.q+'</strong> — Answer: '+item.correct.toUpperCase()+', Your answer: '+(item.chosen?item.chosen.toUpperCase():'—')+'</li>';
+        } else if(item.type==='Fill'){
+          html += '<li><strong>'+item.q+'</strong> — Correct: '+item.correct+', Your answer: '+item.chosen+'</li>';
+        } else {
+          html += '<li><strong>'+item.q+'</strong> — Model key: '+item.correct+', Your answer: '+item.chosen+', Marks awarded: '+item.marks+'</li>';
+        }
+      });
+      html += '</ol>';
+
+      answersArea.innerHTML = html;
+      resultDiv.classList.remove('hide');
+
+      // Prepare printable content
+      const printableHtml = `
+        <div class="header"><h2>${escapeHtml(student)} — Score: ${score} / ${total}</h2>
+        <p>Total marks possible: ${total} (A:10×1, B:10×1, C:5×2)</p></div>
+        <div>${answersArea.innerHTML}</div>
+        <p style="margin-top:12px;color:#444;font-size:12px">Report generated from Modern English School Cairo — Chapter 1: Data Representation</p>
+      `;
+
+      // Try to open a new window and print; if blocked, fallback to iframe printing to avoid 'null document' errors.
+      try{
+        const printWindow = window.open('', '_blank');
+        if(printWindow && printWindow.document){
+          const css = `body{font-family:Arial,Helvetica,sans-serif;color:#000} .header{margin-bottom:8px}`;
+          printWindow.document.open();
+          printWindow.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Assessment Report</title><style>'+css+'</style></head><body>'+printableHtml+'</body></html>');
+          printWindow.document.close();
+          // small delay to ensure content loads, then call print
+          setTimeout(()=>{ try{ printWindow.focus(); printWindow.print(); }catch(e){ console.warn('Print failed in new window:', e); } }, 300);
+        } else {
+          // Fallback: use hidden iframe to print content
+          fallbackPrintUsingIframe(printableHtml);
+        }
+      } catch(err){
+        console.warn('Could not open print window, using iframe fallback.', err);
+        fallbackPrintUsingIframe(printableHtml);
+      }
+    });
+
+    function fallbackPrintUsingIframe(htmlContent){
+      try{
+        // create hidden iframe
+        let iframe = document.getElementById('print-frame');
+        if(!iframe){
+          iframe = document.createElement('iframe');
+          iframe.id = 'print-frame';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+        }
+        const doc = iframe.contentWindow || iframe.contentDocument;
+        const docRef = iframe.contentDocument || iframe.contentWindow.document;
+        docRef.open();
+        docRef.write('<!doctype html><html><head><meta charset="utf-8"><title>Assessment Report</title><style>body{font-family:Arial,Helvetica,sans-serif;color:#000}.header{margin-bottom:8px}</style></head><body>' + htmlContent + '</body></html>');
+        docRef.close();
+        // wait a bit then print from iframe
+        setTimeout(()=>{
+          try{ iframe.contentWindow.focus(); iframe.contentWindow.print(); }catch(e){
+            // As last resort, show printable content in a new tab via data URL
+            try{ const blob = new Blob([docRef.documentElement.outerHTML], {type:'text/html'}); const url = URL.createObjectURL(blob); window.open(url, '_blank'); }catch(e2){ console.error('Final fallback failed', e2); alert('Unable to open print window — please use the displayed results to save/print manually.'); }
+          }
+        }, 400);
+      }catch(e){ console.error('Iframe print fallback failed', e); alert('Printing is not available in this browser.'); }
+    }
+
+    // Simple escape for HTML insertion
+    function escapeHtml(str){ return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  </script>
+</body>
+</html>
