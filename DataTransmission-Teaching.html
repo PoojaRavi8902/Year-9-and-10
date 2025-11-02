@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Data Transmission — Lesson (Packet Switching, Errors, Encryption)</title>
+  <style>
+    :root{--bg:#fff8dc;--fg:#006400;--card:#f7f1d7;--muted:#3b6a3b;--maxw:1000px;font-family:system-ui,Segoe UI,Roboto,Arial}
+    body{background:var(--bg);color:var(--fg);margin:0;padding:20px;display:flex;justify-content:center}
+    .wrap{width:100%;max-width:var(--maxw)}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    h1{margin:0;font-size:20px}
+    .phase{background:var(--card);border-left:6px solid var(--fg);padding:14px;border-radius:8px;margin-bottom:12px}
+    .note{color:var(--muted);font-size:13px}
+    .btn{background:var(--fg);color:var(--bg);border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    .btn:disabled{opacity:0.5}
+    input[type=text], textarea, select{width:100%;padding:8px;border-radius:6px;border:1px solid var(--muted);box-sizing:border-box}
+    .question{margin:10px 0;padding:8px;border-radius:6px}
+    .mcq .option{display:block;margin:6px 0}
+    .feedback{font-size:13px;margin-top:6px}
+    .correct{color:green;font-weight:600}
+    .incorrect{color:red;font-weight:600}
+    .hide{display:none}
+    .collapsible{background:#fff;padding:10px;border-radius:6px;border:1px solid #eee;max-height:400px;overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:6px;border:1px solid #eee}
+    footer{font-size:12px;color:var(--muted);margin-top:8px}
+    iframe#print-frame{display:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Chapter 2: Data Transmission — Packet Switching, Error Detection & Encryption</h1>
+        <div class="note">Five-phase interactive lesson for classroom use. All lecture content is inside collapsible sections.</div>
+      </div>
+      <div style="text-align:right">
+        <div class="note">Modern English School Cairo</div>
+      </div>
+    </header>
+
+    <!-- Phase 1 Starter Activity -->
+    <section class="phase" id="phase1">
+      <h2>Phase 1 — Starter Activity</h2>
+      <div class="note">5 MCQs, 5 Fill-in-the-blanks, 2 Short Answer (quick)</div>
+
+      <div id="p1">
+        <!-- 5 MCQs -->
+        <div class="question mcq" data-answer="b">
+          <strong>1.</strong> Packet switching splits messages into packets. Typical packet size is about:
+          <div class="option"><label><input type="radio" name="p1q1" value="a"> a) 64 bytes</label></div>
+          <div class="option"><label><input type="radio" name="p1q1" value="b"> b) 64 KiB</label></div>
+          <div class="option"><label><input type="radio" name="p1q1" value="c"> c) 1500 KiB</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="c">
+          <strong>2.</strong> The header of a packet usually includes:
+          <div class="option"><label><input type="radio" name="p1q2" value="a"> a) payload only</label></div>
+          <div class="option"><label><input type="radio" name="p1q2" value="b"> b) CRC only</label></div>
+          <div class="option"><label><input type="radio" name="p1q2" value="c"> c) source, destination, sequence number</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="a">
+          <strong>3.</strong> Hop number is used to:
+          <div class="option"><label><input type="radio" name="p1q3" value="a"> a) prevent endless packet circulation</label></div>
+          <div class="option"><label><input type="radio" name="p1q3" value="b"> b) increase packet size</label></div>
+          <div class="option"><label><input type="radio" name="p1q3" value="c"> c) encrypt payload</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="b">
+          <strong>4.</strong> ARQ stands for:
+          <div class="option"><label><input type="radio" name="p1q4" value="a"> a) Automatic Repeat Query</label></div>
+          <div class="option"><label><input type="radio" name="p1q4" value="b"> b) Automatic Repeat Request</label></div>
+          <div class="option"><label><input type="radio" name="p1q4" value="c"> c) Automatic Resend Queue</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question mcq" data-answer="c">
+          <strong>5.</strong> Symmetric encryption uses:
+          <div class="option"><label><input type="radio" name="p1q5" value="a"> a) two keys (public & private)</label></div>
+          <div class="option"><label><input type="radio" name="p1q5" value="b"> b) no keys</label></div>
+          <div class="option"><label><input type="radio" name="p1q5" value="c"> c) same key for encryption and decryption</label></div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- 5 Fill-ins -->
+        <div class="question" data-answer="header">
+          <strong>6.</strong> Fill: The packet part that contains source and destination addresses is the __________.
+          <div><input type="text" id="p1f1"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="payload">
+          <strong>7.</strong> Fill: The packet's main content (actual data) is called the __________.
+          <div><input type="text" id="p1f2"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="trailer">
+          <strong>8.</strong> Fill: The packet part containing CRC and end marker is the __________.
+          <div><input type="text" id="p1f3"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="crc">
+          <strong>9.</strong> Fill: Error checking using a cyclic redundancy check is abbreviated as __________.
+          <div><input type="text" id="p1f4"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="hop number">
+          <strong>10.</strong> Fill: The number that decreases each router hop and prevents endless loops is the __________.
+          <div><input type="text" id="p1f5"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- 2 short answers -->
+        <div class="question" data-answer="reassemble using sequence numbers">
+          <strong>11.</strong> Short: Why must packets be reassembled at the destination? (one-line)
+          <div><input type="text" id="p1s1"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-answer="to detect corruption and request resend">
+          <strong>12.</strong> Short: Purpose of CRC in packet transmission? (one-line)
+          <div><input type="text" id="p1s2"></div>
+          <div class="feedback"></div>
+        </div>
+
+        <div style="margin-top:10px"><button id="p1-check" class="btn">Check Starter</button></div>
+      </div>
+    </section>
+
+    <!-- Phase 2 Lecture (collapsible) -->
+    <section class="phase" id="phase2">
+      <h2>Phase 2 — Lecture (10 minutes)</h2>
+      <div class="note">All teaching material is contained in the collapsible block below.</div>
+      <details class="collapsible" open>
+        <summary><strong>Open Lecture Content — Packet Switching & Routers</strong></summary>
+        <h3>What are Data Packets?</h3>
+        <p>Data sent across long distances is split into small units called data packets (datagrams). Typical packet size: 64 KiB. Small packets are easier to manage; different packets can take different routes. At the destination packets must be reassembled in the correct order.</p>
+
+        <h4>Packet Structure</h4>
+        <p>A packet has three parts: Header (control info: source IP, destination IP, sequence number, packet size, total packets), Payload (actual data, ≈64 KiB), Trailer (end marker and error checking like CRC).</p>
+
+        <h4>Error Checking with CRC (conceptual)</h4>
+        <ol>
+          <li>Sender counts 1-bits in payload and stores the result as hex in the trailer.</li>
+          <li>Receiver repeats count and compares; mismatch => corrupted packet => resend requested.</li>
+        </ol>
+        <p><strong>Exam tip:</strong> Be able to explain CRC step-by-step.</p>
+
+        <h4>Packet Switching & Routers</h4>
+        <p>Packets travel independently through networks; routers inspect headers and decide paths based on traffic. Packets may arrive out of order and must be reassembled using sequence numbers. Hop numbers prevent endless circulation by decrementing at each router; when zero the packet is discarded.</p>
+
+        <h4>Benefits & Drawbacks</h4>
+        <p>Benefits: efficient use of network, rerouting on faults, scalable. Drawbacks: possible packet loss, reordering, delays for real-time streams.</p>
+      </details>
+    </section>
+
+    <!-- Phase 3 Activity -->
+    <section class="phase" id="phase3">
+      <h2>Phase 3 — Activity (Apply Lecture)</h2>
+      <div class="note">10 MCQs, 10 Match-the-following (use select), 5 Short Answer</div>
+
+      <form id="p3-form">
+        <h3>10 MCQs</h3>
+        <!-- We'll include 10 mcqs similar style -->
+        <div class="question mcq" data-answer="a">
+          <strong>1.</strong> Sequence numbers in headers are used to:
+          <div class="option"><label><input type="radio" name="p3a1" value="a"> a) reassemble packets in order</label></div>
+          <div class="option"><label><input type="radio" name="p3a1" value="b"> b) encrypt packets</label></div>
+          <div class="option"><label><input type="radio" name="p3a1" value="c"> c) increase packet size</label></div>
+        </div>
+        <div class="question mcq" data-answer="b">
+          <strong>2.</strong> If hop number reaches zero a router will:
+          <div class="option"><label><input type="radio" name="p3a2" value="a"> a) increase it</label></div>
+          <div class="option"><label><input type="radio" name="p3a2" value="b"> b) drop the packet</label></div>
+          <div class="option"><label><input type="radio" name="p3a2" value="c"> c) send an acknowledgement</label></div>
+        </div>
+        <div class="question mcq" data-answer="c">
+          <strong>3.</strong> Trailer usually contains:
+          <div class="option"><label><input type="radio" name="p3a3" value="a"> a) routing table</label></div>
+          <div class="option"><label><input type="radio" name="p3a3" value="b"> b) payload size only</label></div>
+          <div class="option"><label><input type="radio" name="p3a3" value="c"> c) CRC and end marker</label></div>
+        </div>
+        <div class="question mcq" data-answer="a">
+          <strong>4.</strong> Packet switching advantage is:
+          <div class="option"><label><input type="radio" name="p3a4" value="a"> a) more efficient use of network resources</label></div>
+          <div class="option"><label><input type="radio" name="p3a4" value="b"> b) guaranteed arrival time</label></div>
+          <div class="option"><label><input type="radio" name="p3a4" value="c"> c) no need for routers</label></div>
+        </div>
+        <div class="question mcq" data-answer="b">
+          <strong>5.</strong> Parity checks detect errors by checking:
+          <div class="option"><label><input type="radio" name="p3a5" value="a"> a) packet order</label></div>
+          <div class="option"><label><input type="radio" name="p3a5" value="b"> b) number of 1 bits in a byte</label></div>
+          <div class="option"><label><input type="radio" name="p3a5" value="c"> c) hop count</label></div>
+        </div>
+        <div class="question mcq" data-answer="c">
+          <strong>6.</strong> Check digits like ISBN-13 help detect:
+          <div class="option"><label><input type="radio" name="p3a6" value="a"> a) packet loss</label></div>
+          <div class="option"><label><input type="radio" name="p3a6" value="b"> b) parity errors</label></div>
+          <div class="option"><label><input type="radio" name="p3a6" value="c"> c) transcription/copying errors</label></div>
+        </div>
+        <div class="question mcq" data-answer="b">
+          <strong>7.</strong> ARQ is useful because it:
+          <div class="option"><label><input type="radio" name="p3a7" value="a"> a) encrypts data</label></div>
+          <div class="option"><label><input type="radio" name="p3a7" value="b"> b) requests retransmission on errors</label></div>
+          <div class="option"><label><input type="radio" name="p3a7" value="c"> c) compresses packets</label></div>
+        </div>
+        <div class="question mcq" data-answer="a">
+          <strong>8.</strong> USB-C provides up to:
+          <div class="option"><label><input type="radio" name="p3a8" value="a"> a) 100 watts charging and 10 Gbps</label></div>
+          <div class="option"><label><input type="radio" name="p3a8" value="b"> b) 5V only</label></div>
+          <div class="option"><label><input type="radio" name="p3a8" value="c"> c) 1 Gbps only</label></div>
+        </div>
+        <div class="question mcq" data-answer="c">
+          <strong>9.</strong> Parallel transmission is best for:
+          <div class="option"><label><input type="radio" name="p3a9" value="a"> a) long distances</label></div>
+          <div class="option"><label><input type="radio" name="p3a9" value="b"> b) USB connections</label></div>
+          <div class="option"><label><input type="radio" name="p3a9" value="c"> c) short distance internal buses</label></div>
+        </div>
+        <div class="question mcq" data-answer="b">
+          <strong>10.</strong> Asymmetric encryption uses:
+          <div class="option"><label><input type="radio" name="p3a10" value="a"> a) same key both ways</label></div>
+          <div class="option"><label><input type="radio" name="p3a10" value="b"> b) public and private keys</label></div>
+          <div class="option"><label><input type="radio" name="p3a10" value="c"> c) no keys</label></div>
+        </div>
+
+        <h3>10 Match-the-following</h3>
+        <p>Match left items (1-10) with right options (A-J) using the dropdowns.</p>
+        <table>
+          <tr><th>Item</th><th>Definition / Match</th></tr>
+          <tr><td>1. Header</td><td><select name="m1"><option value="">--select--</option><option value="C">C. Source & destination</option><option value="G">G. Sequence number</option><option value="J">J. Packet size</option><option value="A">A. Payload</option><option value="B">B. Trailer</option><option value="D">D. Hop number</option><option value="E">E. CRC</option><option value="F">F. ARQ</option><option value="H">H. USB-C</option><option value="I">I. Parity</option></select></td></tr>
+          <tr><td>2. Payload</td><td><select name="m2"><option value="">--select--</option><option value="A">A. Payload</option><option value="B">B. Trailer</option><option value="C">C. Source & destination</option><option value="D">D. Hop number</option><option value="E">E. CRC</option><option value="F">F. ARQ</option><option value="G">G. Sequence number</option><option value="H">H. USB-C</option><option value="I">I. Parity</option><option value="J">J. Packet size</option></select></td></tr>
+          <tr><td>3. Trailer</td><td><select name="m3"><option value="">--select--</option><option value="B">B. Trailer</option><option value="E">E. CRC</option><option value="A">A. Payload</option><option value="I">I. Parity</option><option value="J">J. Packet size</option></select></td></tr>
+          <tr><td>4. Sequence number</td><td><select name="m4"><option value="">--select--</option><option value="G">G. Sequence number</option><option value="C">C. Source & destination</option><option value="J">J. Packet size</option><option value="E">E. CRC</option><option value="I">I. Parity</option></select></td></tr>
+          <tr><td>5. Hop number</td><td><select name="m5"><option value="">--select--</option><option value="D">D. Hop number</option><option value="J">J. Packet size</option><option value="F">F. ARQ</option><option value="H">H. USB-C</option></select></td></tr>
+          <tr><td>6. CRC</td><td><select name="m6"><option value="">--select--</option><option value="E">E. CRC</option><option value="I">I. Parity</option><option value="F">F. ARQ</option><option value="B">B. Trailer</option></select></td></tr>
+          <tr><td>7. ARQ</td><td><select name="m7"><option value="">--select--</option><option value="F">F. ARQ</option><option value="E">E. CRC</option><option value="G">G. Sequence number</option></select></td></tr>
+          <tr><td>8. Parity</td><td><select name="m8"><option value="">--select--</option><option value="I">I. Parity</option><option value="A">A. Payload</option><option value="B">B. Trailer</option></select></td></tr>
+          <tr><td>9. USB-C</td><td><select name="m9"><option value="">--select--</option><option value="H">H. USB-C</option><option value="J">J. Packet size</option><option value="C">C. Source & destination</option></select></td></tr>
+          <tr><td>10. Packet size</td><td><select name="m10"><option value="">--select--</option><option value="J">J. Packet size</option><option value="A">A. Payload</option><option value="B">B. Trailer</option></select></td></tr>
+        </table>
+
+        <h3>5 Short Answer</h3>
+        <div class="question" data-answer="sequence numbers allow reassembly in correct order">
+          <strong>SA1.</strong> Explain briefly how packets are reassembled at the receiver.
+          <div><input type="text" name="sa1"></div>
+        </div>
+        <div class="question" data-answer="routers inspect header and forward based on traffic">
+          <strong>SA2.</strong> What role do routers play in packet switching?
+          <div><input type="text" name="sa2"></div>
+        </div>
+        <div class="question" data-answer="crc compares checksum to detect corruption">
+          <strong>SA3.</strong> In one line, how does CRC detect errors?
+          <div><input type="text" name="sa3"></div>
+        </div>
+        <div class="question" data-answer="arq requests retransmission on error">
+          <strong>SA4.</strong> What is ARQ used for?
+          <div><input type="text" name="sa4"></div>
+        </div>
+        <div class="question" data-answer="asymmetric uses public and private keys">
+          <strong>SA5.</strong> Give one advantage of asymmetric encryption.
+          <div><input type="text" name="sa5"></div>
+        </div>
+
+        <div style="margin-top:10px"><button id="p3-check" type="button" class="btn">Check Activity</button></div>
+      </form>
+    </section>
+
+    <!-- Phase 4 Lecture -->
+    <section class="phase" id="phase4">
+      <h2>Phase 4 — Lecture (10 minutes)</h2>
+      <div class="note">Detailed lecture on transmission modes, USB, serial/parallel, and error detection tools.</div>
+      <details class="collapsible">
+        <summary><strong>Open Lecture Content — Transmission Modes & Error Detection</strong></summary>
+        <h3>Modes of Transmission</h3>
+        <p>Direction: Simplex (one-way), Half-duplex (both ways but not at same time), Full-duplex (both ways simultaneously). Method: Serial (one bit at a time) vs Parallel (many bits simultaneously). Synchronization is ensured by protocols like TCP/IP.</p>
+
+        <h3>Serial vs Parallel</h3>
+        <p>Serial: one bit per wire — reliable over long distances, used in USB. Parallel: many bits across multiple wires — faster but prone to skewing and limited to short distances.</p>
+
+        <h3>Universal Serial Bus (USB)</h3>
+        <p>USB uses four wires: +5V (power), Ground, Data+ and Data–. Device detection involves voltage change and driver loading. USB-C offers reversible connector, higher power delivery (up to 100W), and high data rates.</p>
+
+        <h3>Error detection tools</h3>
+        <p>Parity checks: single-bit parity or 2D parity for locating single-bit errors. Checksums: simple sum mod 256 shown as hex. Echo check: receiver returns data for comparison. Check digits: ISBN-13 and Modulo-11.</p>
+
+        <h3>Automatic Repeat Request (ARQ)</h3>
+        <p>ARQ relies on acknowledgements and timeouts to request retransmission when errors are detected. Widely used to ensure reliable transfer.</p>
+      </details>
+    </section>
+
+    <!-- Phase 5 Final Assessment -->
+    <section class="phase" id="phase5">
+      <h2>Phase 5 — Full Assessment</h2>
+      <div class="note">20 MCQs, 20 Fill-in-the-blanks, 5 Short Answer (2 marks each), 2 Scenario Questions (5 marks each). Enter name to attempt.</div>
+
+      <div style="margin-bottom:8px">
+        <label><strong>Student Name:</strong></label>
+        <div style="margin-top:6px"><input type="text" id="student-name" placeholder="Enter full name"></div>
+      </div>
+
+      <form id="test-form">
+        <div id="assessment" aria-hidden="true">
+          <h3>Section A — 20 MCQs (1 mark each)</h3>
+
+          <!-- MCQs A1-A20 -->
+          <div class="question mcq" data-answer="a"><strong>A1.</strong> Typical packet size is approximately:<div class="option"><label><input type="radio" name="a1" value="a"> a) 64 KiB</label></div><div class="option"><label><input type="radio" name="a1" value="b"> b) 64 bytes</label></div><div class="option"><label><input type="radio" name="a1" value="c"> c) 1500 KiB</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A2.</strong> Header contains:<div class="option"><label><input type="radio" name="a2" value="a"> a) payload only</label></div><div class="option"><label><input type="radio" name="a2" value="b"> b) source & destination</label></div><div class="option"><label><input type="radio" name="a2" value="c"> c) trailer info</label></div></div>
+
+          <div class="question mcq" data-answer="c"><strong>A3.</strong> CRC is used for:<div class="option"><label><input type="radio" name="a3" value="a"> a) routing</label></div><div class="option"><label><input type="radio" name="a3" value="b"> b) increasing payload</label></div><div class="option"><label><input type="radio" name="a3" value="c"> c) error checking</label></div></div>
+
+          <div class="question mcq" data-answer="a"><strong>A4.</strong> Hop number prevents:<div class="option"><label><input type="radio" name="a4" value="a"> a) endless circulation</label></div><div class="option"><label><input type="radio" name="a4" value="b"> b) encryption</label></div><div class="option"><label><input type="radio" name="a4" value="c"> c) compression</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A5.</strong> ARQ uses:<div class="option"><label><input type="radio" name="a5" value="a"> a) no acknowledgements</label></div><div class="option"><label><input type="radio" name="a5" value="b"> b) acknowledgements and retransmission</label></div><div class="option"><label><input type="radio" name="a5" value="c"> c) only checksums</label></div></div>
+
+          <div class="question mcq" data-answer="a"><strong>A6.</strong> Serial transmission sends:<div class="option"><label><input type="radio" name="a6" value="a"> a) one bit at a time</label></div><div class="option"><label><input type="radio" name="a6" value="b"> b) many bits simultaneously</label></div><div class="option"><label><input type="radio" name="a6" value="c"> c) whole bytes as separate channels</label></div></div>
+
+          <div class="question mcq" data-answer="c"><strong>A7.</strong> Parallel transmission disadvantage:<div class="option"><label><input type="radio" name="a7" value="a"> a) works long distances</label></div><div class="option"><label><input type="radio" name="a7" value="b"> b) cheap</label></div><div class="option"><label><input type="radio" name="a7" value="c"> c) skewing risk</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A8.</strong> USB-C is backwards compatible and can provide:<div class="option"><label><input type="radio" name="a8" value="a"> a) 5W only</label></div><div class="option"><label><input type="radio" name="a8" value="b"> b) up to 100W and high data rates</label></div><div class="option"><label><input type="radio" name="a8" value="c"> c) only video</label></div></div>
+
+          <div class="question mcq" data-answer="a"><strong>A9.</strong> Parity bit checks:<div class="option"><label><input type="radio" name="a9" value="a"> a) number of 1 bits</label></div><div class="option"><label><input type="radio" name="a9" value="b"> b) packet order</label></div><div class="option"><label><input type="radio" name="a9" value="c"> c) hop count</label></div></div>
+
+          <div class="question mcq" data-answer="c"><strong>A10.</strong> Check digits (ISBN) help detect:<div class="option"><label><input type="radio" name="a10" value="a"> a) packet loss</label></div><div class="option"><label><input type="radio" name="a10" value="b"> b) encryption failures</label></div><div class="option"><label><input type="radio" name="a10" value="c"> c) transcription errors</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A11.</strong> Payload is:<div class="option"><label><input type="radio" name="a11" value="a"> a) header content</label></div><div class="option"><label><input type="radio" name="a11" value="b"> b) actual data of packet</label></div><div class="option"><label><input type="radio" name="a11" value="c"> c) routing info</label></div></div>
+
+          <div class="question mcq" data-answer="a"><strong>A12.</strong> Trailer contains:<div class="option"><label><input type="radio" name="a12" value="a"> a) CRC and end marker</label></div><div class="option"><label><input type="radio" name="a12" value="b"> b) source IP only</label></div><div class="option"><label><input type="radio" name="a12" value="c"> c) sequence number</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A13.</strong> Router decisions are based on:<div class="option"><label><input type="radio" name="a13" value="a"> a) packet payload</label></div><div class="option"><label><input type="radio" name="a13" value="b"> b) network traffic and routing tables</label></div><div class="option"><label><input type="radio" name="a13" value="c"> c) USB standard</label></div></div>
+
+          <div class="question mcq" data-answer="c"><strong>A14.</strong> Reassembly requires:<div class="option"><label><input type="radio" name="a14" value="a"> a) CRC only</label></div><div class="option"><label><input type="radio" name="a14" value="b"> b) hop count</label></div><div class="option"><label><input type="radio" name="a14" value="c"> c) sequence numbers</label></div></div>
+
+          <div class="question mcq" data-answer="a"><strong>A15.</strong> Skewing occurs in:<div class="option"><label><input type="radio" name="a15" value="a"> a) parallel transmission</label></div><div class="option"><label><input type="radio" name="a15" value="b"> b) serial transmission</label></div><div class="option"><label><input type="radio" name="a15" value="c"> c) CRC calculation</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A16.</strong> Simplex means:<div class="option"><label><input type="radio" name="a16" value="a"> a) two-way simultaneous</label></div><div class="option"><label><input type="radio" name="a16" value="b"> b) one-way only</label></div><div class="option"><label><input type="radio" name="a16" value="c"> c) half-duplex</label></div></div>
+
+          <div class="question mcq" data-answer="c"><strong>A17.</strong> Serial is preferred for long distance because:<div class="option"><label><input type="radio" name="a17" value="a"> a) it's faster</label></div><div class="option"><label><input type="radio" name="a17" value="b"> b) it uses many wires</label></div><div class="option"><label><input type="radio" name="a17" value="c"> c) fewer wires and less skewing</label></div></div>
+
+          <div class="question mcq" data-answer="a"><strong>A18.</strong> Asymmetric encryption advantage:<div class="option"><label><input type="radio" name="a18" value="a"> a) no need to share private key</label></div><div class="option"><label><input type="radio" name="a18" value="b"> b) uses same key both sides</label></div><div class="option"><label><input type="radio" name="a18" value="c"> c) weaker than symmetric</label></div></div>
+
+          <div class="question mcq" data-answer="b"><strong>A19.</strong> Checksum example in tool uses:<div class="option"><label><input type="radio" name="a19" value="a"> a) CRC32</label></div><div class="option"><label><input type="radio" name="a19" value="b"> b) sum of bytes mod 256 shown as hex</label></div><div class="option"><label><input type="radio" name="a19" value="c"> c) MD5</label></div></div>
+
+          <div class="question mcq" data-answer="c"><strong>A20.</strong> Echo check works by:<div class="option"><label><input type="radio" name="a20" value="a"> a) checking hop number</label></div><div class="option"><label><input type="radio" name="a20" value="b"> b) using parity only</label></div><div class="option"><label><input type="radio" name="a20" value="c"> c) receiver sends back the data for comparison</label></div></div>
+
+          <h3>Section B — 20 Fill-in-the-blanks (1 mark each)</h3>
+          <div class="question" data-answer="header"><strong>B1.</strong> The packet part that contains source and destination addresses is the __________.<div><input type="text" name="b1"></div></div>
+          <div class="question" data-answer="payload"><strong>B2.</strong> The actual data in a packet is called the __________.<div><input type="text" name="b2"></div></div>
+          <div class="question" data-answer="trailer"><strong>B3.</strong> The packet part containing CRC is the __________.<div><input type="text" name="b3"></div></div>
+          <div class="question" data-answer="sequence number"><strong>B4.</strong> Used to reassemble packets in correct order: __________.<div><input type="text" name="b4"></div></div>
+          <div class="question" data-answer="hop number"><strong>B5.</strong> Prevents endless loops: __________.<div><input type="text" name="b5"></div></div>
+          <div class="question" data-answer="crc"><strong>B6.</strong> Abbreviation for cyclic redundancy check: __________.<div><input type="text" name="b6"></div></div>
+          <div class="question" data-answer="arq"><strong>B7.</strong> Protocol that requests retransmission: __________.<div><input type="text" name="b7"></div></div>
+          <div class="question" data-answer="parity"><strong>B8.</strong> Single-bit error detection uses __________ checks.<div><input type="text" name="b8"></div></div>
+          <div class="question" data-answer="checksum"><strong>B9.</strong> A block-sum used for error detection is called a __________.<div><input type="text" name="b9"></div></div>
+          <div class="question" data-answer="isbn"><strong>B10.</strong> Check digit standard for books is __________.<div><input type="text" name="b10"></div></div>
+          <div class="question" data-answer="simplex"><strong>B11.</strong> One-way transmission is called __________.<div><input type="text" name="b11"></div></div>
+          <div class="question" data-answer="half-duplex"><strong>B12.</strong> Two-way non-simultaneous transmission is __________.<div><input type="text" name="b12"></div></div>
+          <div class="question" data-answer="full-duplex"><strong>B13.</strong> Two-way simultaneous transmission is __________.<div><input type="text" name="b13"></div></div>
+          <div class="question" data-answer="serial"><strong>B14.</strong> Transmission sending one bit at a time is __________.<div><input type="text" name="b14"></div></div>
+          <div class="question" data-answer="parallel"><strong>B15.</strong> Transmission that sends many bits at once is __________.<div><input type="text" name="b15"></div></div>
+          <div class="question" data-answer="skewing"><strong>B16.</strong> Timing mismatch between parallel wires is called __________.<div><input type="text" name="b16"></div></div>
+          <div class="question" data-answer="usb-c"><strong>B17.</strong> The reversible USB connector standard is __________.<div><input type="text" name="b17"></div></div>
+          <div class="question" data-answer="100 watts"><strong>B18.</strong> USB-C can provide up to __________ of power.<div><input type="text" name="b18"></div></div>
+          <div class="question" data-answer="mod 256"><strong>B19.</strong> Simple checksum example uses sum of bytes modulo __________.<div><input type="text" name="b19"></div></div>
+          <div class="question" data-answer="echo"><strong>B20.</strong> The method where receiver returns data to sender for comparison is called __________.<div><input type="text" name="b20"></div></div>
+
+          <h3>Section C — 5 Short Answer (2 marks each)</h3>
+          <div class="question" data-answer="sequence numbers and reassembly"><strong>C1.</strong> How are packets reassembled at the receiver? (short)</div>
+          <div><textarea name="c1" rows="3"></textarea></div>
+
+          <div class="question" data-answer="crc compares checksum to detect corruption"><strong>C2.</strong> Explain in two lines how CRC detects corrupted packets.</div>
+          <div><textarea name="c2" rows="3"></textarea></div>
+
+          <div class="question" data-answer="arq uses ack and timeout to request resend"><strong>C3.</strong> Briefly describe the ARQ process.</div>
+          <div><textarea name="c3" rows="3"></textarea></div>
+
+          <div class="question" data-answer="serial one bit, parallel many bits"><strong>C4.</strong> Difference between serial and parallel transmission (short).</div>
+          <div><textarea name="c4" rows="3"></textarea></div>
+
+          <div class="question" data-answer="public key shared, private key secret"><strong>C5.</strong> One key fact about asymmetric encryption (short).</div>
+          <div><textarea name="c5" rows="3"></textarea></div>
+
+          <h3>Section D — 2 Scenario Questions (5 marks each)</h3>
+          <div class="question" data-answer="explain how packetization, sequence numbers, crc and arq help recover lost packets and ensure integrity">
+            <strong>S1.</strong> Scenario: A student sends a large video file to school server; half-way through transmission the network becomes congested and some packets are lost. Explain how packet switching, sequence numbers, CRC and ARQ help ensure the file is correctly received. (5 marks)
+            <div><textarea name="s1" rows="6"></textarea></div>
+          </div>
+
+          <div class="question" data-answer="describe symmetric vs asymmetric, key sharing issue and public/private advantage"><strong>S2.</strong> Scenario: A teacher wants to send confidential grades to a parent. Compare symmetric and asymmetric encryption for this task and recommend which to use, justifying your choice. (5 marks)</div>
+          <div><textarea name="s2" rows="6"></textarea></div>
+
+          <div style="margin-top:12px">
+            <button type="button" id="submit-test" class="btn" disabled>SUBMIT</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="result" class="hide">
+        <h3 id="result-head"></h3>
+        <div id="score-breakdown"></div>
+        <div id="answers-area" class="answers-revealed"></div>
+      </div>
+    </section>
+
+    <footer>Use the printable report to save student results as PDF. No reset button is provided.</footer>
+  </div>
+
+  <script>
+    // Helpers
+    function normalize(s){return (s||'').toString().trim().toLowerCase();}
+
+    // Phase1 check
+    document.getElementById('p1-check').addEventListener('click', ()=>{
+      const cont = document.getElementById('p1');
+      cont.querySelectorAll('.question').forEach(q=>{
+        const fb = q.querySelector('.feedback'); fb.textContent=''; fb.className='feedback';
+        if(q.classList.contains('mcq')){
+          const correct = q.dataset.answer;
+          const name = q.querySelector('input[type=radio]')?.name;
+          const sel = cont.querySelector('input[name="'+name+'"]:checked');
+          if(!sel){ fb.textContent='Select an option.'; fb.classList.add('incorrect'); }
+          else if(sel.value===correct) { fb.textContent='Correct.'; fb.classList.add('correct'); }
+          else { fb.textContent='Incorrect. Correct: '+correct; fb.classList.add('incorrect'); }
+        } else {
+          const correct = normalize(q.dataset.answer);
+          const inp = q.querySelector('input');
+          const val = normalize(inp.value);
+          if(!val){ fb.textContent='Type an answer.'; fb.classList.add('incorrect'); }
+          else if(val===correct){ fb.textContent='Correct.'; fb.classList.add('correct'); }
+          else{ fb.textContent='Incorrect. Correct: '+q.dataset.answer; fb.classList.add('incorrect'); }
+        }
+      });
+    });
+
+    // Phase3 check
+    document.getElementById('p3-check').addEventListener('click', ()=>{
+      const form = document.getElementById('p3-form');
+      // MCQs
+      form.querySelectorAll('.question.mcq').forEach(q=>{
+        const fb = q.querySelector('.feedback') || (()=>{let d=document.createElement('div');d.className='feedback';q.appendChild(d);return d; })();
+        fb.textContent=''; fb.className='feedback';
+        const correct = q.dataset.answer; const name = q.querySelector('input[type=radio]')?.name; const sel = form.querySelector('input[name="'+name+'"]:checked');
+        if(!sel){ fb.textContent='Select option.'; fb.classList.add('incorrect'); }
+        else if(sel.value===correct){ fb.textContent='Correct.'; fb.classList.add('correct'); }
+        else{ fb.textContent='Incorrect. Correct: '+correct; fb.classList.add('incorrect'); }
+      });
+      // Matches and short answers basic feedback
+      for(let i=1;i<=5;i++){ const sa = form.querySelector('input[name="sa'+i+'"]').closest('.question'); const fb = sa.querySelector('.feedback')||(()=>{let d=document.createElement('div');d.className='feedback';sa.appendChild(d);return d;})(); fb.textContent=''; const expected = normalize(sa.dataset.answer); const val = normalize(form.querySelector('input[name="sa'+i+'"]').value); if(!val){ fb.textContent='Type answer.'; fb.classList.add('incorrect'); } else if(val.includes(expected.split(' ')[0]) || expected.includes(val)) { fb.textContent='Looks plausible.'; fb.classList.add('correct'); } else { fb.textContent='Check answer.'; fb.classList.add('incorrect'); } }
+    });
+
+    // Enable assessment after name
+    const nameInput = document.getElementById('student-name'); const assessment = document.getElementById('assessment'); const submitBtn = document.getElementById('submit-test');
+    nameInput.addEventListener('input', ()=>{ if(nameInput.value.trim().length>0){ assessment.removeAttribute('aria-hidden'); submitBtn.disabled=false; } else { assessment.setAttribute('aria-hidden','true'); submitBtn.disabled=true; } });
+
+    // Submit scoring
+    submitBtn.addEventListener('click', ()=>{
+      submitBtn.disabled=true;
+      const student = nameInput.value.trim(); const resultDiv = document.getElementById('result'); const head = document.getElementById('result-head'); const answersArea = document.getElementById('answers-area'); const breakdown = document.getElementById('score-breakdown');
+      let score=0; let total=0; const revealed=[];
+
+      // Section A MCQs (20)
+      const mcqCount=20; total+=mcqCount;
+      for(let i=1;i<=mcqCount;i++){ const correct = document.querySelectorAll('#test-form .question.mcq')[i-1].dataset.answer; const sel = document.querySelector('#test-form input[name="a'+i+'"]:checked'); const chosen = sel?sel.value:''; if(chosen===correct) score+=1; revealed.push({q:'A'+i,type:'MCQ',chosen:chosen||'—',correct:correct}); }
+
+      // Section B fills (20)
+      const fillCount=20; total+=fillCount;
+      for(let i=1;i<=fillCount;i++){ const el = document.querySelector('#test-form input[name="b'+i+'"]'); const user = normalize(el.value); const correct = normalize(document.querySelectorAll('#test-form .question')[mcqCount + i -1].dataset.answer); if(user===correct) score+=1; revealed.push({q:'B'+i,type:'Fill',chosen:el.value||'—',correct:document.querySelectorAll('#test-form .question')[mcqCount + i -1].dataset.answer}); }
+
+      // Section C shorts (5 ×2)
+      const shortCount=5; total+=shortCount*2;
+      for(let i=1;i<=shortCount;i++){ const ta = document.querySelector('#test-form textarea[name="c'+i+'"]'); const user = normalize(ta.value); const correctText = normalize(document.querySelectorAll('#test-form .question')[mcqCount + fillCount + i -1].dataset.answer); let marks=0; if(user.length>0){ const modelWords = correctText.split(/\s+/).filter(Boolean); let matches=0; modelWords.forEach(w=>{ if(w.length>3 && user.includes(w)) matches++; }); if(matches>=Math.min(2,modelWords.length)) marks=2; else if(matches>=1) marks=1; } score+=marks; revealed.push({q:'C'+i,type:'Short',chosen:ta.value||'—',correct:document.querySelectorAll('#test-form .question')[mcqCount + fillCount + i -1].dataset.answer,marks:marks}); }
+
+      // Section D scenarios (2 ×5)
+      const sceCount=2; total+=sceCount*5;
+      for(let i=1;i<=sceCount;i++){ const ta = document.querySelector('#test-form textarea[name="s'+i+'"]'); const user = normalize(ta.value); const correctText = normalize(document.querySelectorAll('#test-form .question')[mcqCount + fillCount + shortCount + i -1].dataset.answer); // simple rubric: award 0-5 based on keyword matches
+        let marks=0; if(user.length>0){ const keywords = correctText.split(/[,;\s]+/).filter(w=>w.length>3); let matches=0; keywords.forEach(k=>{ if(user.includes(k)) matches++; }); marks = Math.min(5, Math.round((matches/Math.max(1,keywords.length))*5)); }
+        score+=marks; revealed.push({q:'S'+i,type:'Scenario',chosen:ta.value||'—',correct:document.querySelectorAll('#test-form .question')[mcqCount + fillCount + shortCount + i -1].dataset.answer,marks:marks}); }
+
+      head.textContent = student + ' — Score: ' + score + ' / ' + total;
+      breakdown.innerHTML = '<p class="note">Total: '+total+' (A:20×1, B:20×1, C:5×2, D:2×5)</p>';
+
+      // Build answers reveal
+      let html='<h4>Answers & Responses</h4><ol>';
+      revealed.forEach(it=>{ if(it.type==='MCQ') html+='<li><strong>'+it.q+'</strong> — Correct: '+it.correct.toUpperCase()+', Your: '+(it.chosen?it.chosen.toUpperCase():'—')+'</li>'; else if(it.type==='Fill') html+='<li><strong>'+it.q+'</strong> — Correct: '+it.correct+', Your: '+it.chosen+'</li>'; else html+='<li><strong>'+it.q+'</strong> — Model: '+(it.correct||'')+', Your: '+it.chosen+' (Marks: '+(it.marks||0)+')</li>'; });
+      html+='</ol>';
+      answersArea.innerHTML=html; resultDiv.classList.remove('hide');
+
+      // Printable content
+      const printable = `<div class="header"><h2>${escapeHtml(student)} — Score: ${score} / ${total}</h2><p>Total marks: ${total}</p></div>${answersArea.innerHTML}<p style="font-size:12px;color:#444">Generated: Modern English School Cairo — Chapter 2</p>`;
+
+      // Print with fallback
+      try{ const w = window.open('','_blank'); if(w && w.document){ const css='body{font-family:Arial,Helvetica,sans-serif;color:#000}'; w.document.open(); w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Report</title><style>'+css+'</style></head><body>'+printable+'</body></html>'); w.document.close(); setTimeout(()=>{ try{ w.focus(); w.print(); }catch(e){ console.warn('Print failed',e); } },300); } else fallbackPrint(printable); } catch(e){ fallbackPrint(printable); }
+    });
+
+    function fallbackPrint(html){ try{ let iframe=document.getElementById('print-frame'); if(!iframe){ iframe=document.createElement('iframe'); iframe.id='print-frame'; iframe.style.display='none'; document.body.appendChild(iframe);} const doc=iframe.contentDocument||iframe.contentWindow.document; doc.open(); doc.write('<!doctype html><html><head><meta charset="utf-8"><title>Report</title></head><body>'+html+'</body></html>'); doc.close(); setTimeout(()=>{ try{ iframe.contentWindow.focus(); iframe.contentWindow.print(); }catch(e){ try{ const blob=new Blob([doc.documentElement.outerHTML],{type:'text/html'}); const url=URL.createObjectURL(blob); window.open(url,'_blank'); }catch(e2){ alert('Printing not available — use displayed results to save manually.'); } } },400); }catch(e){ alert('Printing not available.'); }}
+
+    function escapeHtml(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  </script>
+</body>
+</html>
