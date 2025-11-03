@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Arithmetic & Hexadecimal – IGCSE 0984</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f9fbff;
+    color: #222;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background: #003366;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  section {
+    background: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 900px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  details {
+    background: #eef4ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  summary {
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    color: #003366;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+  }
+  table, th, td {
+    border: 1px solid #ccc;
+  }
+  th, td {
+    text-align: center;
+    padding: 6px;
+  }
+  h2 {
+    color: #003366;
+    border-bottom: 3px solid #003366;
+    padding-bottom: 4px;
+  }
+  .activity {
+    background: #f5faff;
+    border-left: 5px solid #007acc;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+  .question {
+    margin-bottom: 10px;
+  }
+  button {
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #005fa3;
+  }
+</style>
+<script>
+function checkAnswers() {
+  let score = 0;
+  const answers = {
+    q1: "invert bits and add 1",
+    q2: "multiply",
+    q3: "divide",
+    q4: "overflow",
+    q5: "colour codes"
+  };
+  for (let key in answers) {
+    const input = document.getElementById(key).value.trim().toLowerCase();
+    if (input === answers[key]) score++;
+  }
+  document.getElementById("result").innerText = 
+    `You scored ${score}/5.`;
+}
+</script>
+</head>
+<body>
+<header>
+  <h1>Binary Arithmetic & Hexadecimal</h1>
+  <p>IGCSE Computer Science (0984)</p>
+</header>
+
+<section>
+  <h2>🧮 1. Two’s Complement (2’s Complement)</h2>
+  <details open>
+    <summary>💡 Teacher’s Lecture Notes</summary>
+    <p><b>Purpose:</b> Used to represent negative binary numbers and allow subtraction using addition.</p>
+    <p><b>How it Works:</b> The most significant bit (MSB) shows the sign (0 = positive, 1 = negative).</p>
+    <p><b>Steps to find 2’s complement:</b></p>
+    <ol>
+      <li>Write the binary number.</li>
+      <li>Invert all bits (0→1, 1→0).</li>
+      <li>Add 1 to the result.</li>
+    </ol>
+
+    <table>
+      <tr><th>Step</th><th>Description</th><th>Binary</th></tr>
+      <tr><td>+5</td><td>Normal binary</td><td>00000101</td></tr>
+      <tr><td></td><td>Invert bits</td><td>11111010</td></tr>
+      <tr><td></td><td>Add 1</td><td>11111011</td></tr>
+    </table>
+    <p><b>✅ So, –5 = 11111011</b> (in 8-bit two’s complement).</p>
+
+    <p><b>Range:</b> For n bits, range = –2ⁿ⁻¹ to +2ⁿ⁻¹ – 1</p>
+
+    <table>
+      <tr><th>Bits</th><th>Range</th></tr>
+      <tr><td>4-bit</td><td>–8 to +7</td></tr>
+      <tr><td>8-bit</td><td>–128 to +127</td></tr>
+    </table>
+
+    <p><b>Example:</b> Interpret <code>11110100</code> → MSB=1 (negative).  
+    Invert → <code>00001011</code>, Add 1 → <code>00001100</code> → 12  
+    ✅ Therefore, –12.</p>
+  </details>
+
+  <div class="activity">
+    <h3>🎯 Student Activity</h3>
+    <p>1. Find the two’s complement of <code>00110100</code> and write the result below.</p>
+    <p>2. Interpret <code>11101110</code> as an 8-bit two’s complement number.</p>
+  </div>
+</section>
+
+<section>
+  <h2>🔁 2. Binary Shifts</h2>
+  <details>
+    <summary>💡 Teacher’s Lecture Notes</summary>
+    <p>Shifting moves bits left or right — a fast way to multiply or divide by powers of 2.</p>
+    <ul>
+      <li><b>Left Shift:</b> Multiply by 2 each shift (fill right with 0s).</li>
+      <li><b>Right Shift:</b> Divide by 2 each shift (fill left with 0s).</li>
+    </ul>
+
+    <p><b>Example:</b> 00101100 (44) → Left shift 1 → 01011000 (88)</p>
+    <p><b>Right Shift:</b> 00101100 (44) → 00010110 (22)</p>
+    <p>When shifting signed numbers, the MSB may be preserved (arithmetic shift).</p>
+  </details>
+
+  <div class="activity">
+    <h3>🧩 Student Activity</h3>
+    <p>1. What happens to 00011110 when shifted left by 2 positions?</p>
+    <p>2. Perform a right shift by 1 on 10101000.</p>
+  </div>
+</section>
+
+<section>
+  <h2>➕ 3. Adding Binary Numbers</h2>
+  <details>
+    <summary>💡 Teacher’s Lecture Notes</summary>
+    <p><b>Binary Addition Rules:</b></p>
+    <table>
+      <tr><th>Bit 1</th><th>Bit 2</th><th>Carry In</th><th>Sum</th><th>Carry Out</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    </table>
+    <p><b>Example:</b></p>
+    <pre>
+   0101  (5)
++  0011  (3)
+---------
+   1000  (8)
+    </pre>
+    <p><b>Overflow:</b> Occurs when the result exceeds the number of bits available.</p>
+  </details>
+
+  <div class="activity">
+    <h3>🔢 Student Practice</h3>
+    <p>1. Add 1101 and 1011 (show carry if needed).</p>
+    <p>2. What happens if the sum exceeds 4 bits?</p>
+  </div>
+</section>
+
+<section>
+  <h2>🔢 4. Uses of Hexadecimal</h2>
+  <details>
+    <summary>💡 Teacher’s Lecture Notes</summary>
+    <p><b>Why Hexadecimal?</b> It’s compact — 1 hex digit = 4 binary bits.</p>
+    <table>
+      <tr><th>Hex</th><th>Binary</th><th>Decimal</th></tr>
+      <tr><td>0</td><td>0000</td><td>0</td></tr>
+      <tr><td>1</td><td>0001</td><td>1</td></tr>
+      <tr><td>...</td><td>...</td><td>...</td></tr>
+      <tr><td>F</td><td>1111</td><td>15</td></tr>
+    </table>
+
+    <p><b>Example 1:</b> 10111100 → split → 1011 1100 → BC₁₆</p>
+    <p><b>Example 2:</b> 4F₁₆ → 01001111₂</p>
+
+    <ul>
+      <li>Used in memory addresses (e.g., CAFE₁₆)</li>
+      <li>Used in web colour codes (#FF0000 = Red)</li>
+      <li>Used in machine code and debugging</li>
+    </ul>
+  </details>
+
+  <div class="activity">
+    <h3>🧠 Student Quiz</h3>
+    <div class="question">1. What operation do you perform to find two’s complement? <input id="q1" placeholder="Answer..."></div>
+    <div class="question">2. Left shifting multiplies or divides by 2? <input id="q2" placeholder="Answer..."></div>
+    <div class="question">3. Right shifting multiplies or divides by 2? <input id="q3" placeholder="Answer..."></div>
+    <div class="question">4. What occurs when a result exceeds available bits? <input id="q4" placeholder="Answer..."></div>
+    <div class="question">5. Where is hexadecimal often used in web design? <input id="q5" placeholder="Answer..."></div>
+    <button onclick="checkAnswers()">Submit Answers</button>
+    <p id="result" style="font-weight:bold;color:#003366;"></p>
+  </div>
+</section>
+
+<footer style="text-align:center;margin:20px;font-size:0.9em;color:#555;">
+  © 2025 Computer Science | Designed for Teaching & Learning
+</footer>
+</body>
+</html>
