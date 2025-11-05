@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Combined Assessment — Data Representation & Data Transmission</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#0d6efd;
+    --muted:#6c757d;
+    --card:#ffffff;
+    --bg:#f4f6fb;
+    --panel:#eef6ff;
+  }
+  * { box-sizing: border-box; }
+  body{
+    font-family: "Poppins", sans-serif;
+    margin:0;
+    background:var(--bg);
+    color:#1b1b1b;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    background:linear-gradient(90deg,var(--brand),#0a58ca);
+    color:white;
+    padding:18px 20px;
+    box-shadow:0 4px 12px rgba(13,110,253,0.12);
+  }
+  header h1{ margin:0; font-weight:600; font-size:20px; }
+  header p{ margin:4px 0 0; opacity:0.95; font-size:13px; }
+  main{ max-width:1100px; margin:22px auto; padding:0 18px; }
+
+  .card{
+    background:var(--card);
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(30,50,80,0.06);
+    margin-bottom:18px;
+  }
+
+  .entry{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  label{ font-weight:600; color:var(--muted); }
+  input[type="text"]{
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid #d7e2ff;
+    min-width:320px;
+    font-size:14px;
+  }
+  button.primary{
+    background:var(--brand);
+    color:white;
+    border:none;
+    padding:10px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+  }
+  button.primary[disabled]{ opacity:0.6; cursor:not-allowed; }
+
+  .meta{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .student-badge{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    background:var(--panel);
+    padding:8px 10px;
+    border-radius:8px;
+    font-weight:600;
+  }
+  .score-pill{
+    background:#e6f0ff;
+    color:var(--brand);
+    padding:6px 10px;
+    border-radius:999px;
+    font-weight:700;
+  }
+
+  .section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  h2{ margin:0; color:var(--brand); font-size:16px; }
+
+  .q-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .q{
+    padding:12px;
+    border-radius:8px;
+    border:1px dashed rgba(13,110,253,0.06);
+    background:linear-gradient(180deg,#fff,#fbfdff);
+  }
+  .q p{ margin:0 0 8px 0; font-weight:600; }
+  .opts{ display:flex; gap:8px; flex-wrap:wrap; }
+  .opts label{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border-radius:8px;
+    border:1px solid #e6eefc;
+    cursor:pointer;
+    user-select:none;
+    font-weight:500;
+  }
+  input[type="radio"], input[type="checkbox"]{ transform:scale(1.05); }
+
+  input.fill{
+    padding:8px 10px;
+    border-radius:8px;
+    border:1px solid #dbe9ff;
+    width:160px;
+  }
+
+  textarea.short{
+    width:100%;
+    min-height:72px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #dbe9ff;
+    resize:vertical;
+  }
+
+  .submit-row{
+    display:flex;
+    gap:12px;
+    justify-content:flex-end;
+    margin-top:14px;
+  }
+
+  .result-area{
+    margin-top:14px;
+    padding:12px;
+    border-radius:8px;
+    background:#fff8e6;
+    border:1px solid #ffeeb8;
+    display:none;
+  }
+
+  .reveal-correct{
+    margin-top:12px;
+    background:transparent;
+    border:1px dashed #cfe0ff;
+    padding:10px;
+    border-radius:6px;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .pdf-note{ font-size:13px; color:var(--muted); margin-top:6px; }
+
+  /* PDF hidden area print-friendly */
+  @media print{
+    button{ display:none !important; }
+    input, textarea { border: none !important; box-shadow:none !important; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Combined Assessment — Data Representation & Data Transmission</h1>
+  <p>Chapters 1 & 2 — Cambridge IGCSE Computer Science (0984). Single-page, self-evaluating assessment.</p>
+</header>
+
+<main>
+
+  <div class="card" id="entryCard">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="entry">
+        <label for="studentName">Enter Full Name (required)</label>
+        <input id="studentName" type="text" placeholder="e.g. Ahmed Mohamed Ali">
+        <button id="startBtn" class="primary" disabled>Start Assessment</button>
+      </div>
+      <div class="meta">
+        <div style="font-size:13px;color:var(--muted)">This assessment contains: <strong>20 MCQs</strong>, <strong>20 Fill-in-the-blanks</strong> (one word/number each), <strong>5 short answers (2 marks each)</strong>. All must be attempted before submit.</div>
+        <div style="font-size:13px;color:var(--muted)">There is <strong>no reset</strong>. Answers & marks are revealed on submit and exported to a PDF.</div>
+      </div>
+    </div>
+  </div>
+
+  <form id="assessmentForm" style="display:none" class="card" autocomplete="off">
+    <div class="section-title"><h2>Part A — Multiple Choice Questions (20 × 1)</h2><div style="color:var(--muted);font-size:13px">Select one option per question</div></div>
+    <div class="q-grid" id="mcqContainer">
+      <!-- MCQs injected by JS -->
+    </div>
+
+    <div class="section-title" style="margin-top:18px"><h2>Part B — Fill in the Blanks (20 × 1)</h2><div style="color:var(--muted);font-size:13px">Type short, exact answers (numbers/words)</div></div>
+    <div class="q-grid" id="fillContainer"></div>
+
+    <div class="section-title" style="margin-top:18px"><h2>Part C — Short Answers (5 × 2)</h2><div style="color:var(--muted);font-size:13px">Each 2 marks. Answers are auto-checked using keyword matching and model answers are revealed after submit.</div></div>
+    <div class="q-grid" id="shortContainer"></div>
+
+    <div class="submit-row">
+      <button type="button" id="submitBtn" class="primary" disabled>SUBMIT</button>
+    </div>
+
+    <div id="result" class="result-area" aria-live="polite">
+      <!-- populated after submit -->
+    </div>
+
+    <div style="margin-top:10px;color:var(--muted);font-size:13px">
+      <strong>Note:</strong> The completed answer sheet (with your responses and marks) will be saved as a PDF automatically when you submit.
+    </div>
+  </form>
+</main>
+
+<!-- include html2pdf (used to export PDF). CDN used for convenience. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+/* -------------------------
+   Question Data (IGCSE 0984)
+   Strictly derived from Chapter 1 & 2 topics:
+   Data Representation & Data Transmission
+   ------------------------- */
+
+const mcqs = [
+{ q:"Binary '1101' in decimal is:", opts:["13","11","10","15"], a: "13" },
+{ q:"What is 'lossless' compression?", opts:["Reduces quality","No data lost","Faster transmission only","Encrypts data"], a: "No data lost" },
+{ q:"An 8-bit sample with sample rate 44.1 kHz is associated with:", opts:["Image resolution","Sound sampling","Text encoding","Network packet size"], a: "Sound sampling" },
+{ q:"Parity bit is used for:", opts:["Encryption","Error detection","Compression","Routing"], a: "Error detection" },
+{ q:"Two's complement is primarily used to represent:", opts:["Fractions","Negative integers","Text characters","IP addresses"], a: "Negative integers" },
+{ q:"Which media gives highest bandwidth for long distances?", opts:["Copper cable","Fibre-optic","Wi-Fi","Serial cable"], a: "Fibre-optic" },
+{ q:"An XOR gate outputs 1 when:", opts:["Both inputs 1","Inputs are different","Both inputs 0","Neither input"], a: "Inputs are different" },
+{ q:"A checksum is used to:", opts:["Compress data","Detect transmission errors","Convert bases","Mask IPs"], a: "Detect transmission errors" },
+{ q:"Hexadecimal 'A' equals decimal:", opts:["10","11","12","9"], a: "10" },
+{ q:"Full-duplex transmission means:", opts:["Data one direction only","Both directions simultaneously","No data flow","Alternating directions only"], a: "Both directions simultaneously" },
+{ q:"An 8-bit colour depth per channel affects:", opts:["Audio bit rate","Image file size","Text encoding","Parity"], a: "Image file size" },
+{ q:"Circuit switching is best described as:", opts:["Packets routed individually","Dedicated path for session","Encrypted channel always","Wireless only"], a: "Dedicated path for session" },
+{ q:"ASCII standard defines codes for:", opts:["Images","Sounds","Text characters","Network protocols"], a: "Text characters" },
+{ q:"Baud rate measures:", opts:["Bits per second always","Symbol rate per second","Storage capacity","Latency"], a: "Symbol rate per second" },
+{ q:"A packet switched network:", opts:["Establishes dedicated circuit","Sends data in packets","Uses only fibre","Encrypts by default"], a: "Sends data in packets" },
+{ q:"Sampling rate affects which property of sound?", opts:["Colour depth","Max frequency captured","Text length","Latency only"], a: "Max frequency captured" },
+{ q:"NAND and NOR gates are called 'universal' because:", opts:["They invert only","They can implement any logic","They use less power","They are analog"], a: "They can implement any logic" },
+{ q:"An IP packet's payload uses which unit for size?", opts:["Bits","Bytes","Pixels","Samples"], a: "Bytes" },
+{ q:"Encryption that uses same key for encrypt/decrypt is called:", opts:["Asymmetric","Symmetric","Hashing","Compression"], a: "Symmetric" },
+{ q:"Which reduces file size with some loss of quality?", opts:["Lossless compression","Lossy compression","Parity","Checksum"], a: "Lossy compression" },
+];
+
+const fills = [
+{ q:"Binary to decimal: 1010 = ____", a:"10" },
+{ q:"Hex to decimal: 0xF = ____", a:"15" },
+{ q:"Two's complement: represent -1 in 4 bits = ____", a:"1111" },
+{ q:"1 byte = ____ bits", a:"8" },
+{ q:"Sampling: more samples per second increases ____ (one word)", a:"frequency" },
+{ q:"An 8-bit sample can take values 0 to ____", a:"255" },
+{ q:"Serial transmission sends bits ____ (direction) over a line", a:"sequentially" },
+{ q:"Parity bit that makes total number of 1s even is called ____ parity", a:"even" },
+{ q:"Binary addition: 1 + 1 = ____ (in binary output)", a:"10" },
+{ q:"ASCII code for uppercase A (decimal) = ____", a:"65" },
+{ q:"Bit rate is measured in bits per ____", a:"second" },
+{ q:"Logical OR symbol often written as ____", a:"+" },
+{ q:"Checksum helps detect ____ in data", a:"errors" },
+{ q:"Fibre-optic uses pulses of ____ to transmit data", a:"light" },
+{ q:"Hexadecimal uses digits 0-9 and letters ____ to represent 10-15", a:"A B C D E F".split(" ")[0] }, // we'll accept A
+{ q:"In networking, TCP stands for Transmission Control ____", a:"Protocol" },
+{ q:"An example of lossless compression format: PNG or ____", a:"ZIP" },
+{ q:"Full name for URL 'HTTP' = HyperText ____ Protocol", a:"Transfer" },
+{ q:"XOR outputs 1 when inputs are ____ (one word)", a:"different" },
+{ q:"An example of symmetric cipher: AES or ____", a:"DES" },
+];
+
+const shortAns = [
+{ q:"Explain briefly what 'bit rate' means and how it differs from 'baud rate'. (2 marks)", keywords:["bits","per","second","symbol"], model:"Bit rate = number of bits transmitted per second. Baud rate = number of signal changes (symbols) per second; each symbol can carry multiple bits." },
+{ q:"Describe one advantage and one disadvantage of fibre-optic over copper cable. (2 marks)", keywords:["bandwidth","distance","immune","cost","fragile","expensive"], model:"Advantage: much higher bandwidth / longer distances and immune to electromagnetic interference. Disadvantage: more expensive/fragile and harder to install than copper." },
+{ q:"Using Sum of Products, how do you form a Boolean expression from rows where output = 1 in a truth table? (2 marks)", keywords:["sum","products","AND","OR","minterm"], model:"For each row where output =1, write an AND term (product) matching inputs (use NOT for 0), then OR (sum) those minterms together." },
+{ q:"What is 'lossy' compression and give one example where it is acceptable. (2 marks)", keywords:["lose","quality","jpeg","image","audio"], model:"Lossy compression removes some data and reduces quality to save space. Example: JPEG for photos or MP3 for audio where some quality loss is acceptable." },
+{ q:"State how parity bit and checksum differ in error detection. (2 marks)", keywords:["single","bits","blocks","sum","more"], model:"Parity checks a single bit per small set to detect single-bit errors. Checksums compute a numeric summary over a block of data to detect a wider range of errors (stronger than parity)." },
+];
+
+/* -------------------------
+   Render Questions
+   ------------------------- */
+
+const mcqContainer = document.getElementById('mcqContainer');
+const fillContainer = document.getElementById('fillContainer');
+const shortContainer = document.getElementById('shortContainer');
+
+function shuffle(arr){ return arr.sort(()=>Math.random()-0.5); }
+
+// Render MCQs
+mcqs.forEach((m,i) => {
+  const div = document.createElement('div');
+  div.className = 'q';
+  div.id = 'mcq-'+i;
+  const p = document.createElement('p');
+  p.innerText = `${i+1}. ${m.q}`;
+  div.appendChild(p);
+
+  const opts = document.createElement('div');
+  opts.className = 'opts';
+  m.opts.forEach((opt,j) => {
+    const id = `mcq_${i}_opt_${j}`;
+    const label = document.createElement('label');
+    label.htmlFor = id;
+    label.innerHTML = `<input type="radio" name="mcq_${i}" id="${id}" value="${opt}"> ${opt}`;
+    opts.appendChild(label);
+  });
+  div.appendChild(opts);
+  mcqContainer.appendChild(div);
+});
+
+// Render Fill blanks
+fills.forEach((f,i) => {
+  const div = document.createElement('div');
+  div.className = 'q';
+  div.id = 'fill-'+i;
+  const p = document.createElement('p');
+  p.innerText = `B${i+1}. ${f.q}`;
+  div.appendChild(p);
+  const input = document.createElement('input');
+  input.className = 'fill';
+  input.type = 'text';
+  input.id = `fill_${i}`;
+  input.autocapitalize = "none";
+  input.spellcheck = false;
+  div.appendChild(input);
+  fillContainer.appendChild(div);
+});
+
+// Render Short answers
+shortAns.forEach((s,i) => {
+  const div = document.createElement('div');
+  div.className = 'q';
+  div.id = 'short-'+i;
+  const p = document.createElement('p');
+  p.innerText = `S${i+1}. ${s.q}`;
+  div.appendChild(p);
+  const ta = document.createElement('textarea');
+  ta.className = 'short';
+  ta.id = `short_${i}`;
+  ta.placeholder = 'Type your answer here...';
+  div.appendChild(ta);
+  shortContainer.appendChild(div);
+});
+
+/* -------------------------
+   Entry control and form validation
+   ------------------------- */
+
+const studentNameInput = document.getElementById('studentName');
+const startBtn = document.getElementById('startBtn');
+const assessmentForm = document.getElementById('assessmentForm');
+const submitBtn = document.getElementById('submitBtn');
+const resultArea = document.getElementById('result');
+
+studentNameInput.addEventListener('input', () => {
+  const val = studentNameInput.value.trim();
+  startBtn.disabled = (val.length < 3);
+});
+
+startBtn.addEventListener('click', () => {
+  const name = studentNameInput.value.trim();
+  if(name.length < 3) return alert('Please enter your full name.');
+  document.getElementById('entryCard').style.display = 'none';
+  assessmentForm.style.display = 'block';
+  // show student badge & enable submit
+  const badge = document.createElement('div');
+  badge.className = 'student-badge';
+  badge.id = 'studentBadge';
+  badge.innerHTML = `<span style="color:var(--muted);font-weight:600">Student:</span> <span id="studentNameDisplay">${escapeHtml(name)}</span> <span id="scoreDisplay" style="margin-left:8px"></span>`;
+  document.querySelector('main').prepend(badge);
+  // allow submit once any change (we still check completion later)
+  submitBtn.disabled = false;
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* -------------------------
+   Submit, Marking & PDF export
+   ------------------------- */
+
+function escapeHtml(s){ return s.replace(/[&<>"]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[c]); }
+
+submitBtn.addEventListener('click', async () => {
+  // ensure all MCQs answered
+  const totalMCQ = mcqs.length;
+  for(let i=0;i<totalMCQ;i++){
+    const checked = document.querySelector(`input[name="mcq_${i}"]:checked`);
+    if(!checked){ alert(`Please answer MCQ ${i+1}`); document.getElementById(`mcq-${i}`).scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  }
+  // all fills filled
+  for(let i=0;i<fills.length;i++){
+    const v = document.getElementById(`fill_${i}`).value.trim();
+    if(v===''){ alert(`Please fill answer B${i+1}`); document.getElementById(`fill-${i}`).scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  }
+  // short answers not empty
+  for(let i=0;i<shortAns.length;i++){
+    const v = document.getElementById(`short_${i}`).value.trim();
+    if(v===''){ alert(`Please answer S${i+1}`); document.getElementById(`short-${i}`).scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  }
+
+  // Disable submit to prevent double submits
+  submitBtn.disabled = true;
+
+  // start marking
+  let mcqScore = 0, fillScore = 0, shortScore = 0;
+  const mcqDetails = [];
+  mcqs.forEach((m,i) => {
+    const sel = document.querySelector(`input[name="mcq_${i}"]:checked`).value;
+    const correct = m.a;
+    const correctFlag = (sel === correct);
+    if(correctFlag) mcqScore++;
+    mcqDetails.push({q:m.q, selected:sel, correct});
+    // reveal styling
+    const node = document.getElementById(`mcq-${i}`);
+    node.style.border = '1px solid #e6eefc';
+    // mark chosen label
+    const labels = node.querySelectorAll('label');
+    labels.forEach(lb => {
+      const input = lb.querySelector('input');
+      if(input.value === correct){
+        lb.style.border = '1px solid #d1ffd6';
+        lb.style.background = '#f5fff5';
+      }
+      if(input.checked && input.value !== correct){
+        lb.style.border = '1px solid #ffd6d6';
+        lb.style.background = '#fff6f6';
+      }
+    });
+  });
+
+  // Fill-ins (case-insensitive, trim). Exact string match required after normalization.
+  fills.forEach((f,i) => {
+    const ans = f.a.toString().trim().toLowerCase();
+    const resp = document.getElementById(`fill_${i}`).value.trim().toLowerCase();
+    // accept some small variants: accept 'frequency' vs 'frequency.' etc.
+    const normalize = s => s.replace(/[^\w\d]/g,'').toLowerCase();
+    if(normalize(ans) === normalize(resp)) fillScore++;
+    // annotate UI
+    const node = document.getElementById(`fill-${i}`);
+    const show = document.createElement('div');
+    show.className = 'reveal-correct';
+    show.innerHTML = `<strong>Correct:</strong> ${escapeHtml(f.a.toString())} &nbsp;|&nbsp; <strong>Your:</strong> ${escapeHtml(document.getElementById(`fill_${i}`).value)}`;
+    node.appendChild(show);
+  });
+
+  // Short answers: simple keyword matching (case-insensitive). each question has keywords array
+  shortAns.forEach((s,i) => {
+    const resp = document.getElementById(`short_${i}`).value.trim().toLowerCase();
+    const keywords = s.keywords.map(k=>k.toLowerCase());
+    // count matched keywords
+    let matches = 0;
+    keywords.forEach(k => {
+      if(k.length < 3){
+        if(resp.includes(k)) matches++;
+      } else {
+        if(resp.includes(k)) matches++;
+      }
+    });
+    // heuristic: if >= half keywords matched => full marks; else if >=1 matched => 1 mark; else 0
+    let awarded = 0;
+    if(matches >= Math.max(1, Math.ceil(keywords.length/2))) awarded = 2;
+    else if(matches >= 1) awarded = 1;
+    shortScore += awarded;
+
+    // reveal model answer and awarded marks
+    const node = document.getElementById(`short-${i}`);
+    const reveal = document.createElement('div');
+    reveal.className = 'reveal-correct';
+    reveal.innerHTML = `<strong>Model answer:</strong> ${escapeHtml(s.model)}<br><strong>Marks awarded:</strong> ${awarded} / 2`;
+    node.appendChild(reveal);
+  });
+
+  const totalScore = mcqScore + fillScore + shortScore;
+  const maxScore = mcqs.length + fills.length + shortAns.length*2;
+
+  const name = document.getElementById('studentName').value.trim();
+  // Display results
+  resultArea.style.display = 'block';
+  resultArea.innerHTML = `
+    <div style="font-weight:700">${escapeHtml(name)} — Result</div>
+    <div style="margin-top:8px">MCQs: ${mcqScore} / ${mcqs.length} &nbsp;|&nbsp; Fills: ${fillScore} / ${fills.length} &nbsp;|&nbsp; Short: ${shortScore} / ${shortAns.length*2}</div>
+    <div style="margin-top:8px;font-size:14px"><strong>Total:</strong> ${totalScore} / ${maxScore}</div>
+    <div style="margin-top:10px;color:var(--muted)">Below are your answers and the correct answers. The full sheet will be exported to PDF.</div>
+    <div style="margin-top:12px"><button id="exportPdf" class="primary">Download PDF (Your Answer Sheet)</button></div>
+  `;
+  // update badge score
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  scoreDisplay.innerHTML = `<span class="score-pill">${totalScore}/${maxScore}</span>`;
+
+  // Reveal correct answers for MCQs
+  mcqDetails.forEach((d,i) => {
+    const node = document.getElementById(`mcq-${i}`);
+    const info = document.createElement('div');
+    info.className = 'reveal-correct';
+    info.innerHTML = `<strong>Correct:</strong> ${escapeHtml(d.correct)} &nbsp;|&nbsp; <strong>Your:</strong> ${escapeHtml(d.selected)}`;
+    node.appendChild(info);
+  });
+
+  // Add PDF export listener
+  document.getElementById('exportPdf').addEventListener('click', () => {
+    exportPdf(name, totalScore, maxScore);
+  });
+
+  // Auto-trigger PDF generation automatically (as requested)
+  // Small delay to allow DOM updates
+  setTimeout(()=> exportPdf(name, totalScore, maxScore), 700);
+});
+
+/* -------------------------
+   PDF generation
+   ------------------------- */
+
+function exportPdf(studentName, totalScore, maxScore){
+  // Build a printable area clone
+  const container = document.createElement('div');
+  container.style.padding = '18px';
+  container.style.fontFamily = 'Poppins,Arial,Helvetica,sans-serif';
+  container.style.color = '#111';
+  container.innerHTML = `
+    <h2 style="color:#0d6efd;margin-bottom:4px">Combined Assessment — Data Representation & Data Transmission</h2>
+    <div style="margin-bottom:6px"><strong>Student:</strong> ${escapeHtml(studentName)}</div>
+    <div style="margin-bottom:6px"><strong>Score:</strong> ${totalScore} / ${maxScore}</div>
+    <div style="font-size:12px;color:#444;margin-bottom:12px">Date: ${new Date().toLocaleString('en-GB')}</div>
+    <hr style="border:none;border-top:1px solid #eee;margin-bottom:10px">
+  `;
+
+  // Add questions and answers: MCQs
+  const addSection = (title, itemsHtml) => {
+    const sec = document.createElement('div');
+    sec.innerHTML = `<h3 style="margin:8px 0 6px 0;color:#0a58ca">${escapeHtml(title)}</h3>` + itemsHtml;
+    return sec;
+  };
+
+  // MCQ details
+  let mcqHtml = '<ol>';
+  mcqs.forEach((m,i) => {
+    const sel = document.querySelector(`input[name="mcq_${i}"]:checked`).value;
+    mcqHtml += `<li style="margin-bottom:6px"><div style="font-weight:600">${escapeHtml(m.q)}</div>
+      <div style="font-size:13px"><strong>Your:</strong> ${escapeHtml(sel)} &nbsp;|&nbsp; <strong>Correct:</strong> ${escapeHtml(m.a)}</div></li>`;
+  });
+  mcqHtml += '</ol>';
+
+  // Fill details
+  let fillHtml = '<ol>';
+  fills.forEach((f,i) => {
+    const resp = document.getElementById(`fill_${i}`).value.trim();
+    fillHtml += `<li style="margin-bottom:6px"><div style="font-weight:600">${escapeHtml(f.q)}</div>
+      <div style="font-size:13px"><strong>Your:</strong> ${escapeHtml(resp)} &nbsp;|&nbsp; <strong>Correct:</strong> ${escapeHtml(f.a)}</div></li>`;
+  });
+  fillHtml += '</ol>';
+
+  // Short answers
+  let shortHtml = '<ol>';
+  shortAns.forEach((s,i) => {
+    const resp = document.getElementById(`short_${i}`).value.trim();
+    // find awards displayed in reveal-correct div
+    const revealNode = document.querySelector(`#short-${i} .reveal-correct`);
+    const awardedText = revealNode ? revealNode.innerHTML.match(/Marks awarded:<\/strong>\s*([0-9])/i) : null;
+    const awarded = awardedText ? awardedText[1] : '-';
+    shortHtml += `<li style="margin-bottom:8px"><div style="font-weight:600">${escapeHtml(s.q)}</div>
+      <div style="font-size:13px"><strong>Your:</strong> ${escapeHtml(resp)} </div>
+      <div style="font-size:13px"><strong>Model:</strong> ${escapeHtml(s.model)} &nbsp;|&nbsp; <strong>Marks:</strong> ${awarded}/2</div></li>`;
+  });
+  shortHtml += '</ol>';
+
+  container.appendChild(addSection('Part A — MCQs', mcqHtml));
+  container.appendChild(addSection('Part B — Fill in the Blanks', fillHtml));
+  container.appendChild(addSection('Part C — Short Answers', shortHtml));
+
+  // Use html2pdf to save
+  const opt = {
+    margin:       12,
+    filename:     `${studentName.replace(/\s+/g,'_')}_Assessment_${(new Date()).toISOString().slice(0,10)}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(container).save();
+}
+
+/* End of script */
+</script>
+</body>
+</html>
