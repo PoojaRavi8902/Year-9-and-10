@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chapter 5 — Processor Fundamentals (Teaching Webpage)</title>
+  <style>
+    :root{
+      --bg:#ffffff; --card:#e7f3ff; --accent:#2b6cb0; --text:#0b2545; --muted:#5b6b7a;
+      --card-border:#cfe7ff; --shadow: 0 6px 18px rgba(11,37,69,0.06);
+      --maxwidth:1000px;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial; background:var(--bg); color:var(--text);}
+    .wrap{max-width:var(--maxwidth);margin:28px auto;padding:24px;}
+    header{display:flex;align-items:center;gap:16px}
+    header h1{margin:0;font-size:20px}
+    header p{margin:0;color:var(--muted)}
+
+    .controls{margin-top:12px;display:flex;gap:8px}
+    button.primary{background:var(--accent);color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid var(--card-border);padding:8px 12px;border-radius:8px;cursor:pointer}
+
+    /* collapsible cards */
+    .card{background:var(--card);border-radius:10px;border:1px solid var(--card-border);box-shadow:var(--shadow);margin:14px 0;overflow:hidden}
+    .card summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+    .card summary h2{margin:0;font-size:16px}
+    .card details[open] summary{background:linear-gradient(90deg, rgba(255,255,255,0.45), transparent)}
+    .card .content{padding:14px 18px;border-top:1px dashed rgba(11,37,69,0.06);background:white}
+
+    .subtopic{margin:10px 0;padding:12px;border-radius:8px;background:#fbfdff;border:1px solid #eef7ff}
+    table{width:100%;border-collapse:collapse;margin:10px 0}
+    table th, table td{padding:8px;border:1px solid #e8f3ff;text-align:left}
+    .code{background:#0f1724;color:#fff;padding:10px;border-radius:6px;font-family:monospace;overflow:auto}
+
+    .svg-figure{display:block;max-width:100%;height:auto;border:1px solid #edf6ff;border-radius:6px;padding:8px;background:#fff}
+    .exam-tip{background:#fff7e6;border-left:4px solid #ffb020;padding:10px;border-radius:6px;margin:8px 0}
+    .example{background:#f0fff7;border-left:4px solid #10b981;padding:10px;border-radius:6px;margin:8px 0}
+    .teacher-note{background:#f7f9ff;border-left:4px solid #2b6cb0;padding:10px;border-radius:6px;margin:8px 0}
+
+    footer{color:var(--muted);font-size:13px;margin-top:18px}
+
+    /* small screens */
+    @media (max-width:640px){.wrap{padding:12px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Chapter 5 — Processor Fundamentals</h1>
+        <p>Comprehensive teaching & student reference — collapsible sections for classroom use</p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <button class="primary" onclick="expandAll()">Expand all</button>
+      <button class="ghost" onclick="collapseAll()">Collapse all</button>
+      <button class="ghost" onclick="window.print()">Print</button>
+    </div>
+
+    <!-- 5.01 von Neumann -->
+    <details class="card" open>
+      <summary>
+        <h2>5.01 The von Neumann Model of a Computer System</h2>
+        <div style="color:var(--muted);font-size:13px">Overview · Key features · Analogy · Exam tip</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>Overview</h3>
+          <p>The <strong>von Neumann model</strong> describes a system where program instructions and data are stored together in memory and processed sequentially by a single processor (CPU). This architecture underpins most conventional computers.</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>Key features</h3>
+          <ul>
+            <li><strong>Processor (CPU)</strong> — executes instructions.</li>
+            <li><strong>Direct access to memory</strong> — CPU can read/write memory directly.</li>
+            <li><strong>Stored program concept</strong> — data and instructions share memory; the program can be replaced.</li>
+            <li><strong>Sequential execution</strong> — instructions executed in order unless changed by jumps/branches.</li>
+          </ul>
+        </div>
+
+        <div class="subtopic">
+          <h3>Diagram: Von Neumann model (simple)</h3>
+          <!-- Inline SVG diagram -->
+          <svg class="svg-figure" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Von Neumann model diagram">
+            <style>.t{font:14px/1.1 sans-serif;fill:#0b2545}.b{fill:#e7f3ff;stroke:#cfe7ff;stroke-width:1.5}</style>
+            <rect x="20" y="30" width="250" height="90" rx="8" class="b"></rect>
+            <text x="40" y="58" class="t">Memory (stores data & instructions)</text>
+            <rect x="320" y="30" width="220" height="90" rx="8" class="b"></rect>
+            <text x="340" y="58" class="t">CPU (Control Unit + ALU + Registers)</text>
+            <rect x="640" y="30" width="220" height="90" rx="8" class="b"></rect>
+            <text x="660" y="58" class="t">Input / Output</text>
+            <!-- arrows -->
+            <defs><marker id="m" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#2b6cb0"/></marker></defs>
+            <line x1="270" y1="75" x2="320" y2="75" stroke="#2b6cb0" stroke-width="2" marker-end="url(#m)"/>
+            <line x1="540" y1="75" x2="640" y2="75" stroke="#2b6cb0" stroke-width="2" marker-end="url(#m)"/>
+            <text x="230" y="120" class="t">Shared bus: instructions & data (von Neumann)</text>
+          </svg>
+
+          <p class="exam-tip"><strong>Exam tip:</strong> The von Neumann architecture stores instructions and data in the same memory and uses the same bus — this can create a bottleneck where the CPU waits for memory transfers. Be prepared to explain or give consequences of the bottleneck in exam answers.</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>Analogy</h3>
+          <p>Imagine a <strong>chef</strong> (CPU) using a <strong>cookbook</strong> (memory) where the recipes (instructions) and ingredients (data) are kept together. The chef reads a step, executes it, then reads the next step — sequential execution.</p>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- 5.02 CPU Architecture -->
+    <details class="card" open>
+      <summary>
+        <h2>5.02 Central Processing Unit (CPU) Architecture</h2>
+        <div style="color:var(--muted);font-size:13px">ALU · Control Unit · Clocks · Registers</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>CPU components (simplified)</h3>
+          <p>The CPU typically contains the <strong>Control Unit (CU)</strong>, the <strong>Arithmetic &amp; Logic Unit (ALU)</strong>, and a small set of <strong>registers</strong>. These components collaborate to fetch, decode and execute instructions.</p>
+
+          <!-- CPU schematic SVG -->
+          <svg class="svg-figure" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CPU schematic diagram">
+            <style>.s{font:13px/1.1 sans-serif;fill:#0b2545}.rect{fill:#fff;border:1px solid #cfe7ff;stroke:#cfe7ff}</style>
+            <rect x="30" y="20" width="840" height="200" rx="10" fill="#f8fbff" stroke="#e6f4ff"/>
+            <rect x="50" y="40" width="320" height="70" rx="6" fill="#e7f3ff" stroke="#cfe7ff"/>
+            <text x="70" y="78" class="s">Control Unit (CU) — includes clock & signals</text>
+            <rect x="450" y="40" width="300" height="70" rx="6" fill="#e7f3ff" stroke="#cfe7ff"/>
+            <text x="470" y="78" class="s">Arithmetic &amp; Logic Unit (ALU)</text>
+            <rect x="50" y="130" width="200" height="80" rx="6" fill="#e7f3ff" stroke="#cfe7ff"/>
+            <text x="70" y="168" class="s">Registers (PC, MAR, MDR, CIR, Accumulator)</text>
+            <rect x="280" y="130" width="180" height="80" rx="6" fill="#fff" stroke="#e6f4ff"/>
+            <text x="298" y="168" class="s">System bus connections (address/data/control)</text>
+            <!-- arrows to indicate data flow -->
+            <defs><marker id="ma" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#2b6cb0"/></marker></defs>
+            <line x1="250" y1="90" x2="450" y2="90" stroke="#2b6cb0" stroke-width="2" marker-end="url(#ma)"/>
+            <text x="320" y="106" class="s">Control signals</text>
+          </svg>
+        </div>
+
+        <div class="subtopic">
+          <h3>Active components explained</h3>
+          <ul>
+            <li><strong>ALU</strong>: performs arithmetic (add, subtract, multiply, divide) and logic (AND/OR/NOT, comparisons).</li>
+            <li><strong>Control Unit</strong>: controls data flow, decodes instructions and coordinates CPU activities. It includes a <em>clock</em> used to synchronise operations.</li>
+          </ul>
+
+          <p class="teacher-note"><strong>Teacher note:</strong> emphasise the difference between the internal clock (CPU cycles) and the system clock (synchronises external transfers). In many exam questions, students must identify which clock governs which action.</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>Clocks and clock speed</h3>
+          <p>The <strong>internal clock</strong> times operations inside the CPU; the <strong>system clock</strong> times those outside (memory, I/O). <strong>Clock speed</strong> is measured in Hz (e.g., 2 GHz = 2 billion cycles per second).</p>
+
+          <div class="example"><strong>Classroom example:</strong> If a CPU is 2 GHz, one cycle is 0.5 nanoseconds. Ask students to calculate time for n cycles — helps them connect frequency and time.</div>
+        </div>
+
+        <div class="subtopic">
+          <h3>Registers (detailed)</h3>
+          <p>Registers are very fast storage elements within the CPU. They hold data, addresses, or instructions for immediate use.</p>
+          <table>
+            <thead><tr><th>Register</th><th>Abbreviation</th><th>Function</th></tr></thead>
+            <tbody>
+              <tr><td>Program Counter</td><td>PC</td><td>Address of the next instruction to be executed.</td></tr>
+              <tr><td>Memory Address Register</td><td>MAR</td><td>Holds the address of a memory location for read/write.</td></tr>
+              <tr><td>Memory Data Register / Memory Buffer Register</td><td>MDR / MBR</td><td>Holds data that has just been read from or is to be written to memory.</td></tr>
+              <tr><td>Current Instruction Register</td><td>CIR</td><td>Stores the instruction currently being decoded/executed.</td></tr>
+              <tr><td>Index Register</td><td>IX</td><td>Used for indexed addressing to modify addresses dynamically.</td></tr>
+              <tr><td>Status Register</td><td>SR</td><td>Contains individual flag bits (Carry, Zero, Negative, Overflow).</td></tr>
+            </tbody>
+          </table>
+
+          <p class="exam-tip"><strong>Exam tip:</strong> be aware of abbreviation confusion: some texts use IR for Index Register or Current Instruction Register — in this page we use <strong>IX</strong> for index register and <strong>CIR</strong> for current instruction register.</p>
+
+          <div class="example">
+            <strong>Example (how registers work):</strong>
+            <p>Instruction: <code>ADD 400</code></p>
+            <ol>
+              <li>MAR ← 400</li>
+              <li>MDR ← [address 400] (value fetched from memory)</li>
+              <li>ALU adds MDR to Accumulator</li>
+              <li>Result stored in Accumulator</li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- 5.03 System Bus -->
+    <details class="card">
+      <summary>
+        <h2>5.03 The System Bus</h2>
+        <div style="color:var(--muted);font-size:13px">Address bus · Data bus · Control bus · Examples</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>What is a bus?</h3>
+          <p>A <strong>bus</strong> is a parallel set of wires that carries addresses, data or control signals between system components. It <em>does not store data</em>; it only transports it.</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>System bus components</h3>
+          <table>
+            <thead><tr><th>Bus</th><th>Direction</th><th>Primary function</th></tr></thead>
+            <tbody>
+              <tr><td>Address bus</td><td>One-way (CPU → memory/I/O)</td><td>Carries addresses from MAR to memory or I/O controllers.</td></tr>
+              <tr><td>Data bus</td><td>Two-way</td><td>Carries instructions, addresses or values between CPU, memory and I/O.</td></tr>
+              <tr><td>Control bus</td><td>Two-way</td><td>Carries control signals, including timing signals from the system clock.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subtopic">
+          <h3>Diagram: System bus connecting CPU, memory and I/O</h3>
+          <svg class="svg-figure" viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System bus diagram">
+            <style>.u{font:13px/1.1 sans-serif;fill:#0b2545}.box{fill:#e7f3ff;stroke:#cfe7ff}</style>
+            <rect x="60" y="20" width="220" height="80" rx="8" class="box"/>
+            <text x="80" y="50" class="u">CPU</text>
+            <rect x="340" y="20" width="220" height="80" rx="8" class="box"/>
+            <text x="370" y="50" class="u">Memory</text>
+            <rect x="620" y="20" width="220" height="80" rx="8" class="box"/>
+            <text x="640" y="50" class="u">I/O devices</text>
+            <!-- buses -->
+            <line x1="280" y1="60" x2="340" y2="60" stroke="#2b6cb0" stroke-width="3" stroke-dasharray="4 2"/>
+            <text x="300" y="80" class="u">Address / Data / Control</text>
+            <line x1="560" y1="60" x2="620" y2="60" stroke="#2b6cb0" stroke-width="3" stroke-dasharray="4 2"/>
+          </svg>
+
+          <p class="example"><strong>Example:</strong> Executing <code>LOAD 500</code>: CPU places <code>500</code> on the <em>address bus</em>, sends a READ on the <em>control bus</em>, and the memory value is returned on the <em>data bus</em> into the MDR.</p>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- 5.04 Performance -->
+    <details class="card">
+      <summary>
+        <h2>5.04 Factors Contributing to System Performance</h2>
+        <div style="color:var(--muted);font-size:13px">Clock speed · Cores · Cache · Word length · Bus width</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>Key factors</h3>
+          <table>
+            <thead><tr><th>Factor</th><th>What it means</th><th>Effect on performance</th></tr></thead>
+            <tbody>
+              <tr><td>Clock speed</td><td>Number of cycles per second</td><td>Higher speed → faster execution (subject to other bottlenecks)</td></tr>
+              <tr><td>Number of cores</td><td>Independent processing units on chip</td><td>More cores → better parallelism for suitable tasks</td></tr>
+              <tr><td>Cache memory</td><td>Very fast memory on/near CPU</td><td>More/faster cache reduces wait for main memory</td></tr>
+              <tr><td>Word length</td><td>Number of bits handled as a unit</td><td>Larger word → larger data processed per operation</td></tr>
+              <tr><td>Bus width</td><td>Number of parallel lines in bus</td><td>Wider bus → more data/addressable memory per transfer</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subtopic">
+          <h3>Word length and addressing</h3>
+          <p>A system's <strong>word length</strong> usually matches register sizes (16, 32, 64 bits). The <strong>address bus width</strong> determines how many memory locations can be addressed directly: e.g., 16-bit → 65,536 locations; 32-bit → ≈4.29 billion locations.</p>
+
+          <div class="teacher-note">Teacher: ask students to show the calculation for 2^16 and 2^32; make them relate memory size to real RAM sizes (KB, MB, GB).</div>
+
+          <div class="example">
+            <strong>Example problem:</strong> Advertisement: "4 GB, 1 TB, 1.7 GHz" — ask students: which components are described? (Answer: 4 GB = main memory/RAM; 1 TB = mass storage; 1.7 GHz = CPU clock speed). Also ask: "Minimum time per cycle?" (1 / 1.7 GHz ≈ 0.588 ns)
+          </div>
+        </div>
+
+        <div class="subtopic">
+          <h3>Bus width vs word length</h3>
+          <p>If data bus width &lt; word length, multiple transfers are needed to send a single word — slowing the system. Designers aim to match bus width to word length where possible.</p>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- 5.05 I/O Ports -->
+    <details class="card">
+      <summary>
+        <h2>5.05 I/O Ports</h2>
+        <div style="color:var(--muted);font-size:13px">Ports · USB · Specialised ports</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>Overview</h3>
+          <p>Ports are interfaces through which I/O devices communicate with the system via <strong>device controllers</strong>. Ports may be internal (built-in devices) or external (peripherals).</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>USB (Universal Serial Bus)</h3>
+          <ul>
+            <li>Plug-and-play standard that automates device configuration.</li>
+            <li>Supports up to 127 devices on a host hierarchy.</li>
+            <li>Hot-swappable: devices can be attached/removed while powered on.</li>
+            <li>Version note: USB 3.2 supports high transfer rates (theoretical upto 20 Gbps with multi-lane configurations).</li>
+          </ul>
+
+          <div class="example">Class activity: choose two USB storage devices and list the USB version they use and their maximum transfer rates; compare to internal HDD/SSD speeds.</div>
+        </div>
+
+        <div class="subtopic">
+          <h3>Specialised multimedia ports</h3>
+          <table>
+            <thead><tr><th>Port</th><th>Use</th><th>Characteristics</th></tr></thead>
+            <tbody>
+              <tr><td>VGA</td><td>Monitor connection (older)</td><td>Analogue video only — no audio</td></tr>
+              <tr><td>HDMI</td><td>Modern monitors/TVs</td><td>Digital video + audio; suitable for high-definition media</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- 5.06 Fetch-Execute -->
+    <details class="card">
+      <summary>
+        <h2>5.06 The Fetch–Execute (F–E) Cycle</h2>
+        <div style="color:var(--muted);font-size:13px">Fetch · Decode · Execute · Flowchart · RTN</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>Flowchart (simplified)</h3>
+          <svg class="svg-figure" viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fetch execute cycle flowchart">
+            <style>.f{font:13px/1.1 sans-serif;fill:#0b2545}.box{fill:#e7f3ff;stroke:#cfe7ff}</style>
+            <rect x="60" y="30" width="220" height="60" rx="8" class="box"/><text x="120" y="65" class="f">Start / Check instructions</text>
+            <rect x="340" y="30" width="220" height="60" rx="8" class="box"/><text x="400" y="65" class="f">Fetch next instruction</text>
+            <rect x="340" y="110" width="220" height="60" rx="8" class="box"/><text x="420" y="145" class="f">Decode instruction</text>
+            <rect x="340" y="190" width="220" height="60" rx="8" class="box"/><text x="420" y="225" class="f">Execute instruction</text>
+            <defs><marker id="m2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#2b6cb0"/></marker></defs>
+            <line x1="280" y1="60" x2="340" y2="60" stroke="#2b6cb0" stroke-width="2" marker-end="url(#m2)"/>
+            <line x1="460" y1="90" x2="460" y2="110" stroke="#2b6cb0" stroke-width="2" marker-end="url(#m2)"/>
+            <line x1="460" y1="170" x2="460" y2="190" stroke="#2b6cb0" stroke-width="2" marker-end="url(#m2)"/>
+            <line x1="460" y1="250" x2="460" y2="270" stroke="#2b6cb0" stroke-width="2" marker-end="url(#m2)"/>
+          </svg>
+
+          <p>The cycle repeats continuously while a program is running. Interrupts are checked periodically and handled between cycles.</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>Detailed fetch stage (register transfer notation)</h3>
+          <p>When a program is running, the PC contains the address of the next instruction. In the fetch phase the following RTN describes the transfers:</p>
+          <div class="code">MAR &larr; [PC] <br>PC &larr; [PC] + 1 ; MDR &larr; [[MAR]] <br>CIR &larr; [MDR]</div>
+
+          <p>Notes:</p>
+          <ul>
+            <li><code>[X]</code> means contents of register <code>X</code>.</li>
+            <li><code; </code> separates simultaneous transfers.</li>
+            <li><code>[[MAR]]</code> means memory content at the address stored in <code>MAR</code>.</li>
+          </ul>
+
+          <p class="teacher-note">Teacher: demonstrate RTN on the board step-by-step and ask students to annotate which lines depend on the system clock (hint: memory transfer and PC increment often align with different parts of the clock cycle).</p>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- 5.07 RTN (already included) -->
+    <details class="card">
+      <summary>
+        <h2>5.07 Register Transfer Notation (RTN)</h2>
+        <div style="color:var(--muted);font-size:13px">Notation · Meaning · Examples</div>
+      </summary>
+      <div class="content">
+        <p>RTN is used to express transfers between registers and memory compactly. Common symbols used on this page:</p>
+        <ul>
+          <li><code>[X]</code> — contents of register <code>X</code>.</li>
+          <li><code>&larr;</code> — transfer into (destination is on the left).</li>
+          <li><code>[[MAR]]</code> — memory contents at address stored in <code>MAR</code>.</li>
+          <li><code>;</code> — separates simultaneous operations.
+        </ul>
+
+        <div class="example">
+          <strong>Example RTN (fetch):</strong>
+          <div class="code">MAR &larr; [PC]<br>PC &larr; [PC] + 1 ; MDR &larr; [[MAR]]<br>CIR &larr; [MDR]</div>
+        </div>
+
+        <p class="exam-tip">Students may be asked to write RTN for micro-operations or to label which transfers occur simultaneously — practise with small instruction sequences.</p>
+      </div>
+    </details>
+
+    <!-- 5.08 Interrupts -->
+    <details class="card">
+      <summary>
+        <h2>5.08 Interrupt Handling</h2>
+        <div style="color:var(--muted);font-size:13px">Causes · Priorities · ISR · Steps</div>
+      </summary>
+      <div class="content">
+        <div class="subtopic">
+          <h3>What is an interrupt?</h3>
+          <p>An <strong>interrupt</strong> is a signal that temporarily halts a CPU's current execution to handle an event that requires immediate attention. Interrupts allow the CPU to respond to asynchronous events (e.g., I/O ready, errors, timers).</p>
+        </div>
+
+        <div class="subtopic">
+          <h3>Common causes</h3>
+          <ul>
+            <li>Program error (e.g., division by zero)</li>
+            <li>Hardware fault (e.g., overheating, device fault)</li>
+            <li>I/O requests (e.g., keyboard/mouse data available)</li>
+            <li>Timer events (scheduling)</li>
+            <li>User interrupts (Ctrl+C)</li>
+          </ul>
+        </div>
+
+        <div class="subtopic">
+          <h3>How interrupts are handled</h3>
+          <ol>
+            <li>At an interrupt point (end of F–E cycle), CPU finishes the current instruction.</li>
+            <li>CPU saves PC and relevant registers to memory (stack or reserved area).</li>
+            <li>Interrupt type is identified (often by bits in an interrupt register or vector table).</li>
+            <li>PC is loaded with address of the Interrupt Service Routine (ISR).</li>
+            <li>ISR executes. On completion, CPU checks for further interrupts.</li>
+            <li>If none remain, saved register contents are restored and original program resumes.</li>
+          </ol>
+
+          <div class="example">Printer 'paper out' example: typing program is paused, printer ISR runs to alert user or queue job, then control returns to typing program.</div>
+        </div>
+
+        <div class="subtopic">
+          <h3>Notes on priorities and nested interrupts</h3>
+          <p>Interrupts may have priorities. Some systems allow <em>nested interrupts</em> (an ISR itself is interrupted by a higher-priority interrupt). Careful saving/restoring of state is essential to avoid corruption.</p>
+        </div>
+
+      </div>
+    </details>
+
+    <details class="card" open>
+      <summary>
+        <h2>Chapter Summary & Classroom Resources</h2>
+        <div style="color:var(--muted);font-size:13px">Summary · Activities · Quick quizzes</div>
+      </summary>
+      <div class="content">
+        <h3>Chapter summary (quick reference)</h3>
+        <table>
+          <thead><tr><th>Concept</th><th>Key points</th></tr></thead>
+          <tbody>
+            <tr><td>Von Neumann Model</td><td>CPU, memory, stored program, sequential execution</td></tr>
+            <tr><td>CPU Components</td><td>ALU, CU, Registers (PC, MAR, MDR, CIR, SR)</td></tr>
+            <tr><td>System Bus</td><td>Address, Data, Control — connect CPU, memory, I/O</td></tr>
+            <tr><td>Performance</td><td>Clock speed, cores, cache, word length, bus width</td></tr>
+            <tr><td>I/O Ports</td><td>Interfaces for peripherals — USB, VGA, HDMI</td></tr>
+            <tr><td>F–E Cycle</td><td>Repeated process: Fetch → Decode → Execute</td></tr>
+            <tr><td>RTN</td><td>Symbolic representation of register/memory transfers</td></tr>
+            <tr><td>Interrupts</td><td>Signals that pause and call ISR routines</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Classroom activities (ready-to-run)</h3>
+        <ol>
+          <li><strong>Whiteboard RTN practice:</strong> Give students short pseudo-instructions (LOAD 200, ADD 300, STORE 400) and ask them to write RTN and label simultaneous steps.</li>
+          <li><strong>Hands-on timings:</strong> Using stopwatch and sample program traces, ask students to compute elapsed time using different clock speeds and bus widths (use simplified assumptions).</li>
+          <li><strong>USB research:</strong> Assign two groups to compare USB versions for two flash drives and an internal HDD/SSD. Present speeds and discuss bottlenecks.</li>
+          <li><strong>Interrupt simulation:</strong> Role-play: assign students roles (CPU, memory, keyboard, printer). Generate interrupts and have CPU save/restore state manually to show the concept.</li>
+        </ol>
+
+        <h3>Quick self-marking quiz (for classroom)</h3>
+        <p><em>Note:</em> this is a printable short quiz.</p>
+        <ol>
+          <li>Define the von Neumann bottleneck. (2 marks)</li>
+          <li>List five special-purpose registers and their functions. (5 marks)</li>
+          <li>Explain the difference between the address bus and the data bus. (3 marks)</li>
+          <li>Write RTN for: FETCH next instruction (use PC, MAR, MDR, CIR). (3 marks)</li>
+          <li>Outline the steps taken when an interrupt occurs. (4 marks)</li>
+        </ol>
+
+        <p class="teacher-note">Let us have Quiz for this chapter separately</p>
+
+      </div>
+    </details>
+
+    <footer>
+      <p>Prepared for classroom teaching — all sections are collapsible..</p>
+    </footer>
+  </div>
+
+  <script>
+    function expandAll(){document.querySelectorAll('details.card').forEach(d=>d.open=true)}
+    function collapseAll(){document.querySelectorAll('details.card').forEach(d=>d.open=false)}
+    // Accessibility: allow toggling with Enter/Space
+    document.querySelectorAll('details summary').forEach(s=>{s.addEventListener('keydown',e=>{if(e.key==='Enter' || e.key===' '){e.preventDefault(); s.parentElement.open=!s.parentElement.open}})})
+  </script>
+</body>
+</html>
