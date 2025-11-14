@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IGCSE Computer Science 0984 – Assessment (Ch1 & Ch2)</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+  h1, h2 { color: #333; }
+  .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 6px; }
+  .short, .long { background: #f9f9f9; }
+  button { padding: 10px 18px; margin-top: 20px; }
+  .correct { color: green; font-weight: bold; }
+  .wrong { color: red; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>IGCSE Computer Science 0984 – Self-Marking Assessment</h1>
+
+<div id="access-box" style="border:1px solid #ccc;padding:15px;border-radius:6px;margin-bottom:20px;">
+  <label><strong>Enter Your Name:</strong></label><br>
+  <input type="text" id="studentName" style="width:100%;padding:6px;margin:8px 0;"><br>
+
+  <label><strong>Enter Password:</strong></label><br>
+  <input type="password" id="testPass" style="width:100%;padding:6px;margin:8px 0;"><br>
+
+  <button onclick="unlockTest()">Start Test</button>
+  <p id="accessError" style="color:red"></p>
+</div>
+
+<div id="test-content" style="display:none;">
+<p><strong>Chapters:</strong> 1. Data Representation & 2. Data Transmission</p>
+<p><strong>Total:</strong> 25 MCQs, 5 Short Questions (2 marks), 3 Long Questions (5 marks)</p>
+<hr>
+
+<h2>Multiple‑Choice Questions (25)</h2>
+<div id="mcq-container"></div>
+
+<h2>Short Answer Questions (5 × 2 marks)</h2>
+<div id="short-container"></div>
+
+<h2>Long Answer Questions (3 × 5 marks)</h2>
+<div id="long-container"></div>
+
+<button onclick="gradeAssessment()">Submit Answers</button>
+
+<h2>Results</h2>
+<div id="result"></div>
+
+<script>
+// ---------------- MCQs ----------------
+const mcqs = [
+  // CHAPTER 1 – DATA REPRESENTATION
+  {q:"What number base is binary?", options:["2", "8", "10", "16"], ans:0},
+  {q:"Which is a byte?", options:["4 bits", "8 bits", "16 bits", "32 bits"], ans:1},
+  {q:"Hexadecimal 1A equals decimal…", options:["26", "16", "12", "32"], ans:0},
+  {q:"ASCII is used to represent…", options:["Images", "Sound", "Characters", "Videos"], ans:2},
+  {q:"Which file format is lossy?", options:["BMP", "PNG", "WAV", "JPEG"], ans:3},
+  {q:"Which increases sound quality?", options:["Lower sample rate", "Lower bit depth", "Higher sample rate", "Mono channel"], ans:2},
+  {q:"What is colour depth measured in?", options:["Bytes", "Bits", "Pixels", "Hertz"], ans:1},
+  {q:"Binary 101101₂ = ?", options:["45", "23", "37", "52"], ans:0},
+  {q:"Which is a lossless format?", options:["MP3", "JPEG", "GIF", "MPEG"], ans:2},
+  {q:"Unicode is used because…", options:["ASCII is too large", "ASCII cannot represent all characters", "Unicode is smaller", "Unicode is faster"], ans:1},
+
+  // CHAPTER 2 – DATA TRANSMISSION
+  {q:"Data transmission direction both ways but one at a time is…", options:["Simplex", "Half‑duplex", "Full‑duplex", "Serial"], ans:1},
+  {q:"Which is serial transmission?", options:["Multiple bits at once", "One bit at a time", "Parallel lanes", "Wireless only"], ans:1},
+  {q:"Which detects errors?", options:["Check digit", "Encryption", "Compression", "Buffering"], ans:0},
+  {q:"What is parity?", options:["Security", "Even/odd bit check", "Compression", "Transmission speed"], ans:1},
+  {q:"Purpose of encryption?", options:["Faster data", "Reduce file size", "Prevent unauthorised access", "Add parity bits"], ans:2},
+  {q:"Even parity for 1011 should be…", options:["0", "1", "10", "11"], ans:1},
+  {q:"Which is NOT a transmission method?", options:["Serial", "Parallel", "Duplex", "Unicode"], ans:3},
+  {q:"Which is a security technique?", options:["Parity", "Checksum", "Encryption", "Sampling"], ans:2},
+  {q:"A checksum works by…", options:["Compressing bits", "Adding calculated value", "Encrypting bits", "Adding parity only"], ans:1},
+  {q:"Which term refers to data speed?", options:["Baud rate", "Bit depth", "Pixel rate", "Checksum"], ans:0},
+
+  // Extra balance (5)
+  {q:"Binary shift left by 1 multiplies by…", options:["2", "4", "1/2", "8"], ans:0},
+  {q:"Parallel transmission risk?", options:["Crosstalk", "Slow", "Low error", "Wireless only"], ans:0},
+  {q:"Which is lossy?", options:["WAV", "PNG", "FLAC", "MP3"], ans:3},
+  {q:"Which checks whole data blocks?", options:["Parity", "Checksum", "ASCII", "Hex"], ans:1},
+  {q:"Hexadecimal uses symbols…", options:["0–7", "0–9 + A–F", "0–10", "A–Z"], ans:1}
+];
+
+// ---------------- SHORT QUESTIONS ----------------
+const shortQs = [
+  {q:"Convert 110101₂ to decimal.", ans:"53"},
+  {q:"Define 'lossy compression' in one sentence.", kw:["data", "lost"]},
+  {q:"State one advantage of serial transmission.", kw:["long", "distance"]},
+  {q:"What is the purpose of a check digit?", kw:["detect", "error"]},
+  {q:"Define bit depth.", kw:["bits", "colour"]}
+];
+
+// ---------------- LONG QUESTIONS ----------------
+const longQs = [
+  {
+    q:"Explain how text, sound and images are represented in a computer. Include key terms such as ASCII/Unicode, sample rate, bit depth, pixels, colour depth.",
+    kw:["ascii","unicode","sample","bit","pixel","colour"]
+  },
+  {
+    q:"Describe error detection methods: parity, checksum, ARQ. Explain how each one works.",
+    kw:["parity","checksum","arq"]
+  },
+  {
+    q:"Compare serial and parallel transmission. Include speed, distance, reliability, and interference.",
+    kw:["serial","parallel","distance","speed","interference"]
+  }
+];
+
+// ---------------- Render MCQs ----------------
+let mcqHTML = "";
+mcqs.forEach((m,i)=>{
+  mcqHTML += `<div class='question'>
+      <p><strong>Q${i+1}.</strong> ${m.q}</p>
+      ${m.options.map((o,idx)=>`<label><input type='radio' name='mcq${i}' value='${idx}'> ${o}</label><br>`).join("")}
+    </div>`;
+});
+document.getElementById("mcq-container").innerHTML = mcqHTML;
+
+// ---------------- Render Short Questions ----------------
+let shortHTML = "";
+shortQs.forEach((s,i)=>{
+  shortHTML += `<div class='question short'>
+      <p><strong>S${i+1}.</strong> ${s.q}</p>
+      <textarea id='short${i}' rows='2' style='width:100%'></textarea>
+    </div>`;
+});
+document.getElementById("short-container").innerHTML = shortHTML;
+
+// ---------------- Render Long Questions ----------------
+let longHTML = "";
+longQs.forEach((l,i)=>{
+  longHTML += `<div class='question long'>
+      <p><strong>L${i+1}.</strong> ${l.q}</p>
+      <textarea id='long${i}' rows='5' style='width:100%'></textarea>
+    </div>`;
+});
+document.getElementById("long-container").innerHTML = longHTML;
+
+// ---------------- Grading ----------------
+function gradeAssessment(){
+  let score = 0;
+  let total = 25 + 5*2 + 3*5;
+
+  // MCQs
+  mcqs.forEach((m,i)=>{
+    let selected = document.querySelector(`input[name='mcq${i}']:checked`);
+    if(selected && parseInt(selected.value) === m.ans){ score++; }
+  });
+
+  // Short answers (keyword based, 2 marks each)
+  shortQs.forEach((s,i)=>{
+    let txt = document.getElementById(`short${i}`).value.toLowerCase();
+    let kwCount = 0;
+    if(s.ans){ if(txt.trim() === s.ans) kwCount = 2; }
+    else{
+      s.kw.forEach(k=>{ if(txt.includes(k)) kwCount++; });
+      if(kwCount > 2) kwCount = 2;
+    }
+    score += kwCount;
+  });
+
+  // Long answers (keyword count, max 5)
+  longQs.forEach((l,i)=>{
+    let txt = document.getElementById(`long${i}`).value.toLowerCase();
+    let kwCount = 0;
+    l.kw.forEach(k=>{ if(txt.includes(k)) kwCount++; });
+    if(kwCount > 5) kwCount = 5;
+    score += kwCount;
+  });
+
+  document.getElementById("result").innerHTML = `<p><strong>Your score: ${score} / ${total}</strong></p>`;
+}
+</script>
+<script>
+function unlockTest(){
+  const name = document.getElementById('studentName').value.trim();
+  const pass = document.getElementById('testPass').value.trim();
+  if(name === "" || pass === ""){
+    document.getElementById('accessError').innerText = "Please enter both fields.";
+    return;
+  }
+  if(pass !== "8902"){
+    document.getElementById('accessError').innerText = "Incorrect password.";
+    return;
+  }
+  document.getElementById('access-box').style.display = 'none';
+  document.getElementById('test-content').style.display = 'block';
+}
+
+const oldGrade = gradeAssessment;
+gradeAssessment = function(){
+  oldGrade();
+
+  mcqs.forEach((m,i)=>{
+    let div = document.querySelectorAll('.question')[i];
+    let correctText = document.createElement('p');
+    correctText.className = 'correct';
+    correctText.innerText = "Correct Answer: " + m.options[m.ans];
+    div.appendChild(correctText);
+  });
+
+  shortQs.forEach((s,i)=>{
+    let div = document.getElementById('short' + i).parentElement;
+    let p = document.createElement('p'); p.className='correct';
+    p.innerText = s.ans ? ("Expected: " + s.ans) : ("Key terms: " + s.kw.join(', '));
+    div.appendChild(p);
+  });
+
+  longQs.forEach((l,i)=>{
+    let div = document.getElementById('long' + i).parentElement;
+    let p = document.createElement('p'); p.className='correct';
+    p.innerText = "Key terms: " + l.kw.join(', ');
+    div.appendChild(p);
+  });
+
+  setTimeout(()=>{ window.print(); }, 1000);
+}
+</script>
+</div>
+</body>
+</html>
