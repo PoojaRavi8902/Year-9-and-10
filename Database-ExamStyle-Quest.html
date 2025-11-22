@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>O Level SQL – Exam‑Style Questions & Answers</title>
+<style>
+ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f8fb;}
+ h1, h2 {color: #1a4f7a;}
+ .section {background: white; margin: 20px; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);} 
+ details {margin-bottom: 16px;}
+ summary {cursor: pointer; font-weight: bold; font-size: 1.1rem; padding: 10px; background: #e6f1ff; border-radius: 8px;} 
+ pre {background: #002b36; color: #eee; padding: 12px; border-radius: 8px; overflow-x: auto;} 
+ .answer {background: #eef9f1; padding: 10px; border-left: 4px solid #2e8b57; margin-top: 10px; border-radius: 8px;} 
+</style>
+</head>
+<body>
+<div class="section">
+<h1>O Level SQL – Exam‑Style Questions & Fully Worked Answers</h1>
+<p>All questions are from real exam‑style Cambridge patterns. Answers are explained according to expected mark weightage.</p>
+</div>
+
+<!-- QUESTION 1 -->
+<div class="section">
+<h2>Question 1 – Car Seat Materials & Colours</h2>
+<details>
+<summary>a (i) Number of records</summary>
+<div class="answer">
+<b>Answer:</b> 18 records.<br>
+<b>Explanation:</b> Each row in the CAR table represents one possible combination of code + material + seat colour + paint colour options.
+</div>
+</details>
+
+<details>
+<summary>a (ii) Number of fields</summary>
+<div class="answer">
+<b>Answer:</b> 9 fields.<br>
+<b>Reason:</b> The table contains: Code, Seat Material, Seat Colour, plus 6 paint‑colour fields.
+</div>
+</details>
+
+<details>
+<summary>a (iii) Primary key suitability</summary>
+<div class="answer">
+<b>Answer:</b> Field <b>Code</b> is suitable.<br>
+<b>Reason:</b> Each code (CB, LB, CC, LC, CG, LG, CR, LR…) uniquely identifies a combination line; no duplicates appear.
+</div>
+</details>
+
+<details>
+<summary>b SQL Output</summary>
+<pre>
+SELECT Code
+FROM CAR
+WHERE SeatColour = 'Red' AND ('White' OR 'silver');
+</pre>
+<div class="answer">
+<b>Correct Interpretation:</b><br>
+The condition <code>('White' OR 'silver')</code> is always TRUE in SQL.<br>
+So the query becomes:<br>
+<code>WHERE SeatColour = 'Red'</code> only.<br><br>
+<b>Answer:</b> All codes where SeatColour = Red.
+</div>
+</details>
+
+<details>
+<summary>c SQL completion</summary>
+<div class="answer">
+<pre>
+SELECT *
+FROM CAR
+WHERE SeatMaterial = 'Leather' AND (PaintColour = 'Silver' OR PaintColour = 'Grey');
+</pre>
+</div>
+</details>
+</div>
+
+<!-- QUESTION 2 -->
+<div class="section">
+<h2>Question 2 – Bicycle Stock Database</h2>
+<details>
+<summary>a (i) Suitable data types (7 marks)</summary>
+<div class="answer">
+<ul>
+<li><b>Model number</b> – VARCHAR: alphanumeric values (e.g., BY00007).</li>
+<li><b>Description</b> – VARCHAR: text description.</li>
+<li><b>Colour</b> – VARCHAR: text.</li>
+<li><b>Wheel size</b> – INTEGER: whole number (e.g., 700).</li>
+<li><b>Price</b> – REAL: includes decimals (e.g., 309.50).</li>
+<li><b>Manufactured?</b> – BOOLEAN: Yes/No.</li>
+<li><b>Number in stock</b> – INTEGER: whole number.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>a (ii) Validation needed (3 marks)</summary>
+<div class="answer">
+<ul>
+<li><b>Model number</b> – Format check (e.g., two letters + digits).</li>
+<li><b>Price</b> – Range check (e.g., price must be ≥ 0).</li>
+<li><b>Number in stock</b> – Range check (0 to sensible max).</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>a (iii) Primary key (2 marks)</summary>
+<div class="answer">
+<b>Model number</b> is ideal.<br>
+<b>Reason:</b> It is unique for each bicycle model.
+</div>
+</details>
+
+<details>
+<summary>b SQL command explanations (10 marks)</summary>
+<div class="answer">
+<ul>
+<li><b>SELECT</b> – chooses fields.<br>Example: <code>SELECT ModelNumber, Price</code></li>
+<li><b>FROM</b> – chooses the table.<br>Example: <code>FROM CYCLE</code></li>
+<li><b>WHERE</b> – filters records.<br>Example: <code>WHERE Colour = 'Gold and Black'</code></li>
+<li><b>SUM</b> – totals numerical fields.<br>Example: <code>SELECT SUM(NumberInStock)</code></li>
+<li><b>ORDER BY</b> – sorts results.<br>Example: <code>ORDER BY Price DESC</code></li>
+</ul>
+</div>
+</details>
+</div>
+
+<!-- QUESTION 3 -->
+<div class="section">
+<h2>Question 3 – Theatre Performance Records</h2>
+<details>
+<summary>a Fields and Records</summary>
+<div class="answer">
+<b>Fields:</b> 5 (ShowNumber, Type, Title, Date, SoldOut)<br>
+<b>Records:</b> 8 rows.
+</div>
+</details>
+
+<details>
+<summary>b Validation on Show Number</summary>
+<div class="answer">
+<ul>
+<li><b>Format check</b> – must follow pattern: two letters + three digits.</li>
+<li><b>Length check</b> – fixed length (e.g., 5 or 6 characters depending on format).</li>
+</ul>
+</div>
+</details>
+</div>
+
+</body>
+</html>
