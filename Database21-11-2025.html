@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Databases – Prepared by Ravi Raju</title>
+<style>
+ body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+ h1, h2, h3 { color: #333; }
+ table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+ table, th, td { border: 1px solid #999; }
+ th, td { padding: 8px; text-align: left; }
+ .section { margin-bottom: 40px; }
+ .tip { background: #f0f8ff; padding: 10px; border-left: 4px solid #007acc; margin: 15px 0; }
+</style>
+</head>
+<body>
+<h1>Databases</h1>
+<p><strong>Prepared by Ravi Raju</strong></p>
+
+<details open>
+<summary><h2 style="display:inline">What is a Database?</h2></summary>
+<p>A database is an organised collection of data.</p>
+<p>It is made up of either one or multiple tables which are made up of fields and records to organise how data is stored.</p>
+<p>A database allows easy storage, retrieval, and management of information.</p>
+<p>It is useful when working with large amounts of data, and databases are stored on secondary storage.</p>
+<p>A database is often stored on remote servers so multiple users can access it simultaneously, making it useful for online systems.</p>
+<p>Data can be sorted and searched efficiently using advanced structures.</p>
+<p>They are more secure than text files.</p>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Fields & Records</h2></summary>
+<p>A <strong>field</strong> is one piece of information relating to one person, item, or object. In a database, a field is represented by a column.</p>
+<p>A <strong>record</strong> is a collection of fields relating to one person, item, or object. A record is represented in a database by a row.</p>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Text Files</h2></summary>
+<p>A text file is useful when working with small amounts of data. Text files are stored on secondary storage and are read into a program when being used.</p>
+<p>They are used to store information when the application is closed.</p>
+<p>Each entry is stored on a new line or separated with a special identifier such as a comma (,).</p>
+<p>It can be difficult in text files to know where a record begins and ends.</p>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Validation</h2></summary>
+<p>When a table is created, validation rules can be assigned to different fields.</p>
+<p>A validation rule controls what data can be entered into that field.</p>
+<p>There are different types of validation checks used to limit what data can be entered into each field.</p>
+
+<table>
+<tr><th>Type</th><th>Description</th></tr>
+<tr><td>Length Check</td><td>Checks the number of characters entered. Example: phone numbers must be eleven characters long.</td></tr>
+<tr><td>Format Check</td><td>Ensures data meets a specific format. Example: product code must be two letters followed by five numbers.</td></tr>
+<tr><td>Range Check</td><td>Ensures a number is within a set range. Example: dog age must be between 0 and 40.</td></tr>
+<tr><td>Presence Check</td><td>Ensures the field cannot be left blank.</td></tr>
+<tr><td>Type Check</td><td>Ensures data matches a defined type. Example: date field should not accept text.</td></tr>
+<tr><td>Check Digits</td><td>Used to verify numbers such as credit card numbers.</td></tr>
+</table>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Examiner Tips and Tricks</h2></summary>
+<div class="tip">
+<p>You will likely be presented with a database table and asked to identify the number of fields or records. Remember:</p>
+<ul>
+<li>A <strong>record</strong> is a row.</li>
+<li>A <strong>field</strong> is a column.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Worked Example</h2></summary>
+<h3>Student Grades Table</h3>
+<table>
+<tr>
+<th>StudentID</th><th>FirstName</th><th>LastName</th><th>MarkSubmitted</th><th>Percentage</th>
+</tr>
+<tr><td>1483792</td><td>Shanay</td><td>Giles</td><td>Y</td><td>55</td></tr>
+<tr><td>1498378</td><td>Poppy</td><td>Petit</td><td>N</td><td>20</td></tr>
+<tr><td>1500121</td><td>Diya</td><td>Dinesh</td><td>Y</td><td>74</td></tr>
+<tr><td>1382972</td><td>Joe</td><td>Swaile</td><td>Y</td><td>68</td></tr>
+<tr><td>1598264</td><td>Anton</td><td>Smith</td><td>Y</td><td>34</td></tr>
+<tr><td>1548282</td><td>Felicity</td><td>Hall</td><td>N</td><td>47</td></tr>
+</table>
+<p><strong>Sample Answers:</strong></p>
+<p>StudentID can have a length check to ensure 7 characters are entered.</p>
+<p>Name fields should have a presence check.</p>
+<p>MarkSubmitted can have a type check so only Y or N are entered.</p>
+<p>Percentage can have a range check between 0 and 100.</p>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Data Types</h2></summary>
+<p>A data type defines the kind of data a field can hold.</p>
+<ul>
+<li><strong>Integer</strong> – whole number</li>
+<li><strong>Real</strong> – decimal number</li>
+<li><strong>Text/Alphanumeric</strong> – text</li>
+<li><strong>Character</strong> – single character</li>
+<li><strong>Date/Time</strong></li>
+<li><strong>Boolean</strong> – true/false</li>
+</ul>
+
+<h3>Example Table: Cars</h3>
+<ul>
+<li>car_id: integer</li>
+<li>make: text/alphanumeric</li>
+<li>model: text/alphanumeric</li>
+<li>colour: text/alphanumeric</li>
+<li>price: real</li>
+</ul>
+
+<table>
+<tr><th>car_id</th><th>make</th><th>model</th><th>colour</th><th>price</th></tr>
+<tr><td>1</td><td>Peugeot</td><td>2008</td><td>Red</td><td>24950</td></tr>
+<tr><td>2</td><td>Mazda</td><td>MX5</td><td>Blue</td><td>17995</td></tr>
+<tr><td>3</td><td>Citroen</td><td>DS4</td><td>Black</td><td>21450</td></tr>
+<tr><td>4</td><td>Ford</td><td>Puma</td><td>White</td><td>19500</td></tr>
+</table>
+</details>
+
+<details>
+<summary><h2 style="display:inline">Interactive Quiz</h2></summary>
+<div id="quiz-section">
+<p><strong>Question 1:</strong> What is a record in a database?</p>
+<button onclick="checkAnswer(1,'A')">A: A single piece of data</button>
+<button onclick="checkAnswer(1,'B')">B: A row of related fields</button>
+<button onclick="checkAnswer(1,'C')">C: A column in a table</button>
+<p id="feedback1"></p>
+
+<p><strong>Question 2:</strong> Which validation check ensures a field is not left blank?</p>
+<button onclick="checkAnswer(2,'A')">A: Presence check</button>
+<button onclick="checkAnswer(2,'B')">B: Range check</button>
+<button onclick="checkAnswer(2,'C')">C: Format check</button>
+<p id="feedback2"></p>
+
+<p><strong>Question 3:</strong> Which data type is suitable for storing price?</p>
+<button onclick="checkAnswer(3,'A')">A: Integer</button>
+<button onclick="checkAnswer(3,'B')">B: Real</button>
+<button onclick="checkAnswer(3,'C')">C: Boolean</button>
+<p id="feedback3"></p>
+</div>
+
+<script>
+function checkAnswer(q, ans) {
+  const answers = {
+    1: 'B',
+    2: 'A',
+    3: 'B'
+  };
+  const feedback = document.getElementById('feedback' + q);
+  if (ans === answers[q]) {
+    feedback.textContent = 'Correct!';
+    feedback.style.color = 'green';
+  } else {
+    feedback.textContent = 'Try again.';
+    feedback.style.color = 'red';
+  }
+}
+</script>
+</details>
+
+</body>
+</html>
