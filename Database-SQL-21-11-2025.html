@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Database — Designed by Ravi Raju for MESCairo</title>
+<style>
+  :root{--accent:#0066cc;--muted:#666;--panel:#f7fbff}
+  body{font-family:Segoe UI,Roboto,Arial;max-width:1000px;margin:20px auto;padding:18px;color:#222}
+  h1{font-size:28px;margin:0 0 6px}
+  p.lead{margin:0 0 14px;color:var(--muted)}
+  details{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin:12px 0}
+  summary{font-size:18px;cursor:pointer;outline:none}
+  table{width:100%;border-collapse:collapse;margin:10px 0}
+  th,td{border:1px solid #d1d5db;padding:8px;text-align:left}
+  .note{background:var(--panel);padding:10px;border-left:4px solid var(--accent);margin:10px 0}
+  .exercise{background:#fff7e6;padding:10px;border-left:4px solid #ff9f1c;margin:10px 0}
+  button, .btn{background:var(--accent);color:#fff;padding:8px 10px;border-radius:6px;border:none;cursor:pointer}
+  .small{font-size:14px;color:var(--muted)}
+  .answer{display:none;margin-top:8px;padding:8px;background:#f1f8ed;border-left:4px solid #2d8a2d}
+  input[type=text]{padding:6px;border:1px solid #cbd5e1;border-radius:4px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>Database</h1>
+<p class="lead"><strong>Designed by Ravi Raju for MESCairo</strong></p>
+
+<details open>
+  <summary><strong>9.1.1 Single-table databases — What is a database?</strong></summary>
+  <p>A database is a structured collection of data that allows people to extract information in a way that meets their needs. The data can include text, numbers, pictures — anything that can be stored in a computer.</p>
+  <p><strong>Single-table databases</strong> (the focus for IGCSE 0984) contain only one table. Relational databases (multiple related tables) are studied at A Level.</p>
+  <div class="note">
+    <strong>Why are databases useful?</strong>
+    <ul>
+      <li>If changes or additions are made they only need to be done once — data remains consistent.</li>
+      <li>The same data is used by everyone (single source of truth).</li>
+      <li>In relational systems (A Level) data is stored once which prevents duplication.</li>
+    </ul>
+  </div>
+  <p><strong>What are databases used for?</strong> To store information about people (patients, pupils), things (cars, books) or events (hotel bookings, race results).</p>
+</details>
+
+<details>
+  <summary><strong>Fields and Records — building blocks</strong></summary>
+  <p>Inside a database, data is stored in <strong>tables</strong>. Each table contains many <strong>records</strong>. Each record consists of several <strong>fields</strong>.</p>
+  <p>The number of <em>records</em> can change (you can add or delete records). The number of <em>fields</em> is fixed for the table — each record has the same fields. An easy way to remember:</p>
+  <ul>
+    <li><strong>Record</strong> = row</li>
+    <li><strong>Field</strong> = column</li>
+  </ul>
+  <p>Each table should be given a meaningful name (e.g. <code>PATIENT</code>, <code>BOOK</code>, <code>APPOINTMENT</code>).</p>
+
+  <h4>Example: PATIENT table — example fields</h4>
+  <ul>
+    <li>FirstName (patient's first name)</li>
+    <li>FamilyName</li>
+    <li>DateOfAdmission</li>
+    <li>Consultant</li>
+    <li>WardNumber</li>
+    <li>BedNumber</li>
+  </ul>
+
+  <p class="small">Note: Field names should be a single word (no spaces) like <code>BedNumber</code>.</p>
+
+  <div class="exercise">
+    <strong>Activity 9.1</strong>
+    <p>State what fields you would expect to find in each record for the doctor's <em>APPOINTMENT</em> table and give each field a suitable single-word name.</p>
+    <p class="small">(Try to suggest at least 6 fields)</p>
+    <button class="btn" onclick="document.getElementById('act91').style.display='block'">Show sample answers</button>
+    <div id="act91" class="answer">
+      <strong>Sample fields for APPOINTMENT:</strong>
+      <ul>
+        <li>AppointmentID (or use <code>APPTID</code>)</li>
+        <li>PatientName (or <code>PatientID</code> if using linked records)</li>
+        <li>Doctor</li>
+        <li>Date</li>
+        <li>Time</li>
+        <li>Reason</li>
+        <li>RoomNumber</li>
+      </ul>
+    </div>
+  </div>
+
+</details>
+
+<details>
+  <summary><strong>Validation</strong></summary>
+  <p>The role of validation (see Section 7.5) is vital. Some validation is automatic in the DBMS (for example date fields), other checks must be set by the developer.</p>
+  <p><strong>Example:</strong> <code>DateOfAdmission</code> will be automatically validated by the software to ensure a valid date. But <code>WardNumber</code> might require a custom rule to only allow whole numbers 1 to 10.</p>
+  <div class="grid">
+    <div>
+      <h4>Common validation checks</h4>
+      <ul>
+        <li><strong>Length check</strong> — ensure a fixed number of characters (e.g. ID length).</li>
+        <li><strong>Format check</strong> — match patterns (e.g. <code>HN123456</code>).</li>
+        <li><strong>Range check</strong> — numbers within permitted range (e.g. ward 1–10).</li>
+        <li><strong>Presence check</strong> — field cannot be left blank.</li>
+        <li><strong>Type check</strong> — correct data type (date, integer, text).</li>
+        <li><strong>Check digits</strong> — algorithmic check for numbers like card numbers.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Examples from PATIENT table</h4>
+      <ul>
+        <li><code>DateOfAdmission</code>: automatic date validation (DBMS checks valid date).</li>
+        <li><code>WardNumber</code>: developer sets range 1–10.</li>
+        <li><code>BedNumber</code>: developer sets range 1–8.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <strong>Activity 9.2 (practical)</strong>
+    <p>Using Access (or any DBMS), set up a single-table PATIENT database using fields: <code>FirstName, FamilyName, DateOfAdmission, Consultant, WardNumber, BedNumber</code>.</p>
+    <ol>
+      <li>Choose a suitable data type for each field.</li>
+      <li>Include validation checks so <code>WardNumber</code> is whole numbers 1–10 and <code>BedNumber</code> is whole numbers 1–8.</li>
+      <li>Enter the following patient records:</li>
+    </ol>
+    <table>
+      <tr><th>FirstName</th><th>FamilyName</th><th>DateOfAdmission</th><th>Consultant</th><th>WardNumber</th><th>BedNumber</th></tr>
+      <tr><td>Winnie</td><td>Sing</td><td>12/10/2022</td><td>Mr Smith</td><td>6</td><td>8</td></tr>
+      <tr><td>Steve</td><td>Chow</td><td>23/10/2022</td><td>Miss Abebe</td><td>6</td><td>3</td></tr>
+      <tr><td>Chin</td><td>Wee</td><td>30/10/2022</td><td>Mr Jones</td><td>7</td><td>1</td></tr>
+      <tr><td>Min</td><td>Hoo</td><td>01/11/2022</td><td>Mr Smith</td><td>6</td><td>1</td></tr>
+      <tr><td>Peter</td><td>Patel</td><td>12/11/2022</td><td>Mr Jones</td><td>7</td><td>8</td></tr>
+      <tr><td>Sue</td><td>Sands</td><td>19/11/2022</td><td>Miss Abebe</td><td>6</td><td>2</td></tr>
+      <tr><td>Farouk</td><td>Khan</td><td>22/11/2022</td><td>Mr Jones</td><td>7</td><td>4</td></tr>
+      <tr><td>Ahmad</td><td>Teo</td><td>22/11/2022</td><td>Mr Jones</td><td>7</td><td>2</td></tr>
+    </table>
+    <p class="small">(If you haven't used Access before, follow the steps in your school's DBMS guide — create table, add fields, set data types and validation rules.)</p>
+  </div>
+
+</details>
+
+<details>
+  <summary><strong>9.1.2 Basic data types</strong></summary>
+  <p>There are six basic data types for IGCSE you should know:</p>
+  <ul>
+    <li>text / alphanumeric</li>
+    <li>character</li>
+    <li>Boolean</li>
+    <li>integer</li>
+    <li>real</li>
+    <li>date / time</li>
+  </ul>
+
+  <p><strong>What is a data type?</strong> A data type classifies how the data is stored, displayed and what operations can be performed. For example, an <em>integer</em> is stored as a whole number and can be used in calculations.</p>
+
+  <h4>IGCSE name → common Access equivalent</h4>
+  <table>
+    <tr><th>Syllabus data type</th><th>Description</th><th>Typical Access data type</th></tr>
+    <tr><td>text/alphanumeric</td><td>a number of characters (e.g. names)</td><td>Short text / Long text</td></tr>
+    <tr><td>character</td><td>a single character</td><td>Short text with field size 1</td></tr>
+    <tr><td>Boolean</td><td>one of two values: True/False or Yes/No</td><td>Yes/No</td></tr>
+    <tr><td>integer</td><td>whole number</td><td>Whole Number</td></tr>
+    <tr><td>real</td><td>decimal number</td><td>Number (Decimal)</td></tr>
+    <tr><td>date/time</td><td>date and/or time formats</td><td>Date/Time</td></tr>
+  </table>
+
+  <div class="exercise">
+    <strong>Activity 9.4 (1)</strong>
+    <p>Write down four database data types. For each: describe it and give an example field where it would be suitable.</p>
+    <button class="btn" onclick="document.getElementById('act94a').style.display='block'">Show sample answers</button>
+    <div id="act94a" class="answer">
+      <ul>
+        <li><strong>Integer</strong> — whole number; example field: WardNumber.</li>
+        <li><strong>Text/Alphanumeric</strong> — letters and numbers; example field: FirstName, Consultant.</li>
+        <li><strong>Date/Time</strong> — dates and times; example field: DateOfAdmission.</li>
+        <li><strong>Boolean</strong> — two values (Yes/No); example field: IsDischarged (Yes/No).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <strong>Activity 9.4 (2) — Fill the blanks</strong>
+    <p>Complete the paragraph below using words/phrases from the list. Use some words more than once if necessary.</p>
+    <p class="small"><em>Word list:</em> database, record, data type, char, fields, table, records, primary key, validation, Boolean, text, field</p>
+
+    <p id="fillpara">
+      A single <input id="w1" type="text" size="8"> <input id="w2" type="text" size="8"> contains one <input id="w3" type="text" size="8">. Each <input id="w4" type="text" size="8"> consists of many <input id="w5" type="text" size="8">. Every <input id="w6" type="text" size="8"> has the same number of <input id="w7" type="text" size="8">. Every <input id="w8" type="text" size="8"> is given a <input id="w9" type="text" size="12">. Examples of data types are <input id="w10" type="text" size="8">, <input id="w11" type="text" size="8"> and <input id="w12" type="text" size="8">. Some <input id="w13" type="text" size="8"> will have <input id="w14" type="text" size="8"> rules.
+    </p>
+    <button class="btn" onclick="checkFill()">Check answers</button>
+    <div id="fillResult" class="answer"></div>
+  </div>
+
+</details>
+
+<details>
+  <summary><strong>9.1.3 Primary keys</strong></summary>
+  <p>To uniquely identify each record in a table we use a <strong>primary key</strong>. A primary key must contain values that are never repeated.</p>
+  <p>Sometimes an existing field can be used as a primary key (e.g. ISBN for books) if it is unique. Otherwise add a new field — for the PATIENT table add <code>HospitalNumber</code>.</p>
+
+  <div class="exercise">
+    <strong>Activity 9.3</strong>
+    <ol>
+      <li>Add a <code>HospitalNumber</code> field to the PATIENT table.</li>
+      <li>Choose <code>text</code> as the data type for this field.</li>
+      <li>Add a validation rule: exactly 8 characters, starting with <code>HN</code> followed by 6 digits (e.g. <code>HN123456</code>).</li>
+      <li>Choose suitable HospitalNumber values for each patient above.</li>
+    </ol>
+    <p class="small">The rule can be enforced with a format check using a pattern like: <code>^HN\d{6}$</code> (regular expression) or with Access input mask and validation rule.</p>
+    <button class="btn" onclick="document.getElementById('act93').style.display='block'">Show sample HospitalNumber values</button>
+    <div id="act93" class="answer">
+      <ul>
+        <li>Winnie Sing — HN000001</li>
+        <li>Steve Chow — HN000002</li>
+        <li>Chin Wee — HN000003</li>
+        <li>Min Hoo — HN000004</li>
+        <li>Peter Patel — HN000005</li>
+        <li>Sue Sands — HN000006</li>
+        <li>Farouk Khan — HN000007</li>
+        <li>Ahmad Teo — HN000008</li>
+      </ul>
+    </div>
+  </div>
+
+</details>
+
+<details>
+  <summary><strong>Interactive Quiz — check your understanding</strong></summary>
+  <div>
+    <p><strong>Q1.</strong> A single-table database contains how many tables?</p>
+    <button onclick="pick('q1','A')">A: One</button>
+    <button onclick="pick('q1','B')">B: Two</button>
+    <button onclick="pick('q1','C')">C: Many</button>
+    <p id="q1fb" class="small"></p>
+
+    <p><strong>Q2.</strong> Which data type would you choose for <code>BedNumber</code>?</p>
+    <button onclick="pick('q2','A')">A: Text</button>
+    <button onclick="pick('q2','B')">B: Integer</button>
+    <button onclick="pick('q2','C')">C: Date/Time</button>
+    <p id="q2fb" class="small"></p>
+
+    <p><strong>Q3.</strong> What must a primary key ensure?</p>
+    <button onclick="pick('q3','A')">A: Values are unique</button>
+    <button onclick="pick('q3','B')">B: Values are always blank</button>
+    <button onclick="pick('q3','C')">C: Values repeat often</button>
+    <p id="q3fb" class="small"></p>
+
+    <p><strong>Q4.</strong> Which validation would stop <code>WardNumber</code> = 15?</p>
+    <button onclick="pick('q4','A')">A: Type check</button>
+    <button onclick="pick('q4','B')">B: Range check</button>
+    <button onclick="pick('q4','C')">C: Format check</button>
+    <p id="q4fb" class="small"></p>
+
+    <p><strong>Score:</strong> <span id="score">0</span>/4</p>
+  </div>
+</details>
+
+<script>
+// quiz answers
+const answers = {q1:'A', q2:'B', q3:'A', q4:'B'};
+let score = 0;
+function pick(q, choice){
+  const fb = document.getElementById(q + 'fb');
+  if(!fb) return;
+  if(choice === answers[q]){ fb.textContent = 'Correct!'; fb.style.color='green'; score += (fb.textContent.includes('Correct!')?0:1); }
+  else { fb.textContent = 'Incorrect — try again.'; fb.style.color='red'; }
+  document.getElementById('score').textContent = Object.values(document.querySelectorAll('[id$="fb"]').length ? [] : []); // placeholder
+  // simple recalc score
+  const fbs = ['q1fb','q2fb','q3fb','q4fb'];
+  let s=0; for(const id of fbs){const el=document.getElementById(id); if(el && el.textContent.startsWith('Correct')) s++;} document.getElementById('score').textContent = s;
+}
+
+// fill-in-the-blanks checker
+function checkFill(){
+  const answersFill = ['table','database','record','record','fields','record','fields','record','primary key','text','character','date/time','fields','validation'];
+  const ids = ['w1','w2','w3','w4','w5','w6','w7','w8','w9','w10','w11','w12','w13','w14'];
+  let correct=0;
+  ids.forEach((id,i)=>{
+    const val = (document.getElementById(id).value||'').trim();
+    if(val.toLowerCase() === answersFill[i].toLowerCase()) correct++;
+  });
+  const res = document.getElementById('fillResult');
+  res.style.display='block';
+  res.textContent = 'You got '+correct+' out of '+ids.length+' correct.';
+}
+</script>
+<details>
+  <summary><strong>9.1.4 SQL — Structured Query Language (SELECT, WHERE, ORDER BY, SUM, COUNT)</strong></summary>
+  <p>SQL (pronounced <em>es-queue-el</em>) is the standard language for querying databases. In IGCSE we use SQL to query single-table databases to obtain and display only the information required.</p>
+
+  <h4>Basic SQL keywords you must know</h4>
+  <table>
+    <tr><th>Keyword</th><th>Use</th></tr>
+    <tr><td>SELECT</td><td>Choose which fields (columns) to display.</td></tr>
+    <tr><td>FROM</td><td>Specify the table to query.</td></tr>
+    <tr><td>WHERE</td><td>Filter rows (records) by a condition.</td></tr>
+    <tr><td>ORDER BY</td><td>Sort results by field(s), ASC (default) or DESC.</td></tr>
+    <tr><td>SUM(field)</td><td>Return sum of all values in a numeric field.</td></tr>
+    <tr><td>COUNT(field)</td><td>Count rows where the field matches a condition.</td></tr>
+  </table>
+
+  <p>Only <code>SELECT</code> and <code>FROM</code> are mandatory for a basic SELECT query. Field values of type text/char/date should be quoted in SQL (single quotes). Numeric types are not quoted.</p>
+
+  <h4>Comparison operators</h4>
+  <p>=, &gt;, &lt;, &gt;=, &lt;=, &lt;&gt; (not equal), BETWEEN, LIKE, IN, AND, OR, NOT</p>
+
+  <h4>Field value examples (how to write values)</h4>
+  <ul>
+    <li>Text: <code>'Mr Smith'</code></li>
+    <li>Character: <code>'M'</code></li>
+    <li>Boolean: <code>TRUE</code> or <code>FALSE</code></li>
+    <li>Integer: <code>7</code></li>
+    <li>Real: <code>12.01</code></li>
+    <li>Date/Time: <code>'22/11/2022'</code> (Access may accept different formats)</li>
+  </ul>
+
+  <h4>Example queries (worked examples)</h4>
+  <div class="note">
+    <strong>Example 1 — Display Mr Smith's patients</strong>
+    <pre>SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith';</pre>
+  </div>
+  <div class="note">
+    <strong>Example 2 — Same, ordered by family name</strong>
+    <pre>SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith'
+ORDER BY FamilyName;</pre>
+  </div>
+
+  <div class="exercise">
+    <strong>Example 3 — Using SUM and COUNT</strong>
+    <p>Count patients in Ward 7 and sum badges example (if field Badges exists):</p>
+    <pre>SELECT COUNT(HospitalNumber)
+FROM PATIENT
+WHERE WardNumber = 7;
+
+SELECT SUM(Badges)
+FROM CUB;</pre>
+  </div>
+
+  <h4>Simulated PATIENT table (for practice)</h4>
+  <table>
+    <tr><th>HospitalNumber</th><th>FirstName</th><th>FamilyName</th><th>DateOfAdmission</th><th>Consultant</th><th>WardNumber</th><th>BedNumber</th></tr>
+    <tr><td>HN000001</td><td>Winnie</td><td>Sing</td><td>12/10/2022</td><td>Mr Smith</td><td>6</td><td>8</td></tr>
+    <tr><td>HN000002</td><td>Steve</td><td>Chow</td><td>23/10/2022</td><td>Miss Abebe</td><td>6</td><td>3</td></tr>
+    <tr><td>HN000003</td><td>Chin</td><td>Wee</td><td>30/10/2022</td><td>Mr Jones</td><td>7</td><td>1</td></tr>
+    <tr><td>HN000004</td><td>Min</td><td>Hoo</td><td>01/11/2022</td><td>Mr Smith</td><td>6</td><td>1</td></tr>
+    <tr><td>HN000005</td><td>Peter</td><td>Patel</td><td>12/11/2022</td><td>Mr Jones</td><td>7</td><td>8</td></tr>
+    <tr><td>HN000006</td><td>Sue</td><td>Sands</td><td>19/11/2022</td><td>Miss Abebe</td><td>6</td><td>2</td></tr>
+    <tr><td>HN000007</td><td>Farouk</td><td>Khan</td><td>22/11/2022</td><td>Mr Jones</td><td>7</td><td>4</td></tr>
+    <tr><td>HN000008</td><td>Ahmad</td><td>Teo</td><td>22/11/2022</td><td>Mr Jones</td><td>7</td><td>2</td></tr>
+  </table>
+
+  <h4>Practice Exercises (Activity 9.5 & 9.6)</h4>
+  <ol>
+    <li>a) Write an SQL query to list all Mr Jones' patients.
+      <div class="small">(Hint: use WHERE Consultant = 'Mr Jones')</div>
+      <button class="btn" onclick="showAns('a1')">Show answer</button>
+      <div id="a1" class="answer">SELECT HospitalNumber, FirstName, FamilyName<br>FROM PATIENT<br>WHERE Consultant = 'Mr Jones';</div>
+    </li>
+    <li>b) Write an SQL query to list all the patients not in ward 6.
+      <button class="btn" onclick="showAns('a2')">Show answer</button>
+      <div id="a2" class="answer">SELECT HospitalNumber, FirstName, FamilyName, WardNumber<br>FROM PATIENT<br>WHERE WardNumber &lt;&gt; 6;</div>
+    </li>
+    <li>c) Write an SQL query to list all the patients who arrived on 12/11/2022.
+      <button class="btn" onclick="showAns('a3')">Show answer</button>
+      <div id="a3" class="answer">SELECT HospitalNumber, FirstName, FamilyName, DateOfAdmission<br>FROM PATIENT<br>WHERE DateOfAdmission = '12/11/2022';</div>
+    </li>
+    <li>d) Write an SQL query to list all the patients who arrived between 12/10/2022 AND 30/10/2022.
+      <button class="btn" onclick="showAns('a4')">Show answer</button>
+      <div id="a4" class="answer">SELECT HospitalNumber, FirstName, FamilyName, DateOfAdmission<br>FROM PATIENT<br>WHERE DateOfAdmission BETWEEN '12/10/2022' AND '30/10/2022';</div>
+    </li>
+  </ol>
+
+  <h4>Exercise — identify output (Activity 9.5.2)</h4>
+  <p>Write down the output from this SQL query:</p>
+  <pre>SELECT FirstName, FamilyName, BedNumber
+FROM PATIENT
+WHERE WardNumber = 7;</pre>
+  <button class="btn" onclick="document.getElementById('out1').style.display='block'">Show output</button>
+  <div id="out1" class="answer">
+    <table>
+      <tr><th>FirstName</th><th>FamilyName</th><th>BedNumber</th></tr>
+      <tr><td>Chin</td><td>Wee</td><td>1</td></tr>
+      <tr><td>Peter</td><td>Patel</td><td>8</td></tr>
+      <tr><td>Farouk</td><td>Khan</td><td>4</td></tr>
+      <tr><td>Ahmad</td><td>Teo</td><td>2</td></tr>
+    </table>
+  </div>
+
+  <h4>COUNT & SUM exercises (Activity 9.6)</h4>
+  <ol>
+    <li>a) Write an SQL query to count the number of patients in ward 7.
+      <button class="btn" onclick="showAns('c1')">Show answer</button>
+      <div id="c1" class="answer">SELECT COUNT(HospitalNumber) AS NumPatients<br>FROM PATIENT<br>WHERE WardNumber = 7; -- Output: 4</div>
+    </li>
+    <li>b) Write an SQL query to count the number of patients not in ward 7.
+      <button class="btn" onclick="showAns('c2')">Show answer</button>
+      <div id="c2" class="answer">SELECT COUNT(HospitalNumber) AS NumPatients<br>FROM PATIENT<br>WHERE WardNumber &lt;&gt; 7; -- Output: 4</div>
+    </li>
+  </ol>
+
+  <h4>Exercise — read & predict output (ORDER BY)</h4>
+  <p>Write down the output from this SQL query:</p>
+  <pre>SELECT HospitalNumber, FirstName, FamilyName, Consultant
+FROM PATIENT
+ORDER BY Consultant, FamilyName;</pre>
+  <button class="btn" onclick="document.getElementById('out2').style.display='block'">Show output</button>
+  <div id="out2" class="answer">
+    <table>
+      <tr><th>HospitalNumber</th><th>FirstName</th><th>FamilyName</th><th>Consultant</th></tr>
+      <tr><td>HN000002</td><td>Steve</td><td>Chow</td><td>Miss Abebe</td></tr>
+      <tr><td>HN000006</td><td>Sue</td><td>Sands</td><td>Miss Abebe</td></tr>
+      <tr><td>HN000004</td><td>Min</td><td>Hoo</td><td>Mr Smith</td></tr>
+      <tr><td>HN000001</td><td>Winnie</td><td>Sing</td><td>Mr Smith</td></tr>
+      <tr><td>HN000005</td><td>Peter</td><td>Patel</td><td>Mr Jones</td></tr>
+      <tr><td>HN000007</td><td>Farouk</td><td>Khan</td><td>Mr Jones</td></tr>
+      <tr><td>HN000003</td><td>Chin</td><td>Wee</td><td>Mr Jones</td></tr>
+      <tr><td>HN000008</td><td>Ahmad</td><td>Teo</td><td>Mr Jones</td></tr>
+    </table>
+  </div>
+
+  <h4>Cub Scout case study — quick SQL examples</h4>
+  <p>Assume a <code>CUB</code> table has fields: <code>CubID, FamilyName, OtherNames, DOB, Gender, Six, Badges</code></p>
+  <div class="note">
+    <strong>Examples:</strong>
+    <pre>-- Cubs in the red six
+SELECT CubID, OtherNames, FamilyName
+FROM CUB
+WHERE Six = 'red';
+
+-- Cubs in red or blue six
+SELECT CubID, OtherNames, FamilyName
+FROM CUB
+WHERE Six IN ('red','blue');
+
+-- Count cubs in red six
+SELECT COUNT(CubID)
+FROM CUB
+WHERE Six = 'red';
+
+-- Sum total badges
+SELECT SUM(Badges) AS TotalBadges
+FROM CUB;</pre>
+  </div>
+
+  <h4>Practice tasks (Activity 9.7 & 9.8) — suggested answers available</h4>
+  <ol>
+    <li>Set up CUB table; enter 10 records (practical).
+      <ul>
+        <li>i) SQL to pick out cubs in red six: <code>SELECT * FROM CUB WHERE Six = 'red';</code></li>
+        <li>ii) SQL to pick cubs in red or blue six: <code>SELECT * FROM CUB WHERE Six IN ('red','blue');</code></li>
+        <li>iii) SQL to count cubs in red six: <code>SELECT COUNT(CubID) FROM CUB WHERE Six = 'red';</code></li>
+        <li>iv) SQL to sum badges: <code>SELECT SUM(Badges) FROM CUB;</code></li>
+      </ul>
+    </li>
+    <li>Student database design (Activity 9.8): a complete set of tasks from choosing data types, validating fields, choosing primary key, to writing SQL scripts. Sample solutions are given as teacher notes (ask if you want the full sample dataset & SQL).</li>
+  </ol>
+
+  <h4>Interactive SQL syntax checker (type a SQL query and press Check)</h4>
+  <p class="small">This checker does not execute SQL — it matches your query (loosely) against expected answers for practice. Use it to compare structure, keywords and field names.</p>
+  <textarea id="sqlbox" rows="4" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px">SELECT HospitalNumber, FirstName, FamilyName FROM PATIENT WHERE Consultant = 'Mr Smith';</textarea>
+  <div style="margin-top:8px"><button class="btn" onclick="checkSQL()">Check</button> <button class="btn" onclick="document.getElementById('sqlbox').value=''">Clear</button></div>
+  <div id="sqlfb" class="answer"></div>
+
+  <script>
+    function showAns(id){document.getElementById(id).style.display='block'}
+    function normalize(s){return s.replace(/\s+/g,' ').trim().toLowerCase();}
+    const patterns = [
+      {p:normalize("select hospitalnumber, firstname, familyname from patient where consultant = 'mr jones';"), msg:'Good: select specific fields with a where condition.'},
+      {p:normalize("select hospitalnumber, firstname, familyname from patient where wardnumber <> 6;"), msg:'Good: use <> for not equal.'},
+      {p:normalize("select hospitalnumber, firstname, familyname from patient where dateofadmission = '12/11/2022';"), msg:'Good: date match.'}
+    ];
+    function checkSQL(){
+      const text = normalize(document.getElementById('sqlbox').value.replace(/;$/,'')+';');
+      let ok=false; let message='';
+      for(const pt of patterns){ if(text.indexOf(pt.p) !== -1 || pt.p.indexOf(text) !== -1){ ok=true; message=pt.msg; break; } }
+      const fb=document.getElementById('sqlfb'); fb.style.display='block';
+      if(ok){ fb.style.color='green'; fb.textContent = 'Looks good — ' + message; }
+      else {
+        fb.style.color='orange'; fb.textContent = 'Could not exactly match your query. Check keyword order (SELECT ... FROM ... WHERE ...) and ensure field names match (HospitalNumber, FirstName, FamilyName, Consultant, WardNumber, DateOfAdmission).';
+      }
+    }
+  </script>
+
+</details>
+
+</body>
+</html>
