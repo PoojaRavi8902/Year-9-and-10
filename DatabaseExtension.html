@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Database — A‑Level Extension (DDL & DML) — Designed by Ravi Raju for MESCairo</title>
+<style>
+:root{--accent:#0b66c3;--muted:#556;color-scheme:light}
+body{font-family:Segoe UI,Roboto,Arial;max-width:1000px;margin:18px auto;padding:18px;color:#212121}
+h1{font-size:26px;margin:0 0 6px}
+.lead{color:var(--muted);margin:0 0 14px}
+details{background:#fff;border:1px solid #e6eef9;border-radius:8px;padding:12px;margin:12px 0}
+summary{font-size:18px;cursor:pointer}
+pre{background:#f3f7fb;padding:10px;border-radius:6px;overflow:auto}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+th,td{border:1px solid #e2e8f0;padding:8px;text-align:left}
+.note{background:#f0f8ff;padding:10px;border-left:4px solid var(--accent);margin:10px 0}
+.exercise{background:#fff6ea;padding:10px;border-left:4px solid #ff9f1c;margin:10px 0}
+.btn{background:var(--accent);color:#fff;padding:8px 10px;border-radius:6px;border:none;cursor:pointer}
+.small{font-size:13px;color:var(--muted)}
+.answer{display:none;margin-top:8px;padding:10px;background:#f7fff3;border-left:4px solid #27a03a}
+input[type=text], textarea{padding:6px;border:1px solid #cbd5e1;border-radius:4px;width:100%}
+.code{font-family:Consolas,monospace;background:#f7fbff;padding:8px;border-radius:6px}
+</style>
+</head>
+<body>
+<h1>Database — A‑Level Extension (DDL & DML)</h1>
+<p class="lead"><strong>Designed by Ravi Raju for MESCairo</strong></p>
+
+<details open>
+  <summary><strong>Overview — DDL vs DML</strong></summary>
+  <p>AS/A Level covers <strong>relational databases</strong> (multiple related tables). Industry-standard DBMSs use two SQL language groups:</p>
+  <ul>
+    <li><strong>DDL (Data Definition Language)</strong> — create, alter and remove database structures (tables, keys, indexes). Examples: <code>CREATE DATABASE</code>, <code>CREATE TABLE</code>, <code>ALTER TABLE</code>.</li>
+    <li><strong>DML (Data Manipulation Language)</strong> — manage the data stored in the structures. Examples: <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>SELECT</code>.</li>
+  </ul>
+  <p class="small">Most DBMSs (MySQL, PostgreSQL, SQLite, SQL Server) use SQL for both DDL and DML with small syntax differences — learn the standard forms below.</p>
+</details>
+
+<details>
+  <summary><strong>SQL Data Types for Attributes (common)</strong></summary>
+  <table>
+    <tr><th>Type</th><th>Description</th><th>Typical format</th></tr>
+    <tr><td><code>CHAR(n)</code></td><td>Fixed-length text (n chars)</td><td><code>CHAR(1)</code> for gender</td></tr>
+    <tr><td><code>VARCHAR(n)</code></td><td>Variable-length text (max n chars)</td><td><code>VARCHAR(30)</code> for names</td></tr>
+    <tr><td><code>BOOLEAN</code></td><td>True/False (often 1/0)</td><td><code>BOOLEAN</code> or <code>TINYINT(1)</code></td></tr>
+    <tr><td><code>INTEGER</code></td><td>Whole numbers</td><td><code>INTEGER</code> or <code>INT</code></td></tr>
+    <tr><td><code>REAL</code></td><td>Decimals</td><td><code>REAL</code> or <code>DECIMAL(8,2)</code></td></tr>
+    <tr><td><code>DATE</code></td><td>Dates (ISO format)</td><td><code>DATE</code> (YYYY-MM-DD)</td></tr>
+    <tr><td><code>TIME</code></td><td>Times</td><td><code>TIME</code> (HH:MM:SS)</td></tr>
+  </table>
+</details>
+
+<details>
+  <summary><strong>DDL — Creating and changing database structure (examples)</strong></summary>
+  <div class="note">
+    <strong>Create a new database</strong>
+    <pre class="code">CREATE DATABASE HospitalDB;</pre>
+  </div>
+
+  <div class="note">
+    <strong>Create PATIENT table (good example)</strong>
+    <pre class="code">CREATE TABLE PATIENT (
+  HospitalNumber CHAR(8) PRIMARY KEY,
+  FirstName VARCHAR(30),
+  FamilyName VARCHAR(30),
+  DateOfAdmission DATE,
+  Consultant VARCHAR(40),
+  WardNumber INTEGER,
+  BedNumber INTEGER
+);</pre>
+  </div>
+
+  <div class="note">
+    <strong>Corrected CUB example (your original had a syntax error)</strong>
+    <pre class="code">CREATE DATABASE CubScout;
+
+CREATE TABLE CUB (
+  CubNumber INTEGER PRIMARY KEY,
+  CubName VARCHAR(30),
+  DateOfBirth DATE,
+  Address VARCHAR(100),
+  Gender CHAR(1),
+  School VARCHAR(30),
+  TelephoneNumber CHAR(14),
+  DateJoined DATE,
+  Six VARCHAR(10),
+  Badges INTEGER
+);
+
+-- Add primary key using ALTER (if needed)
+ALTER TABLE CUB ADD PRIMARY KEY (CubNumber);</pre>
+    <p class="small">Notes: define <code>CubNumber</code> as a numeric primary key. TelephoneNumber must be declared with a data type — the original comma placement was wrong.</p>
+  </div>
+
+  <div class="exercise">
+    <strong>Try it (DDL)</strong>
+    <p>Write a CREATE TABLE statement for a <code>BOOK</code> table with fields: <code>ISBN</code> (PRIMARY KEY, char 13), <code>Title</code>, <code>Author</code>, <code>Price</code> (real), <code>PublishedDate</code> (date).</p>
+    <button class="btn" onclick="document.getElementById('ddlAns').style.display='block'">Show model answer</button>
+    <div id="ddlAns" class="answer">
+      <pre class="code">CREATE TABLE BOOK (
+  ISBN CHAR(13) PRIMARY KEY,
+  Title VARCHAR(100),
+  Author VARCHAR(60),
+  Price REAL,
+  PublishedDate DATE
+);</pre>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary><strong>DML — inserting, updating, deleting, querying (examples)</strong></summary>
+
+  <div class="note">
+    <strong>Insert rows</strong>
+    <pre class="code">INSERT INTO PATIENT (HospitalNumber, FirstName, FamilyName, DateOfAdmission, Consultant, WardNumber, BedNumber)
+VALUES ('HN000009','Aisha','Khan','2022-12-01','Dr Brown',5,2);
+
+INSERT INTO CUB (CubNumber, CubName, DateOfBirth, Address, Gender, School, TelephoneNumber, DateJoined, Six, Badges)
+VALUES (11,'Ali', '2012-05-10', '12 Street', 'M', 'Elm School', '01234567890123','2023-01-05','red',3);</pre>
+  </div>
+
+  <div class="note">
+    <strong>Update example</strong>
+    <pre class="code">UPDATE PATIENT
+SET WardNumber = 8, BedNumber = 1
+WHERE HospitalNumber = 'HN000003';</pre>
+  </div>
+
+  <div class="note">
+    <strong>Delete example</strong>
+    <pre class="code">DELETE FROM PATIENT
+WHERE HospitalNumber = 'HN000008';</pre>
+  </div>
+
+  <div class="note">
+    <strong>Query (SELECT) examples — DML read</strong>
+    <pre class="code">-- Select specific fields
+SELECT FirstName, FamilyName, WardNumber FROM PATIENT;
+
+-- Select with condition
+SELECT * FROM PATIENT WHERE WardNumber = 6;
+
+-- Order results
+SELECT FirstName, FamilyName FROM PATIENT ORDER BY FamilyName DESC;
+
+-- Aggregates
+SELECT COUNT(*) FROM PATIENT WHERE WardNumber = 7;
+SELECT SUM(Badges) FROM CUB;</pre>
+  </div>
+
+  <div class="exercise">
+    <strong>Exercise (DML)</strong>
+    <ol>
+      <li>Write an SQL <code>UPDATE</code> to set <code>Badges = Badges + 1</code> for all cubs in the yellow six.</li>
+      <li>Write an SQL <code>DELETE</code> to remove any cub whose <code>DateJoined</code> is before '2018-01-01'.</li>
+      <li>Write an SQL <code>SELECT</code> to list <code>CubName</code> and <code>Badges</code> for cubs in red or blue six, ordered by <code>Badges</code> descending.</li>
+    </ol>
+    <button class="btn" onclick="document.getElementById('dmlAns').style.display='block'">Show answers</button>
+    <div id="dmlAns" class="answer">
+      <pre class="code">-- 1
+UPDATE CUB SET Badges = Badges + 1 WHERE Six = 'yellow';
+
+-- 2
+DELETE FROM CUB WHERE DateJoined &lt; '2018-01-01';
+
+-- 3
+SELECT CubName, Badges FROM CUB WHERE Six IN ('red','blue') ORDER BY Badges DESC;</pre>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary><strong>Relational ideas — foreign keys, simple joins (intro)</strong></summary>
+  <p>At AS/A Level you'll study relational design — separate tables connected by keys. Example:</p>
+  <pre class="code">-- two tables: PATIENT and CONSULTANT
+CREATE TABLE CONSULTANT (
+  ConsultantID INTEGER PRIMARY KEY,
+  Name VARCHAR(40),
+  Speciality VARCHAR(40)
+);
+
+ALTER TABLE PATIENT ADD ConsultantID INTEGER;
+-- Link (in some DBMSs use FOREIGN KEY constraint)
+-- Example join:
+SELECT P.FirstName, P.FamilyName, C.Name
+FROM PATIENT P JOIN CONSULTANT C ON P.ConsultantID = C.ConsultantID;</pre>
+  <p class="small">(Full foreign-key syntax varies and will be covered in AS/A Level.)</p>
+</details>
+
+<details>
+  <summary><strong>Extension Activity — Build the PATIENT database using DDL and practice DML</strong></summary>
+  <ol>
+    <li>Use the DDL example above to create <code>PATIENT</code> and <code>CUB</code> tables.</li>
+    <li>Insert the sample rows from the IGCSE activities (or create your own).</li>
+    <li>Try the DML examples: run SELECTs, COUNTs, SUMs; practice UPDATE and DELETE in a safe sandbox.</li>
+  </ol>
+  <p class="small">If you don't have a DBMS installed, try <a href="https://sqlite.org/" target="_blank">SQLite</a> or <a href="https://www.mysql.com/" target="_blank">MySQL</a> — both are free to install. Many online SQL sandboxes also execute queries in the browser.</p>
+</details>
+
+<details>
+  <summary><strong>Exercises & Exam-style tasks (lots of practice)</strong></summary>
+  <div class="exercise">
+    <strong>Task 1 — create & insert (short answer)</strong>
+    <p>Write SQL to create a table <code>ROOM</code> with fields: <code>RoomID</code> (int PK), <code>RoomNumber</code> (char 4), <code>Floor</code> (int), <code>Type</code> (varchar 20).</p>
+    <button class="btn" onclick="document.getElementById('t1').style.display='block'">Show model answer</button>
+    <div id="t1" class="answer"><pre class="code">CREATE TABLE ROOM (
+  RoomID INTEGER PRIMARY KEY,
+  RoomNumber CHAR(4),
+  Floor INTEGER,
+  Type VARCHAR(20)
+);</pre></div>
+  </div>
+
+  <div class="exercise">
+    <strong>Task 2 — prediction (medium)</strong>
+    <p>Given the PATIENT table sample data, write the output of:</p>
+    <pre class="code">SELECT COUNT(*) FROM PATIENT WHERE WardNumber = 6;</pre>
+    <button class="btn" onclick="document.getElementById('t2').style.display='block'">Show answer</button>
+    <div id="t2" class="answer"><pre class="code">-- From sample: WardNumber = 6 appears for Winnie, Steve, Min, Sue => 4</pre></div>
+  </div>
+
+  <div class="exercise">
+    <strong>Task 3 — exam-style (scenario)</strong>
+    <p>A school wants a student table. List suitable fields and data types, choose a primary key and give 2 validation rules.</p>
+    <button class="btn" onclick="document.getElementById('t3').style.display='block'">Show sample answer</button>
+    <div id="t3" class="answer"><pre class="code">Sample: StudentID CHAR(8) PK, FamilyName VARCHAR(40), OtherNames VARCHAR(60), DOB DATE, Email VARCHAR(80), Year INTEGER
+Validation: Email presence & format check; DOB must be a valid date & student age between 5 and 19.</pre></div>
+  </div>
+
+  <div class="exercise">
+    <strong>Task 4 — extended SQL</strong>
+    <p>Write a single SQL query to find the total badges for cubs in each six (grouped) — (hint: GROUP BY).</p>
+    <button class="btn" onclick="document.getElementById('t4').style.display='block'">Show model answer</button>
+    <div id="t4" class="answer"><pre class="code">SELECT Six, SUM(Badges) AS TotalBadges
+FROM CUB
+GROUP BY Six
+ORDER BY TotalBadges DESC;</pre></div>
+  </div>
+</details>
+
+<details>
+  <summary><strong>Interactive DDL/DML checker & mini-quiz</strong></summary>
+  <p class="small">This simple checker only validates structure and keywords; it does not run SQL. Use it to get quick feedback.</p>
+  <textarea id="checkbox" rows="5">-- Try: SELECT FirstName, FamilyName FROM PATIENT WHERE WardNumber = 6;</textarea>
+  <div style="margin-top:8px"><button class="btn" onclick="checkInput()">Check SQL</button> <button class="btn" onclick="document.getElementById('checkbox').value=''">Clear</button></div>
+  <div id="checkout" class="answer"></div>
+
+  <div style="margin-top:12px" class="exercise">
+    <strong>Mini quiz</strong>
+    <p>Q1. Which command defines a table structure?</p>
+    <button class="btn" onclick="mq('q1','A')">A: INSERT</button>
+    <button class="btn" onclick="mq('q1','B')">B: CREATE TABLE</button>
+    <button class="btn" onclick="mq('q1','C')">C: SELECT</button>
+    <p id="mq1" class="small"></p>
+
+    <p>Q2. Which command removes rows from a table?</p>
+    <button class="btn" onclick="mq('q2','A')">A: DELETE</button>
+    <button class="btn" onclick="mq('q2','B')">B: DROP</button>
+    <button class="btn" onclick="mq('q2','C')">C: CREATE</button>
+    <p id="mq2" class="small"></p>
+
+    <p>Score: <span id="mqscore">0</span>/2</p>
+  </div>
+</details>
+
+<script>
+function checkInput(){
+  const t=document.getElementById('checkbox').value.toLowerCase();
+  const out=document.getElementById('checkout'); out.style.display='block';
+  const msgs=[];
+  if(t.includes('create table')) msgs.push('DDL detected: CREATE TABLE');
+  if(t.includes('create database')) msgs.push('DDL detected: CREATE DATABASE');
+  if(t.includes('insert into')) msgs.push('DML detected: INSERT INTO');
+  if(t.includes('update ')) msgs.push('DML detected: UPDATE');
+  if(t.includes('delete from')) msgs.push('DML detected: DELETE FROM');
+  if(t.includes('select ')) msgs.push('Query detected: SELECT');
+  if(t.includes('group by')) msgs.push('Aggregate: GROUP BY');
+  if(msgs.length===0) out.textContent='No recognized keywords found. Check SQL syntax.'; else out.textContent=msgs.join('\n');
+}
+
+// mini-quiz
+const mAnswers={q1:'B', q2:'A'};
+function mq(q,choice){ const el=document.getElementById('mq'+q.slice(1)); if(choice===mAnswers[q]){ el.textContent='Correct'; el.style.color='green'; } else { el.textContent='Incorrect'; el.style.color='red'; } const s=(document.getElementById('mq1').textContent==='Correct'?1:0)+(document.getElementById('mq2').textContent==='Correct'?1:0); document.getElementById('mqscore').textContent=s; }
+</script>
+
+</body>
+</html>
