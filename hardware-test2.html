@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chapter 3 – Hardware Assessment</title>
+<style>
+body{font-family:Arial, sans-serif; margin:20px;}
+.hidden{display:none;}
+.question{margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:6px;}
+button{padding:10px 20px; font-size:16px; margin-top:10px; cursor:pointer;}
+</style>
+</head>
+<body>
+<h2>Chapter 3 – Hardware</h2>
+<label><b>Student Name:</b></label>
+<input type="text" id="studentName">
+<span id="marksDisplay"></span>
+<br><br>
+<button id="startBtn">Start Test</button>
+<div id="questions" class="hidden"></div>
+<button id="submitBtn" class="hidden">SUBMIT</button>
+<script>
+const qDiv = document.getElementById('questions');
+const submitBtn = document.getElementById('submitBtn');
+const marksDisplay = document.getElementById('marksDisplay');
+
+const mcqData = [
+  {q:"1. Which device is an input device?", opts:["Keyboard","Monitor","Printer","Speaker"], ans:"Keyboard"},
+  {q:"2. Which device is an output device?", opts:["Mouse","Scanner","Monitor","Microphone"], ans:"Monitor"},
+  {q:"3. Which is volatile memory?", opts:["RAM","ROM","Hard Disk","CD-ROM"], ans:"RAM"},
+  {q:"4. Which is non-volatile memory?", opts:["RAM","ROM","Cache","Registers"], ans:"ROM"},
+  {q:"5. Which stores large amounts of data permanently?", opts:["SSD","RAM","Cache","Registers"], ans:"SSD"},
+  {q:"6. CPU component that performs calculations?", opts:["ALU","Control Unit","Cache","RAM"], ans:"ALU"},
+  {q:"7. CPU component that manages instructions?", opts:["ALU","Control Unit","Cache","Registers"], ans:"Control Unit"},
+  {q:"8. Small, fast memory inside CPU?", opts:["Cache","ROM","RAM","SSD"], ans:"Cache"},
+  {q:"9. Magnetic storage device?", opts:["Hard Disk","RAM","ROM","Flash"], ans:"Hard Disk"},
+  {q:"10. Optical storage device?", opts:["CD-ROM","RAM","SSD","Cache"], ans:"CD-ROM"}
+];
+
+const fillData = [
+  {q:"11. CPU stands for ______.", ans:"Central Processing Unit"},
+  {q:"12. RAM stands for ______.", ans:"Random Access Memory"},
+  {q:"13. ROM stands for ______.", ans:"Read Only Memory"},
+  {q:"14. Primary storage is also called ______ memory.", ans:"Main"},
+  {q:"15. Secondary storage is also called ______ memory.", ans:"Auxiliary"},
+  {q:"16. GPU stands for ______.", ans:"Graphics Processing Unit"},
+  {q:"17. Input devices send data to the ______.", ans:"CPU"},
+  {q:"18. Output devices receive data from the ______.", ans:"CPU"},
+  {q:"19. Flash memory is ______-volatile.", ans:"Non"},
+  {q:"20. Registers are located inside the ______.", ans:"CPU"}
+];
+
+const shortData = [
+  {q:"21. Explain the function of the ALU.", keywords:["arithmetic","logic","operation"]},
+  {q:"22. Explain the role of the control unit.", keywords:["instructions","control","fetch"]},
+  {q:"23. Difference between RAM and ROM.", keywords:["volatile","non-volatile","read-only","read/write"]},
+  {q:"24. Advantages of SSD over HDD.", keywords:["speed","durability","no moving parts"]},
+  {q:"25. Explain cache memory.", keywords:["fast","CPU","temporary"]}
+];
+
+const longData = [
+  {q:"26. Describe the major components of a computer and their functions.", keywords:["CPU","RAM","ROM","Input","Output"]},
+  {q:"27. Explain how primary and secondary storage differ, giving examples.", keywords:["primary","secondary","RAM","SSD","HDD"]}
+];
+
+function renderQuestions(){
+  let html='';
+  mcqData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br>`;
+    item.opts.forEach(opt=>{
+      html+=`<label><input type='radio' name='mcq${i}' value='${opt}'> ${opt}</label><br>`;
+    });
+    html+=`<p class='hidden answer'>${item.ans}</p></div>`;
+  });
+  fillData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><input type='text' class='fill'><p class='hidden answer'>${item.ans}</p></div>`;
+  });
+  shortData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><textarea class='short' rows='3'></textarea><p class='hidden answer'>${item.keywords.join(',')}</p></div>`;
+  });
+  longData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><textarea class='short' rows='4'></textarea><p class='hidden answer'>${item.keywords.join(',')}</p></div>`;
+  });
+  qDiv.innerHTML = html;
+}
+
+document.getElementById('startBtn').onclick = ()=>{
+  const name = document.getElementById('studentName').value.trim();
+  if(!name){ alert('Enter your name'); return; }
+  qDiv.style.display='block';
+  submitBtn.classList.remove('hidden');
+  renderQuestions();
+};
+
+submitBtn.onclick = ()=>{
+ let score=0;
+ document.querySelectorAll('.question').forEach(q=>{
+  const mcq=q.querySelector("input[type='radio']");
+  const fill=q.querySelector('.fill');
+  const short=q.querySelector('.short');
+  const ans=q.querySelector('.answer').innerText.toLowerCase();
+  if(mcq){
+   const checked=q.querySelector("input[type='radio']:checked");
+   if(checked && checked.value.toLowerCase()===ans) score++;
+  }
+  if(fill){ if(fill.value.trim().toLowerCase()===ans) score++; }
+  if(short){
+   let val=short.value.toLowerCase();
+   ans.split(',').forEach(k=>{ if(val.includes(k.trim())) score++; });
+  }
+  q.querySelector('.answer').classList.remove('hidden');
+ });
+ marksDisplay.innerHTML=` | Marks: ${score}`;
+ window.print();
+};
+</script>
+</body>
+</html>

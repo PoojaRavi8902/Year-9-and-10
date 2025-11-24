@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chapter 10 – Boolean Logic Assessment</title>
+<style>
+body{font-family:Arial, sans-serif; margin:20px;}
+.hidden{display:none;}
+.question{margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:6px;}
+button{padding:10px 20px; font-size:16px; margin-top:10px; cursor:pointer;}
+textarea{width:100%;}
+</style>
+</head>
+<body>
+<h2>Chapter 10 – Boolean Logic</h2>
+<label><b>Student Name:</b></label>
+<input type="text" id="studentName">
+<span id="marksDisplay"></span>
+<br><br>
+<button id="startBtn">Start Test</button>
+<div id="questions" class="hidden"></div>
+<button id="submitBtn" class="hidden">SUBMIT</button>
+<script>
+const qDiv = document.getElementById('questions');
+const submitBtn = document.getElementById('submitBtn');
+const marksDisplay = document.getElementById('marksDisplay');
+
+const mcqData = [
+  {q:"1. What is the output of A AND B when A=1, B=0?", opts:["0","1","Error","Undefined"], ans:"0"},
+  {q:"2. Output of A OR B when A=0, B=1?", opts:["0","1","Error","Undefined"], ans:"1"},
+  {q:"3. NOT 1 is?", opts:["0","1","Error","Undefined"], ans:"0"},
+  {q:"4. Which gate gives output 1 only if all inputs are 1?", opts:["AND","OR","XOR","NOT"], ans:"AND"},
+  {q:"5. Which gate gives output 1 if only one input is 1?", opts:["AND","OR","XOR","NOR"], ans:"XOR"},
+  {q:"6. Truth table shows:", opts:["All possible inputs and outputs","Only outputs","Only inputs","Only logic gates"], ans:"All possible inputs and outputs"},
+  {q:"7. Boolean expression for A+B?", opts:["OR","AND","XOR","NOT"], ans:"OR"},
+  {q:"8. Expression for A.B?", opts:["OR","AND","XOR","NOT"], ans:"AND"},
+  {q:"9. DeMorgan's law states:", opts:["NOT(A.B)=NOT A + NOT B","NOT(A+B)=NOT A AND NOT B","Both","None"], ans:"Both"},
+  {q:"10. Logic gates are used in:", opts:["Computers","Calculators","Digital Circuits","All"], ans:"All"}
+];
+
+const fillData = [
+  {q:"11. XOR is also called ______ OR.", ans:"Exclusive"},
+  {q:"12. NOR is ______ of OR.", ans:"NOT"},
+  {q:"13. NAND is ______ of AND.", ans:"NOT"},
+  {q:"14. Output of NOT 0 is ______.", ans:"1"},
+  {q:"15. Output of A OR B when both 0?", ans:"0"},
+  {q:"16. Output of A AND B when both 1?", ans:"1"},
+  {q:"17. Boolean variable can have values ______.", ans:"0,1"},
+  {q:"18. Truth table for one variable has ______ rows.", ans:"2"},
+  {q:"19. AND gate output is 0 when any input is ______.", ans:"0"},
+  {q:"20. OR gate output is 1 when any input is ______.", ans:"1"}
+];
+
+const shortData = [
+  {q:"21. Define AND gate.", keywords:["1 if all inputs 1","0 otherwise"]},
+  {q:"22. Define OR gate.", keywords:["1 if any input 1","0 if all 0"]},
+  {q:"23. Define XOR gate.", keywords:["1 if only one input 1","0 if both 0 or both 1"]},
+  {q:"24. Explain NOT gate.", keywords:["inverts input","0 becomes 1","1 becomes 0"]},
+  {q:"25. State DeMorgan's law.", keywords:["NOT(A AND B)=NOT A OR NOT B","NOT(A OR B)=NOT A AND NOT B"]}
+];
+
+const longData = [
+  {q:"26. Draw and explain truth tables for AND, OR, XOR, NOT gates.", keywords:["AND","OR","XOR","NOT","truth table"]},
+  {q:"27. Simplify a Boolean expression using laws and rules.", keywords:["simplify","Boolean","laws","DeMorgan"]}
+];
+
+function renderQuestions(){
+  let html='';
+  mcqData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br>`;
+    item.opts.forEach(opt=>{
+      html+=`<label><input type='radio' name='mcq${i}' value='${opt}'> ${opt}</label><br>`;
+    });
+    html+=`<p class='hidden answer'>${item.ans}</p></div>`;
+  });
+  fillData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><input type='text' class='fill'><p class='hidden answer'>${item.ans}</p></div>`;
+  });
+  shortData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><textarea class='short' rows='3'></textarea><p class='hidden answer'>${item.keywords.join(',')}</p></div>`;
+  });
+  longData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><textarea class='short' rows='4'></textarea><p class='hidden answer'>${item.keywords.join(',')}</p></div>`;
+  });
+  qDiv.innerHTML = html;
+}
+
+document.getElementById('startBtn').onclick = ()=>{
+  const name = document.getElementById('studentName').value.trim();
+  if(!name){ alert('Enter your name'); return; }
+  qDiv.style.display='block';
+  submitBtn.classList.remove('hidden');
+  renderQuestions();
+};
+
+submitBtn.onclick = ()=>{
+ let score=0;
+ document.querySelectorAll('.question').forEach(q=>{
+  const mcq=q.querySelector("input[type='radio']");
+  const fill=q.querySelector('.fill');
+  const short=q.querySelector('.short');
+  const ans=q.querySelector('.answer').innerText.toLowerCase();
+  if(mcq){
+   const checked=q.querySelector("input[type='radio']:checked");
+   if(checked && checked.value.toLowerCase()===ans) score++;
+  }
+  if(fill){ if(fill.value.trim().toLowerCase()===ans) score++; }
+  if(short){
+   let val=short.value.toLowerCase();
+   ans.split(',').forEach(k=>{ if(val.includes(k.trim())) score++; });
+  }
+  q.querySelector('.answer').classList.remove('hidden');
+ });
+ marksDisplay.innerHTML=` | Marks: ${score}`;
+ window.print();
+};
+</script>
+</body>
+</html>

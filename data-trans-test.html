@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chapter 2 – Data Transmission</title>
+<style>
+body{font-family:Arial, sans-serif; margin:20px;}
+.hidden{display:none;}
+.question{margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:6px;}
+button{padding:10px 20px; font-size:16px; margin-top:10px; cursor:pointer;}
+</style>
+</head>
+<body>
+<h2>Chapter 2 – Data Transmission</h2>
+<label><b>Student Name:</b></label>
+<input type="text" id="studentName">
+<span id="marksDisplay"></span>
+<br><br>
+<button id="startBtn">Start Test</button>
+<div id="questions" class="hidden"></div>
+<button id="submitBtn" class="hidden">SUBMIT</button>
+<script>
+const qDiv = document.getElementById('questions');
+const submitBtn = document.getElementById('submitBtn');
+const marksDisplay = document.getElementById('marksDisplay');
+
+const mcqData = [
+  {q:"1. What is serial transmission?", opts:["Bits sent one at a time","Bits sent in groups","Wireless only","Uses parallel cables"], ans:"Bits sent one at a time"},
+  {q:"2. What is parallel transmission?", opts:["Bits sent together","Bits sent one by one","Wireless only","Used for long distances"], ans:"Bits sent together"},
+  {q:"3. Which is prone to skew?", opts:["Serial","Parallel","Fiber","Wireless"], ans:"Parallel"},
+  {q:"4. Which is used in USB?", opts:["Parallel","Serial","Simplex","Half-duplex"], ans:"Serial"},
+  {q:"5. Which is simplex?", opts:["Keyboard to computer","Two-way same time","Two-way different times","Mobile phones"], ans:"Keyboard to computer"},
+  {q:"6. Full-duplex means:", opts:["One way only","Both ways but not same time","Both ways same time","No data flow"], ans:"Both ways same time"},
+  {q:"7. ARQ stands for:", opts:["Automatic Request Queue","Auto Repeat Query","Automatic Repeat reQuest","Auto Response Quality"], ans:"Automatic Repeat reQuest"},
+  {q:"8. Which transmission is fastest for short distance?", opts:["Serial","Parallel","Wireless","Fiber"], ans:"Parallel"},
+  {q:"9. Which method adds an extra bit for error detection?", opts:["Checksum","Parity","Echo check","None"], ans:"Parity"},
+  {q:"10. Synchronous transmission sends data in:", opts:["Blocks with timing signals","One bit at a time","Start/stop bits only","Parallel bits"], ans:"Blocks with timing signals"}
+];
+
+const fillData = [
+  {q:"11. Transmission in one direction only is called ______.", ans:"Simplex"},
+  {q:"12. Transmission allowing data both ways at different times is ______.", ans:"Half-duplex"},
+  {q:"13. Transmission allowing data both ways at the same time is ______.", ans:"Full-duplex"},
+  {q:"14. Parity bit is used for ______ detection.", ans:"Error"},
+  {q:"15. A ______ is calculated by adding blocks of data.", ans:"Checksum"},
+  {q:"16. Start and stop bits are used in ______ transmission.", ans:"Asynchronous"},
+  {q:"17. Bits sent together in parallel are called ______.", ans:"Bytes"},
+  {q:"18. USB uses ______ transmission.", ans:"Serial"},
+  {q:"19. Synchronous transmission uses a ______ to coordinate data.", ans:"Clock"},
+  {q:"20. ARQ retransmits data on ______ detection.", ans:"Error"}
+];
+
+const shortData = [
+  {q:"21. Explain ARQ.", keywords:["ack","nack","resend","automatic repeat request"]},
+  {q:"22. Explain checksum.", keywords:["sum","block","error check"]},
+  {q:"23. Explain parity checking.", keywords:["even","odd","bit","error"]},
+  {q:"24. Difference between synchronous and asynchronous transmission.", keywords:["timing","clock","start bit","stop bit"]},
+  {q:"25. Advantages of serial vs parallel transmission.", keywords:["distance","skew","cost","simplicity"]}
+];
+
+const longData = [
+  {q:"26. Explain how data transmission modes work including serial, parallel, synchronous, and asynchronous.", keywords:["serial","parallel","synchronous","asynchronous","clock","bits"]},
+  {q:"27. Describe how ARQ works with acknowledgements, timeouts, and retransmission.", keywords:["arq","ack","nack","timeout","retransmit"]}
+];
+
+function renderQuestions(){
+  let html='';
+  mcqData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br>`;
+    item.opts.forEach(opt=>{
+      html+=`<label><input type='radio' name='mcq${i}' value='${opt}'> ${opt}</label><br>`;
+    });
+    html+=`<p class='hidden answer'>${item.ans}</p></div>`;
+  });
+  fillData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><input type='text' class='fill'><p class='hidden answer'>${item.ans}</p></div>`;
+  });
+  shortData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><textarea class='short' rows='3'></textarea><p class='hidden answer'>${item.keywords.join(',')}</p></div>`;
+  });
+  longData.forEach((item,i)=>{
+    html+=`<div class='question'><b>${item.q}</b><br><textarea class='short' rows='4'></textarea><p class='hidden answer'>${item.keywords.join(',')}</p></div>`;
+  });
+  qDiv.innerHTML = html;
+}
+
+document.getElementById('startBtn').onclick = ()=>{
+  const name = document.getElementById('studentName').value.trim();
+  if(!name){ alert('Enter your name'); return; }
+  qDiv.style.display='block';
+  submitBtn.classList.remove('hidden');
+  renderQuestions();
+};
+
+submitBtn.onclick = ()=>{
+ let score=0;
+ document.querySelectorAll('.question').forEach(q=>{
+  const mcq=q.querySelector("input[type='radio']");
+  const fill=q.querySelector('.fill');
+  const short=q.querySelector('.short');
+  const ans=q.querySelector('.answer').innerText.toLowerCase();
+  if(mcq){
+   const checked=q.querySelector("input[type='radio']:checked");
+   if(checked && checked.value.toLowerCase()===ans) score++;
+  }
+  if(fill){ if(fill.value.trim().toLowerCase()===ans) score++; }
+  if(short){
+   let val=short.value.toLowerCase();
+   ans.split(',').forEach(k=>{ if(val.includes(k.trim())) score++; });
+  }
+  q.querySelector('.answer').classList.remove('hidden');
+ });
+ marksDisplay.innerHTML=` | Marks: ${score}`;
+ window.print();
+};
+</script>
+</body>
+</html>

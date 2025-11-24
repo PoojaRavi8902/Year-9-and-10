@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chapter 1: Data Representation – Assessment</title>
+<style>
+  :root{--accent:#0b5ed7;--muted:#666}
+  body{font-family:Arial,Helvetica,sans-serif;margin:18px;color:#111}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  h1{font-size:1.2rem;margin:0}
+  .meta{font-size:0.95rem}
+  .student-block{margin:14px 0}
+  label{margin-right:6px}
+  input[type=text]{padding:6px 8px;font-size:0.95rem}
+  .submit-btn{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+  .submit-btn:disabled{opacity:0.6;cursor:not-allowed}
+  section{margin-top:14px}
+  h2{font-size:1rem;margin:12px 0}
+  .question{margin-bottom:12px}
+  textarea{width:100%;min-height:70px;padding:6px;font-family:inherit}
+  input[type=text].fill{width:240px;padding:6px}
+  .answer-reveal{background:#f7f7f7;border-left:4px solid var(--accent);padding:8px;margin-top:6px}
+  .marks-box{font-weight:700}
+  .small{font-size:0.9rem;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:1fr 140px;gap:12px;align-items:center}
+  @media(max-width:600px){.grid{grid-template-columns:1fr} .student-block{display:flex;flex-direction:column;gap:8px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Chapter 1: Data Representation</h1>
+    <div class="small">Assessment (IGCSE Computer Science 0984)</div>
+  </div>
+  <div id="headerRight" class="meta">
+    <!-- Student name & marks will appear here after start -->
+    <div id="studentDisplay" class="small"></div>
+  </div>
+</header>
+
+<div class="student-block grid">
+  <div>
+    <label for="studentName">Student Name:</label>
+    <input id="studentName" type="text" autocomplete="off" />
+    <button id="startBtn" class="submit-btn">Start Test</button>
+  </div>
+  <div class="marks-box">Marks: <span id="marks">–</span></div>
+</div>
+
+<div id="questions" style="display:none">
+  <section>
+    <h2>Section A: Multiple Choice Questions (1 mark each)</h2>
+    <div id="mcq-section"></div>
+  </section>
+
+  <section>
+    <h2>Section B: Fill in the Blanks (1 mark each)</h2>
+    <div id="fill-section"></div>
+  </section>
+
+  <section>
+    <h2>Section C: Short Answer Questions (2 marks each)</h2>
+    <div id="short-section"></div>
+  </section>
+
+  <section>
+    <h2>Section D: Long Questions (5 marks each)</h2>
+    <div id="long-section"></div>
+  </section>
+
+  <div style="margin-top:14px">
+    <button id="submitBtn" class="submit-btn">SUBMIT</button>
+  </div>
+</div>
+
+<script>
+// --- Question data (strictly from syllabus) ---
+const mcqs = [
+  {q:"Which number system is base 2?", opts:["Binary","Decimal","Hexadecimal","Octal"], ans:0},
+  {q:"Which of the following is a lossless compression method?", opts:["JPEG","MPEG","Run-length encoding","MP3"], ans:2},
+  {q:"How many bits make 1 byte?", opts:["2","4","8","16"], ans:2},
+  {q:"What is the hexadecimal value of decimal 15?", opts:["A","E","F","10"], ans:2},
+  {q:"ASCII typically uses how many bits?", opts:["7 bits","8 bits","16 bits","32 bits"], ans:0},
+  {q:"Which representation is used for colours in images?", opts:["RGB","ASCII","Unicode","RLE"], ans:0},
+  {q:"Sound is stored digitally as:", opts:["Pixels","Samples","Frames","Vectors"], ans:1},
+  {q:"Unicode was introduced because:", opts:["ASCII had too many characters","ASCII was limited to 128 characters","Computers needed faster storage","Binary was removed"], ans:1},
+  {q:"Binary 1010 equals decimal:", opts:["8","9","10","12"], ans:2},
+  {q:"An image with more bits per pixel will:", opts:["Have lower quality","Have higher quality","Load faster","Use less storage"], ans:1}
+];
+
+const fills = [
+  {q:"1 byte = __ bits.", ans:"8"},
+  {q:"Binary is base __.", ans:"2"},
+  {q:"Hexadecimal digits range from 0–9 and A–__.", ans:"F"},
+  {q:"ASCII stores characters using __ bits.", ans:"7"},
+  {q:"The number of samples per second is called the __ rate.", ans:"sampling"},
+  {q:"A pixel is the smallest unit of a digital __.", ans:"image"},
+  {q:"Images are often compressed using __ encoding.", ans:"run-length"},
+  {q:"A nibble is __ bits.", ans:"4"},
+  {q:"Unicode was created to represent __ languages.", ans:"all"},
+  {q:"Increasing sample __ improves sound quality.", ans:"rate"}
+];
+
+const short = [
+  {q:"Explain the term 'pixel'.", keys:["pixel","smallest","unit","image"]},
+  {q:"What is meant by 'bit depth'?", keys:["bit depth","bits per pixel","colour detail","colour"]},
+  {q:"Define sampling in sound representation.", keys:["sample","sampling","amplitude","interval","regular"]},
+  {q:"Why is hexadecimal used in computing?", keys:["hex","shorter","readable","compact"]},
+  {q:"State two examples of lossless compression.", keys:["run-length","rle","zip","lossless"]}
+];
+
+const longq = [
+  {q:"Describe how sound is represented and stored digitally.", keys:["sample","sampling","rate","bit depth","amplitude","binary"]},
+  {q:"Explain how images are represented using pixels, resolution and colour depth.", keys:["pixel","resolution","colour","bit depth","storage","pixels"]}
+];
+
+// --- Rendering functions ---
+function renderMCQs(){
+  const mcqDiv = document.getElementById('mcq-section');
+  mcqDiv.innerHTML = '';
+  mcqs.forEach((m,i)=>{
+    const qwrap = document.createElement('div'); qwrap.className='question';
+    qwrap.innerHTML = `<b>${i+1}.</b> ${m.q}<br>`;
+    m.opts.forEach((op,j)=>{
+      const id = `mcq-${i}-${j}`;
+      qwrap.innerHTML += `<label><input type='radio' name='mcq${i}' id='${id}' value='${j}'> ${op}</label><br>`;
+    });
+    mcqDiv.appendChild(qwrap);
+  });
+}
+
+function renderFills(){
+  const fillDiv = document.getElementById('fill-section'); fillDiv.innerHTML='';
+  fills.forEach((f,i)=>{
+    const d = document.createElement('div'); d.className='question';
+    d.innerHTML = `<b>${i+1}.</b> ${f.q}<br><input class='fill' id='fill${i}' type='text'>`;
+    fillDiv.appendChild(d);
+  });
+}
+
+function renderShort(){
+  const sDiv = document.getElementById('short-section'); sDiv.innerHTML='';
+  short.forEach((s,i)=>{
+    const d = document.createElement('div'); d.className='question';
+    d.innerHTML = `<b>${i+1}.</b> ${s.q}<br><textarea id='short${i}'></textarea>`;
+    sDiv.appendChild(d);
+  });
+}
+
+function renderLong(){
+  const lDiv = document.getElementById('long-section'); lDiv.innerHTML='';
+  longq.forEach((l,i)=>{
+    const d = document.createElement('div'); d.className='question';
+    d.innerHTML = `<b>${i+1}.</b> ${l.q}<br><textarea id='long${i}'></textarea>`;
+    lDiv.appendChild(d);
+  });
+}
+
+function loadQuestions(){ renderMCQs(); renderFills(); renderShort(); renderLong(); }
+
+// --- Simple key-term scoring ---
+function scoreByKeywords(answer, keywords){
+  if(!answer) return 0;
+  const text = answer.toLowerCase();
+  let score = 0;
+  keywords.forEach(k=>{ if(text.includes(k.toLowerCase())) score++; });
+  return score;
+}
+
+// --- Reveal answers ---
+function revealAll(){
+  // MCQ answers
+  mcqs.forEach((m,i)=>{
+    const container = document.getElementById('mcq-section').children[i];
+    const div = document.createElement('div'); div.className='answer-reveal';
+    div.innerHTML = `<strong>Answer:</strong> ${m.opts[m.ans]}`;
+    container.appendChild(div);
+  });
+
+  // Fill answers
+  fills.forEach((f,i)=>{
+    const container = document.getElementById('fill-section').children[i];
+    const div = document.createElement('div'); div.className='answer-reveal';
+    div.innerHTML = `<strong>Answer:</strong> ${f.ans}`;
+    container.appendChild(div);
+  });
+
+  // Short answers (key terms)
+  short.forEach((s,i)=>{
+    const container = document.getElementById('short-section').children[i];
+    const div = document.createElement('div'); div.className='answer-reveal';
+    div.innerHTML = `<strong>Key terms:</strong> ${s.keys.join(', ')}`;
+    container.appendChild(div);
+  });
+
+  // Long answers (key terms)
+  longq.forEach((l,i)=>{
+    const container = document.getElementById('long-section').children[i];
+    const div = document.createElement('div'); div.className='answer-reveal';
+    div.innerHTML = `<strong>Key terms:</strong> ${l.keys.join(', ')}`;
+    container.appendChild(div);
+  });
+}
+
+// --- Grading ---
+function gradeTest(){
+  let total = 0;
+  // MCQs
+  mcqs.forEach((m,i)=>{
+    const selected = document.querySelector(`input[name='mcq${i}']:checked`);
+    if(selected && parseInt(selected.value,10) === m.ans) total += 1;
+  });
+
+  // Fills
+  fills.forEach((f,i)=>{
+    const v = (document.getElementById(`fill${i}`).value || '').trim().toLowerCase();
+    if(v === String(f.ans).toLowerCase()) total += 1;
+  });
+
+  // Short answers (2 marks each) - score by keyword matches (max 2)
+  short.forEach((s,i)=>{
+    const ans = document.getElementById(`short${i}`).value || '';
+    const matches = scoreByKeywords(ans, s.keys);
+    total += Math.min(2, matches);
+  });
+
+  // Long answers (5 marks each) - score by keyword matches (max 5)
+  longq.forEach((l,i)=>{
+    const ans = document.getElementById(`long${i}`).value || '';
+    const matches = scoreByKeywords(ans, l.keys);
+    total += Math.min(5, matches);
+  });
+
+  return total;
+}
+
+// --- Event handlers ---
+document.getElementById('startBtn').addEventListener('click', function(){
+  const name = document.getElementById('studentName').value.trim();
+  if(!name){ alert('Please enter your name before starting the test.'); document.getElementById('studentName').focus(); return; }
+  // show name and lock field
+  document.getElementById('studentDisplay').innerHTML = `<strong>${escapeHtml(name)}</strong>`;
+  document.getElementById('studentName').disabled = true;
+  this.disabled = true;
+  // show questions and populate
+  document.getElementById('questions').style.display = 'block';
+  loadQuestions();
+  // focus first input
+  setTimeout(()=>{
+    const first = document.querySelector('#mcq-section input, #fill-section input, #short-section textarea, #long-section textarea');
+    if(first) first.focus();
+  },50);
+});
+
+document.getElementById('submitBtn').addEventListener('click', function(){
+  // prevent double submission
+  this.disabled = true;
+  // calculate marks
+  const total = gradeTest();
+  document.getElementById('marks').innerText = total;
+  // reveal answers and then trigger print to PDF
+  revealAll();
+  // small delay so the DOM updates before print dialog
+  setTimeout(()=>{
+    window.print();
+  },200);
+});
+
+// escape simple html for name display
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
