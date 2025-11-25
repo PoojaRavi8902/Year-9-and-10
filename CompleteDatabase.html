@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Databases — Teacher Edition (IGCSE 0984)</title>
+  <style>
+    :root{--accent:#0b5fff;--muted:#666;--bg:#fbfbfe;--card:#ffffff}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.5;margin:0;background:linear-gradient(180deg,#f7f9ff, #fbfbfe);color:#111}
+    header{background:var(--accent);color:#fff;padding:18px 24px;box-shadow:0 6px 18px rgba(11,95,255,0.08)}
+    header h1{margin:0;font-size:20px}
+    .wrap{max-width:1100px;margin:22px auto;padding:18px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:var(--card);border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(20,20,50,0.06)}
+    h2{margin:8px 0 12px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* collapsible sections */
+    .section{margin-bottom:12px}
+    .section summary{font-weight:600;cursor:pointer;padding:8px;border-radius:8px}
+    details[open] summary{background:linear-gradient(90deg,#eef3ff,#f7fbff)}
+
+    /* table display */
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:8px;border-bottom:1px solid #eee;text-align:left}
+    th{background:#fafbff;font-weight:700}
+
+    /* SQL runner */
+    .sql-area textarea{width:100%;height:100px;border-radius:8px;border:1px solid #ddd;padding:10px;font-family:monospace}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(11,95,255,0.12)}
+    .output{margin-top:12px;overflow:auto;border-radius:6px;border:1px solid #eef;padding:8px;background:#fbfcff}
+
+    /* glossary */
+    .glossary dt{font-weight:700}
+    .glossary dd{margin:0 0 10px 0;color:var(--muted)}
+
+    /* flip cards */
+    .flip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .flip{perspective:1000px}
+    .flip .card-inner{transition:transform .6s;transform-style:preserve-3d;position:relative}
+    .flip:hover .card-inner{transform:rotateY(180deg)}
+    .flip .face{position:absolute;backface-visibility:hidden;width:100%;height:100%;padding:12px;border-radius:8px}
+    .flip .back{transform:rotateY(180deg);background:#f5f7ff}
+
+    /* responsive */
+    @media (max-width:980px){.grid{grid-template-columns:1fr;}.flip-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.flip-grid{grid-template-columns:1fr}}
+
+    /* teacher tips */
+    .tip{border-left:4px solid #ffd54a;background:#fffbea;padding:10px;border-radius:6px;margin:10px 0}
+
+    /* exam box */
+    .exam{border:2px dashed #eee;padding:12px;border-radius:8px;background:#fff}
+
+    footer{font-size:13px;color:var(--muted);text-align:center;margin-top:18px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Chapter-9.Databases —(Cambridge IGCSE 0984)</h1>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <section class="card">
+        <h2>Lesson Overview</h2>
+        <p class="muted">Single-table databases, fields & records, primary keys, data types, validation, SQL (SELECT/FROM/WHERE/ORDER BY/SUM/COUNT). Includes worked examples, classroom activities and exam-style tasks.</p>
+
+        <details class="section" open>
+          <summary>1. What is a database? (Quick teacher script)</summary>
+          <p>Database: a persistent structured collection of data designed for easy retrieval and reporting. For IGCSE we focus on single-table databases: tables containing rows (records) and columns (fields).</p>
+          <div class="tip"><strong>Tip for me:</strong> Start with a real-life story — e.g., hospital patients — then show the PATIENT table to make the abstract concrete.</div>
+        </details>
+
+        <details class="section">
+          <summary>2. Fields, records & table structure</summary>
+          <p>Each <strong>record</strong> is a row; each <strong>field</strong> is a column. Number of fields is fixed; number of records varies. Field names should be single words (e.g., <code>FirstName</code>, <code>WardNumber</code>).</p>
+
+          <table aria-label="PATIENT table example">
+            <thead><tr><th>HospitalNumber</th><th>FirstName</th><th>FamilyName</th><th>DateOfAdmission</th><th>Consultant</th><th>WardNumber</th><th>BedNumber</th></tr></thead>
+            <tbody>
+              <tr><td>HN000001</td><td>Winnie</td><td>Sing</td><td>2022-10-12</td><td>Mr Smith</td><td>6</td><td>8</td></tr>
+              <tr><td>HN000002</td><td>Steve</td><td>Chow</td><td>2022-10-23</td><td>Miss Abebe</td><td>6</td><td>3</td></tr>
+              <tr><td>HN000003</td><td>Chin</td><td>Wee</td><td>2022-10-30</td><td>Mr Jones</td><td>7</td><td>1</td></tr>
+              <tr><td>HN000004</td><td>Min</td><td>Hoo</td><td>2022-11-01</td><td>Mr Smith</td><td>6</td><td>1</td></tr>
+              <tr><td>HN000005</td><td>Peter</td><td>Patel</td><td>2022-11-12</td><td>Mr Jones</td><td>7</td><td>8</td></tr>
+              <tr><td>HN000006</td><td>Sue</td><td>Sands</td><td>2022-11-19</td><td>Miss Abebe</td><td>6</td><td>2</td></tr>
+              <tr><td>HN000007</td><td>Farouk</td><td>Khan</td><td>2022-11-22</td><td>Mr Jones</td><td>7</td><td>4</td></tr>
+              <tr><td>HN000008</td><td>Ahmad</td><td>Teo</td><td>2022-11-22</td><td>Mr Jones</td><td>7</td><td>2</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tip">Quick activity: Ask students to name three fields that could be changed without altering HospitalNumber.</div>
+        </details>
+
+        <details class="section">
+          <summary>3. Data types & validation (exam focus)</summary>
+          <p>IGCSE expects you to know six data types: <strong>text/alphanumeric, character, Boolean, integer, real, date/time</strong>. Choose types to match expected operations and storage.</p>
+
+          <ul>
+            <li><strong>Text</strong> — names, addresses (Access: Short Text)</li>
+            <li><strong>Character</strong> — single letters (e.g., gender stored as 'M' or 'F')</li>
+            <li><strong>Boolean</strong> — True/False or Yes/No</li>
+            <li><strong>Integer</strong> — whole numbers (ward numbers, counts)</li>
+            <li><strong>Real</strong> — decimals (weights)</li>
+            <li><strong>Date/time</strong> — dates and times (admission date)</li>
+          </ul>
+
+          <p>Validation examples: presence checks, range checks (WardNumber 1–10), length checks (HospitalNumber must be 8 characters starting with 'HN').</p>
+          <div class="tip">Exam hint: always explain why a data type is suitable (e.g., integer for WardNumber because you will count and compare).</div>
+        </details>
+
+        <details class="section">
+          <summary>4. Primary key — what & why</summary>
+          <p>Primary key uniquely identifies each record. Use an existing field if guaranteed unique (ISBN), otherwise add an artificial key (e.g., <code>HospitalNumber</code>).</p>
+          <div class="tip">Teacher suggestion: show collisions — two patients with same name — to motivate the need for keys.</div>
+        </details>
+
+        <details class="section">
+          <summary>5. SQL essentials (SELECT / FROM / WHERE / ORDER BY / SUM / COUNT)</summary>
+          <p>SQL is the language used to query databases. For single-table queries the typical pattern is:</p>
+          <pre><code>SELECT Field1, Field2
+FROM TableName
+WHERE Condition
+ORDER BY Field1;</code></pre>
+        </details>
+
+        <details class="section">
+          <summary>6. Worked examples (explain + show output)</summary>
+          <p><strong>Example:</strong> List Mr Smith's patients (HospitalNumber, FirstName, FamilyName)</p>
+          <pre><code>SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith';</code></pre>
+          <p>Output: HospitalNumber HN000001 Winnie Sing; HN000004 Min Hoo</p>
+
+          <p><strong>Sorted example:</strong></p>
+          <pre><code>SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith'
+ORDER BY FamilyName;</code></pre>
+          <p>Output in alphabetical order by family name.</p>
+        </details>
+
+        <details class="section">
+          <summary>7. Classroom activities</summary>
+          <ol>
+            <li>Activity: design fields for a doctor's appointment table. Share answers and compare.</li>
+            <li>Use the SQL runner (right) to test queries from Activity 9.5 and 9.6.</li>
+            <li>Group task: create validation rules for Student ID and test with dummy data.</li>
+          </ol>
+        </details>
+
+        <details class="section">
+          <summary>8. Exam-style questions (with teacher notes)</summary>
+          <div class="exam">
+            <p><strong>Q1 (short)</strong> — Define primary key and give an example for a BOOK table. <em>[2 marks]</em></p>
+            <div class="muted">Teacher note: expect definition + example (ISBN or BookID).</div>
+
+            <p><strong>Q2 (script)</strong> — Write an SQL query to list all patients not in ward 6. <em>[2 marks]</em></p>
+            <pre><code>SELECT FirstName, FamilyName, WardNumber
+FROM PATIENT
+WHERE WardNumber <> 6;</code></pre>
+            <div class="muted">Teacher note: allow >= or explicit NOT IN (6).</div>
+
+            <p><strong>Q3 (long)</strong> — Design a CUB table for a cub scout group (fields, types, primary key, validation). <em>[6 marks]</em></p>
+            <div class="muted">Teacher mark scheme: field list (3), types suitable (2), primary key and reason (1).</div>
+          </div>
+        </details>
+
+        <details class="section">
+          <summary>9. Extension & DDL (brief)</summary>
+          <p>DDL commands: <code>CREATE DATABASE</code>, <code>CREATE TABLE</code>, <code>ALTER TABLE</code>, <code>PRIMARY KEY</code>. Example DDL snippet for PATIENT shown in the extension area (right panel).</p>
+        </details>
+
+      </section>
+
+      <!-- Right column: interactive tools -->
+      <aside>
+        <div class="card">
+          <h2>Interactive SQL Runner</h2>
+          <p class="muted">Type a simple SELECT query (single table PATIENT). Supports WHERE, ORDER BY, BETWEEN, IN, LIKE, SUM, COUNT.</p>
+          <div class="sql-area">
+            <textarea id="sqlInput">SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith';</textarea>
+          </div>
+          <div style="margin-top:8px">
+            <button class="btn" id="runBtn">Run SQL</button>
+            <button class="btn ghost" id="resetBtn">Load Example</button>
+          </div>
+          <div class="output" id="sqlOutput" role="region" aria-live="polite"></div>
+
+          <details style="margin-top:8px">
+            <summary>Database preview (PATIENT)</summary>
+            <table>
+              <thead><tr><th>HospitalNumber</th><th>First</th><th>Family</th><th>Admit</th><th>Consultant</th><th>Ward</th><th>Bed</th></tr></thead>
+              <tbody id="patientPreview"></tbody>
+            </table>
+          </details>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Quick Glossary</h3>
+          <dl class="glossary">
+            <dt>Field</dt><dd>A named column holding one type of data for every record.</dd>
+            <dt>Record</dt><dd>A row of related field values describing one item.</dd>
+            <dt>Primary key</dt><dd>A field that uniquely identifies each record.</dd>
+            <dt>Validation</dt><dd>Rules to ensure input values are sensible and safe.</dd>
+            <dt>DDL vs DML</dt><dd>DDL defines structure; DML manipulates data.</dd>
+          </dl>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Exam Practice — Reveal Answers</h3>
+          <div><strong>Q:</strong> List patients who arrived between 12/10/2022 and 30/10/2022.</div>
+          <button class="btn" id="showAnsBtn" style="margin-top:8px">Show SQL & Output</button>
+          <div id="ansArea" style="margin-top:10px;display:none"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>DDL Example</h3>
+          <pre><code>CREATE TABLE PATIENT(
+  HospitalNumber CHAR(8),
+  FirstName VARCHAR(30),
+  FamilyName VARCHAR(30),
+  DateOfAdmission DATE,
+  Consultant VARCHAR(30),
+  WardNumber INTEGER,
+  BedNumber INTEGER,
+  PRIMARY KEY(HospitalNumber)
+);</code></pre>
+        </div>
+
+      </aside>
+    </div>
+
+    <section style="margin-top:18px" class="card">
+      <h2>Practice activity answers (teacher)</h2>
+      <div class="muted">Below are model answers you can use in marking or presenting.</div>
+      <details class="section" open>
+        <summary>Activity: doctor appointments — example fields</summary>
+        <p>Suggested fields: AppointmentID (Primary key), PatientName, Date, Time, Consultant, RoomNumber, Reason, Status</p>
+      </details>
+
+      <details class="section">
+        <summary>Activity 9.5 & 9.6 — SQL model answers</summary>
+        <ol>
+          <li><pre><code>-- a) All Mr Jones' patients
+SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Jones';</code></pre></li>
+          <li><pre><code>-- b) Patients not in ward 6
+SELECT HospitalNumber, FirstName, FamilyName, WardNumber
+FROM PATIENT
+WHERE WardNumber <> 6;</code></pre></li>
+          <li><pre><code>-- c) Arrived on 2022-11-12
+SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE DateOfAdmission = '2022-11-12';</code></pre></li>
+          <li><pre><code>-- d) Between 2022-10-12 and 2022-10-30
+SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE DateOfAdmission BETWEEN '2022-10-12' AND '2022-10-30';</code></pre></li>
+        </ol>
+
+        <p><strong>Counting examples:</strong></p>
+        <pre><code>-- Count patients in ward 7
+SELECT COUNT(*) FROM PATIENT WHERE WardNumber = 7;
+
+-- Sum of badges (example from CUB)
+SELECT SUM(Badges) FROM CUB;</code></pre>
+      </details>
+
+    </section>
+
+    <footer class="muted">Created by Ravi Raju for MESCairo</footer>
+  </main>
+
+  <script>
+    // PATIENT data used by the SQL runner
+    const PATIENT = [
+      { HospitalNumber: 'HN000001', FirstName: 'Winnie', FamilyName: 'Sing', DateOfAdmission: '2022-10-12', Consultant: 'Mr Smith', WardNumber: 6, BedNumber: 8 },
+      { HospitalNumber: 'HN000002', FirstName: 'Steve', FamilyName: 'Chow', DateOfAdmission: '2022-10-23', Consultant: 'Miss Abebe', WardNumber: 6, BedNumber: 3 },
+      { HospitalNumber: 'HN000003', FirstName: 'Chin', FamilyName: 'Wee', DateOfAdmission: '2022-10-30', Consultant: 'Mr Jones', WardNumber: 7, BedNumber: 1 },
+      { HospitalNumber: 'HN000004', FirstName: 'Min', FamilyName: 'Hoo', DateOfAdmission: '2022-11-01', Consultant: 'Mr Smith', WardNumber: 6, BedNumber: 1 },
+      { HospitalNumber: 'HN000005', FirstName: 'Peter', FamilyName: 'Patel', DateOfAdmission: '2022-11-12', Consultant: 'Mr Jones', WardNumber: 7, BedNumber: 8 },
+      { HospitalNumber: 'HN000006', FirstName: 'Sue', FamilyName: 'Sands', DateOfAdmission: '2022-11-19', Consultant: 'Miss Abebe', WardNumber: 6, BedNumber: 2 },
+      { HospitalNumber: 'HN000007', FirstName: 'Farouk', FamilyName: 'Khan', DateOfAdmission: '2022-11-22', Consultant: 'Mr Jones', WardNumber: 7, BedNumber: 4 },
+      { HospitalNumber: 'HN000008', FirstName: 'Ahmad', FamilyName: 'Teo', DateOfAdmission: '2022-11-22', Consultant: 'Mr Jones', WardNumber: 7, BedNumber: 2 }
+    ];
+
+    // render preview
+    const previewBody = document.getElementById('patientPreview');
+    PATIENT.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${p.HospitalNumber}</td><td>${p.FirstName}</td><td>${p.FamilyName}</td><td>${p.DateOfAdmission}</td><td>${p.Consultant}</td><td>${p.WardNumber}</td><td>${p.BedNumber}</td>`;
+      previewBody.appendChild(tr);
+    });
+
+    // very small SQL evaluator
+    function runSQL(sql) {
+      const s = sql.trim().replace(/;$/,'');
+      if (!/SELECT\s+/i.test(s) || !/FROM\s+/i.test(s)) return { error: 'Only SELECT ... FROM ... queries supported.' };
+
+      // detect SUM and COUNT
+      const sumMatch = s.match(/SELECT\s+SUM\s*\(\s*(\w+)\s*\)/i);
+      const countMatch = s.match(/SELECT\s+COUNT\s*\(\s*(\*|\w+)\s*\)/i);
+
+      // fields
+      const fieldsPart = s.match(/SELECT\s+(.+)\s+FROM/i)[1].trim();
+      const fields = fieldsPart === '*' ? null : fieldsPart.split(',').map(f => f.trim());
+
+      const fromMatch = s.match(/FROM\s+(\w+)/i);
+      const table = fromMatch ? fromMatch[1].toUpperCase() : null;
+      let rows = table === 'PATIENT' ? PATIENT.slice() : [];
+
+      // WHERE clause
+      const whereMatch = s.match(/WHERE\s+(.+?)(ORDER BY|$)/i);
+      if (whereMatch) {
+        const cond = whereMatch[1].trim();
+        rows = rows.filter(r => evalCondition(r, cond));
+      }
+
+      // ORDER BY
+      const orderMatch = s.match(/ORDER BY\s+(\w+)(\s+DESC)?/i);
+      if (orderMatch) {
+        const key = orderMatch[1];
+        const desc = !!orderMatch[2];
+        rows.sort((a,b)=>{ if (a[key] < b[key]) return desc?1:-1; if (a[key]>b[key]) return desc?-1:1; return 0; });
+      }
+
+      if (sumMatch) {
+        const key = sumMatch[1];
+        const total = rows.reduce((acc,cur)=>acc + Number(cur[key]||0),0);
+        return { columns: ['SUM('+key+')'], rows: [[total]] };
+      }
+
+      if (countMatch) {
+        return { columns: ['COUNT'], rows: [[rows.length]] };
+      }
+
+      const outCols = fields || Object.keys(rows[0]||{});
+      const outRows = rows.map(r => outCols.map(c => r[c]));
+      return { columns: outCols, rows: outRows };
+    }
+
+    function evalCondition(row, cond) {
+      // handle AND / OR (no parentheses)
+      if (/\s+AND\s+/i.test(cond)) {
+        return cond.split(/\s+AND\s+/i).every(c=>evalCondition(row,c));
+      }
+      if (/\s+OR\s+/i.test(cond)) {
+        return cond.split(/\s+OR\s+/i).some(c=>evalCondition(row,c));
+      }
+
+      // BETWEEN 'a' AND 'b'
+      const between = cond.match(/(\w+)\s+BETWEEN\s+'?([^']+)'?\s+AND\s+'?([^']+)'?/i);
+      if (between) {
+        const key = between[1]; const a=between[2]; const b=between[3];
+        return row[key] >= a && row[key] <= b;
+      }
+
+      // IN ('x','y')
+      const inMatch = cond.match(/(\w+)\s+IN\s*\(([^)]+)\)/i);
+      if (inMatch) {
+        const key=inMatch[1]; const vals = inMatch[2].split(',').map(v=>v.trim().replace(/^'|'$/g,''));
+        return vals.includes(String(row[key]));
+      }
+
+      // LIKE 'pattern'
+      const like = cond.match(/(\w+)\s+LIKE\s+'(.+)'/i);
+      if (like) {
+        const key=like[1]; const pattern = like[2].replace(/%/g,'');
+        return String(row[key]).includes(pattern);
+      }
+
+      // simple comparisons
+      const cmp = cond.match(/(\w+)\s*(=|<>|>|<|>=|<=)\s*'?([^']+)'?/);
+      if (cmp) {
+        const key=cmp[1]; const op=cmp[2]; let val=cmp[3];
+        if (!isNaN(Number(val))) val = Number(val);
+        const left = row[key];
+        switch(op){
+          case '=': return String(left) == String(val);
+          case '<>': return String(left) != String(val);
+          case '>': return left > val;
+          case '<': return left < val;
+          case '>=': return left >= val;
+          case '<=': return left <= val;
+        }
+      }
+
+      return false;
+    }
+
+    // UI wiring
+    document.getElementById('runBtn').addEventListener('click', ()=>{
+      const sql = document.getElementById('sqlInput').value;
+      const res = runSQL(sql);
+      const out = document.getElementById('sqlOutput');
+      out.innerHTML = '';
+      if (res.error) { out.innerHTML = `<div style="color:#b00020">Error: ${res.error}</div>`; return; }
+      const tbl = document.createElement('table');
+      const thead = document.createElement('thead');
+      thead.innerHTML = '<tr>' + res.columns.map(c=>`<th>${c}</th>`).join('') + '</tr>';
+      tbl.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      res.rows.forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML = r.map(c=>`<td>${c}</td>`).join(''); tbody.appendChild(tr); });
+      tbl.appendChild(tbody);
+      out.appendChild(tbl);
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      document.getElementById('sqlInput').value = "SELECT HospitalNumber, FirstName, FamilyName\nFROM PATIENT\nWHERE Consultant = 'Mr Smith';";
+    });
+
+    document.getElementById('showAnsBtn').addEventListener('click', ()=>{
+      const area = document.getElementById('ansArea');
+      area.style.display = 'block';
+      area.innerHTML = `<pre><code>SELECT HospitalNumber, FirstName, FamilyName\nFROM PATIENT\nWHERE DateOfAdmission BETWEEN '2022-10-12' AND '2022-10-30';</code></pre>`;
+      const res = runSQL("SELECT HospitalNumber, FirstName, FamilyName FROM PATIENT WHERE DateOfAdmission BETWEEN '2022-10-12' AND '2022-10-30';");
+      if (!res.error) {
+        const tbl = document.createElement('table');
+        tbl.innerHTML = '<thead><tr>' + res.columns.map(c=>`<th>${c}</th>`).join('') + '</tr></thead><tbody>' + res.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('') + '</tbody>';
+        area.appendChild(tbl);
+      }
+    });
+
+  </script>
+</body>
+</html>
