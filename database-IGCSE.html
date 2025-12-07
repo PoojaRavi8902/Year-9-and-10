@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IGCSE 0984 — Chapter 9: Databases — Teaching & Exam Prep</title>
+  <style>
+    :root{--bg:#f7f9fc;--card:#fff;--muted:#555}
+    body{font-family:Inter,Segoe UI,Helvetica,Arial;line-height:1.45;margin:0;background:var(--bg);color:#222}
+    .wrap{max-width:1100px;margin:24px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    h1{margin:0;font-size:1.6rem}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:18px}
+    .card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(20,30,50,0.06)}
+    .sidebar .card{margin-bottom:12px}
+    h2{margin-top:0}
+    pre.sql{background:#0b1220;color:#d6f2ff;padding:12px;border-radius:8px;overflow:auto;font-family:monospace}
+    table{border-collapse:collapse;width:100%}
+    table th, table td{border:1px solid #e2e8f0;padding:6px;text-align:left}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .qa{margin:8px 0;padding:12px;border-radius:8px;background:#fbfdff}
+    .answers{background:#fffef6;padding:10px;border-left:4px solid #ffd166}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .exercise{border-left:4px solid #7aa2ff;padding:8px;background:#f4f8ff;margin:12px 0}
+    .btn{display:inline-block;padding:8px 12px;border-radius:6px;background:#2b7cff;color:white;text-decoration:none}
+    footer{margin-top:18px;font-size:0.85rem;color:var(--muted)}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>IGCSE Computer Science 0984 — Databases (Chapter 9): Teaching & Exam Preparation</h1>
+        <div class="small">Single-table databases • data types • validation • primary keys • SQL</div>
+      </div>
+      <div style="margin-left:auto" class="small">Prepared for classroom use — concise explanations + exam-style practices with model answers</div>
+    </header>
+
+    <div class="grid">
+      <main class="card">
+        <h2>Quick overview (one-line cheatsheet)</h2>
+        <p class="small">Database = structured collection of data. Single-table database = one table only. A table = fields (columns) + records (rows). Primary key = unique identifier. SQL = use SELECT, FROM, WHERE, ORDER BY, SUM, COUNT to query.</p>
+
+        <h2>Core concepts (student-friendly)</h2>
+        <div class="two-col">
+          <div>
+            <h3>Table / Record / Field</h3>
+            <p><strong>Table</strong>: collection of related records (e.g., PATIENT).<br>
+            <strong>Record</strong>: one row (data about one patient).<br>
+            <strong>Field</strong>: one column (e.g., FirstName).</p>
+
+            <h3>Primary key</h3>
+            <p>Unique field (no duplicates, not NULL). Example: HospitalNumber or ISBN. Use short text or integer; ensure consistent format.</p>
+
+            <h3>Validation vs Verification</h3>
+            <p><strong>Validation</strong> = automated checks (range, presence, format, length).<br>
+            <strong>Verification</strong> = manual double-check (e.g., check an address is correct).</p>
+          </div>
+
+          <div>
+            <h3>Basic data types (syllabus names)</h3>
+            <ul>
+              <li><strong>text / alphanumeric</strong> — many characters (Access: Short Text / Long Text)</li>
+              <li><strong>character</strong> — single character (Access: Short Text with length 1)</li>
+              <li><strong>Boolean</strong> — True/False (Access: Yes/No)</li>
+              <li><strong>integer</strong> — whole numbers (Access: Number / Whole number)</li>
+              <li><strong>real</strong> — decimals (Access: Number / Decimal)</li>
+              <li><strong>date/time</strong> — dates and times (Access: Date/Time)</li>
+            </ul>
+            <p class="small">Choose types so values display correctly and allow appropriate operations (SUM on numeric fields only, date comparisons on date fields).</p>
+          </div>
+        </div>
+
+        <h2>Practical example — PATIENT table (single table)</h2>
+        <p>Below is a ready PATIENT table (12 records) you can use in exercises and SQL queries. Primary key: <strong>HospitalNumber</strong> (text format HN######).</p>
+
+        <table>
+          <thead><tr><th>HospitalNumber</th><th>FirstName</th><th>FamilyName</th><th>DateOfAdmission</th><th>Consultant</th><th>WardNumber</th><th>BedNumber</th></tr></thead>
+          <tbody>
+            <tr><td>HN000001</td><td>Winnie</td><td>Sing</td><td>2022-10-12</td><td>Mr Smith</td><td>6</td><td>8</td></tr>
+            <tr><td>HN000002</td><td>Steve</td><td>Chow</td><td>2022-10-23</td><td>Miss Abebe</td><td>6</td><td>3</td></tr>
+            <tr><td>HN000003</td><td>Chin</td><td>Wee</td><td>2022-10-30</td><td>Mr Jones</td><td>7</td><td>1</td></tr>
+            <tr><td>HN000004</td><td>Min</td><td>Hoo</td><td>2022-11-01</td><td>Mr Smith</td><td>6</td><td>1</td></tr>
+            <tr><td>HN000005</td><td>Peter</td><td>Patel</td><td>2022-11-12</td><td>Mr Jones</td><td>7</td><td>8</td></tr>
+            <tr><td>HN000006</td><td>Sue</td><td>Sands</td><td>2022-11-19</td><td>Miss Abebe</td><td>6</td><td>2</td></tr>
+            <tr><td>HN000007</td><td>Farouk</td><td>Khan</td><td>2022-11-22</td><td>Mr Jones</td><td>7</td><td>4</td></tr>
+            <tr><td>HN000008</td><td>Ahmad</td><td>Teo</td><td>2022-11-22</td><td>Mr Jones</td><td>7</td><td>2</td></tr>
+            <tr><td>HN000009</td><td>Nour</td><td>Samy</td><td>2022-11-24</td><td>Miss Abebe</td><td>6</td><td>5</td></tr>
+            <tr><td>HN000010</td><td>Kareem</td><td>Ramy</td><td>2022-11-25</td><td>Mr Smith</td><td>6</td><td>4</td></tr>
+            <tr><td>HN000011</td><td>Jana</td><td>Ehab</td><td>2022-11-26</td><td>Miss Abebe</td><td>6</td><td>6</td></tr>
+            <tr><td>HN000012</td><td>Mohamed</td><td>Tamer</td><td>2022-11-27</td><td>Mr Jones</td><td>7</td><td>3</td></tr>
+          </tbody>
+        </table>
+
+        <h2>How the table was created (SQL DDL)</h2>
+        <pre class="sql">CREATE TABLE PATIENT (
+  HospitalNumber VARCHAR(8) PRIMARY KEY,
+  FirstName VARCHAR(30),
+  FamilyName VARCHAR(30),
+  DateOfAdmission DATE,
+  Consultant VARCHAR(30),
+  WardNumber INTEGER,
+  BedNumber INTEGER
+);</pre>
+        <p class="small">Validation rules (examples): WardNumber BETWEEN 1 AND 10; BedNumber BETWEEN 1 AND 8; HospitalNumber format HN###### using a format check.</p>
+
+        <h2>Common SQL queries — with outputs (model answers)</h2>
+
+        <div class="qa">
+          <strong>Example A — List Mr Smith's patients (HospitalNumber, FirstName, FamilyName)</strong>
+          <pre class="sql">SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith';</pre>
+          <div class="answers">
+            <strong>Output (rows):</strong>
+            <table><thead><tr><th>HospitalNumber</th><th>FirstName</th><th>FamilyName</th></tr></thead>
+            <tbody>
+              <tr><td>HN000001</td><td>Winnie</td><td>Sing</td></tr>
+              <tr><td>HN000004</td><td>Min</td><td>Hoo</td></tr>
+              <tr><td>HN000010</td><td>Kareem</td><td>Ramy</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <div class="qa">
+          <strong>Example B — Mr Smith's patients ordered by FamilyName</strong>
+          <pre class="sql">SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Smith'
+ORDER BY FamilyName;</pre>
+          <div class="answers">
+            <strong>Output (alphabetical by FamilyName):</strong>
+            <table><thead><tr><th>HospitalNumber</th><th>FirstName</th><th>FamilyName</th></tr></thead>
+            <tbody>
+              <tr><td>HN000004</td><td>Min</td><td>Hoo</td></tr>
+              <tr><td>HN000010</td><td>Kareem</td><td>Ramy</td></tr>
+              <tr><td>HN000001</td><td>Winnie</td><td>Sing</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <div class="qa">
+          <strong>Example C — Patients admitted between 2022-10-12 and 2022-10-30</strong>
+          <pre class="sql">SELECT FirstName, FamilyName, DateOfAdmission
+FROM PATIENT
+WHERE DateOfAdmission BETWEEN '2022-10-12' AND '2022-10-30'
+ORDER BY DateOfAdmission;</pre>
+          <div class="answers">
+            <table><thead><tr><th>FirstName</th><th>FamilyName</th><th>DateOfAdmission</th></tr></thead>
+            <tbody>
+              <tr><td>Winnie</td><td>Sing</td><td>2022-10-12</td></tr>
+              <tr><td>Steve</td><td>Chow</td><td>2022-10-23</td></tr>
+              <tr><td>Chin</td><td>Wee</td><td>2022-10-30</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <h2>Exercises from the chapter — with full model answers</h2>
+
+        <div class="exercise">
+          <strong>Activity 9.1 — Doctor's appointments: suggest fields</strong>
+          <p>Suggested fields (single-word names): AppointmentID, PatientID, PatientFirstName, PatientFamilyName, DateOfAppointment, TimeOfAppointment, Consultant, Reason, RoomNumber</p>
+          <p class="small">Primary key: <strong>AppointmentID</strong> (e.g., AP000123). Validation examples: DateOfAppointment must be a valid date; TimeOfAppointment between 00:00 and 23:59; RoomNumber between 1 and 50; AppointmentID format check and presence check.</p>
+        </div>
+
+        <div class="exercise">
+          <strong>Activity 9.2 — Choose data types for PATIENT fields</strong>
+          <ul>
+            <li>FirstName: TEXT (VARCHAR(30))</li>
+            <li>FamilyName: TEXT (VARCHAR(30))</li>
+            <li>DateOfAdmission: DATE</li>
+            <li>Consultant: TEXT</li>
+            <li>WardNumber: INTEGER</li>
+            <li>BedNumber: INTEGER</li>
+          </ul>
+          <p class="small">Validation: WardNumber 1–10 (range), BedNumber 1–8 (range), DateOfAdmission must be present (not NULL).</p>
+        </div>
+
+        <div class="exercise">
+          <strong>Activity 9.3 — HospitalNumber primary key format</strong>
+          <p>Requirement: 8 characters starting with HN followed by 6 digits. Example valid entries: HN123456, HN000001. Use a format check (regular expression) or length + starts-with + numeric checks. Store as TEXT (VARCHAR(8)).</p>
+          <p class="small">Set presence check (NOT NULL) and uniqueness constraint so no duplicates allowed.</p>
+        </div>
+
+        <div class="exercise">
+          <strong>Activity 9.4 — (1) Four data types — description & example</strong>
+          <ol>
+            <li>TEXT/ALPHANUMERIC: sequence of characters. Example field: Address or Title of book.</li>
+            <li>CHARACTER: single character. Example: Gender (M/F)</li>
+            <li>BOOLEAN: True/False. Example: IsMember (Yes/No)</li>
+            <li>INTEGER: whole numbers. Example: WardNumber or NumberInStock</li>
+          </ol>
+
+          <strong>(2) Fill-the-blank paragraph — model filled text:</strong>
+          <p>A single <strong>table</strong> <strong>database</strong> contains one <strong>table</strong>. Each <strong>table</strong> consists of many <strong>records</strong>. Every <strong>record</strong> has the same number of <strong>fields</strong>. Every <strong>field</strong> is given a <strong>name</strong>. Examples of data types are <strong>text</strong>, <strong>integer</strong> and <strong>Boolean</strong>. Some <strong>fields</strong> will have <strong>validation</strong> rules.</p>
+        </div>
+
+        <div class="exercise">
+          <strong>Activity 9.5 — SQL practice (use the PATIENT table)</strong>
+          <ol>
+            <li>(a) List all Mr Jones' patients.
+              <pre class="sql">SELECT HospitalNumber, FirstName, FamilyName
+FROM PATIENT
+WHERE Consultant = 'Mr Jones';</pre>
+              <div class="answers small">Output: HN000003 Chin Wee; HN000005 Peter Patel; HN000007 Farouk Khan; HN000008 Ahmad Teo; HN000012 Mohamed Tamer</div>
+            </li>
+            <li>(b) List all patients NOT in ward 6.
+              <pre class="sql">SELECT * FROM PATIENT
+WHERE WardNumber <> 6;</pre>
+              <div class="answers small">Output: rows where WardNumber is 7 (HN000003, HN000005, HN000007, HN000008, HN000012)</div>
+            </li>
+            <li>(c) List all patients who arrived on 12/11/2022.
+              <pre class="sql">SELECT * FROM PATIENT
+WHERE DateOfAdmission = '2022-11-12';</pre>
+              <div class="answers small">Output: HN000005 Peter Patel</div>
+            </li>
+            <li>(d) List patients who arrived BETWEEN 2022-10-12 AND 2022-10-30.
+              <pre class="sql">SELECT FirstName, FamilyName, DateOfAdmission
+FROM PATIENT
+WHERE DateOfAdmission BETWEEN '2022-10-12' AND '2022-10-30';</pre>
+              <div class="answers small">Output: Winnie Sing (2022-10-12), Steve Chow (2022-10-23), Chin Wee (2022-10-30)</div>
+            </li>
+            <li>2. Write output of:<pre class="sql">SELECT FirstName, FamilyName, BedNumber
+FROM PATIENT
+WHERE WardNumber = 7;</pre>
+              <div class="answers small">Rows with WardNumber=7: HN000003 Chin Wee Bed 1; HN000005 Peter Patel Bed 8; HN000007 Farouk Khan Bed 4; HN000008 Ahmad Teo Bed 2; HN000012 Mohamed Tamer Bed 3</div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <strong>Activity 9.6 — COUNT queries</strong>
+          <ol>
+            <li>(a) Count patients in ward 7:
+              <pre class="sql">SELECT COUNT(*)
+FROM PATIENT
+WHERE WardNumber = 7;</pre>
+              <div class="answers small">Output: 5</div>
+            </li>
+            <li>(b) Count patients not in ward 7:
+              <pre class="sql">SELECT COUNT(*)
+FROM PATIENT
+WHERE WardNumber <> 7;</pre>
+              <div class="answers small">Output: 7 (there are 12 total; 12 - 5 = 7)</div>
+            </li>
+            <li>2. Output from:<pre class="sql">SELECT HospitalNumber, FirstName, FamilyName, Consultant
+FROM PATIENT
+ORDER BY Consultant, FamilyName;</pre>
+              <div class="answers small">Sorted by Consultant then FamilyName: all rows shown grouped by Consultant (Miss Abebe rows alphabetical by family name, then Mr Jones, then Mr Smith).</div>
+            </li>
+          </ol>
+        </div>
+
+        <h2>Cub Scout case study — quick SQL examples and extension</h2>
+        <p>Set up <strong>CUB</strong> table with fields: CubNumber (PK), CubName, DateOfBirth, Address, Gender (CHAR(1)), School, TelephoneNumber, DateJoined, Six (text), Badges (integer).</p>
+
+        <pre class="sql">-- Example: select cubs in red six
+SELECT * FROM CUB
+WHERE Six = 'red';
+
+-- Example: red OR blue six
+SELECT * FROM CUB
+WHERE Six IN ('red','blue');
+
+-- Example: count cubs in red six
+SELECT COUNT(*) FROM CUB
+WHERE Six = 'red';
+
+-- Example: total badges
+SELECT SUM(Badges) FROM CUB;</pre>
+
+        <h2>Activity 9.7 &amp; 9.8 — guidance & model answers (summary)</h2>
+        <p>Both activities ask you to build databases, enter at least 10 records, add validation, and write SQL scripts. Follow the pattern used for PATIENT and CUB examples. Use primary keys, appropriate types and clear validation rules (length, presence, range and format checks).</p>
+
+        <h2>Exam-style questions — model answers (detailed)</h2>
+
+        <div class="exercise">
+          <strong>Question 1 — CAR table (seat & paint combinations)</strong>
+          <p><em>Part a i</em> Number of records: <strong>16</strong> (assuming table shows 16 rows of different codes given the array in the question). <br>
+          <em>Part a ii</em> Number of fields: <strong>3</strong> (Code, SeatMaterial, PaintColour) depending on how question presents — exam answer must match what is visible; if a header row shows Code, Cloth/Leather, PaintColours then count accordingly.</p>
+          <p><em>Part a iii</em> Is any field suitable as primary key? <strong>Code</strong> is suitable because each code is unique for a combination; PaintColour or SeatColour are not unique.</p>
+
+          <p><em>Part b</em> The SQL given is incorrect as written. The intention: list Codes where SeatColour = 'Red' AND PaintColour is either 'White' OR 'Silver'. Correct SQL:
+          <pre class="sql">SELECT Code
+FROM CAR
+WHERE SeatColour = 'Red' AND (PaintColour = 'White' OR PaintColour = 'Silver');</pre>
+          <div class="answers small">Output: rows where SeatColour 'Red' and PaintColour 'White' or 'Silver' — show matching Code values from table.</div>
+
+          <p><em>Part c</em> Customer wants leather seats and silver or grey paint: correct SQL:
+          <pre class="sql">SELECT *
+FROM CAR
+WHERE SeatMaterial = 'Leather' AND (PaintColour = 'Silver' OR PaintColour = 'Grey');</pre>
+          </p>
+        </div>
+
+        <div class="exercise">
+          <strong>Question 2 — CYCLE table (stock records)</strong>
+          <p><em>a i</em> Data types (recommended):</p>
+          <ul>
+            <li>ModelNumber: TEXT (VARCHAR) — allows letters and digits (e.g., BY00007)</li>
+            <li>Description: TEXT</li>
+            <li>Colour: TEXT</li>
+            <li>WheelSize: INTEGER (mm — whole number)</li>
+            <li>Price: REAL (decimal)</li>
+            <li>StillManufactured: BOOLEAN (Yes/No)</li>
+            <li>NumberInStock: INTEGER</li>
+          </ul>
+
+          <p><em>a ii</em> Validation rules:</p>
+          <ul>
+            <li>ModelNumber: presence check and format check (e.g., starts with BY and followed by 5 digits).</li>
+            <li>Price: must be >= 0 and numeric (range check, data type check).</li>
+            <li>NumberInStock: whole number >= 0 (integer range check).</li>
+          </ul>
+
+          <p><em>a iii</em> Suitable primary key: <strong>ModelNumber</strong> — unique identifier for each model (reason: unique, fixed for each model).</p>
+
+          <p><em>b</em> Explain SQL commands with examples:</p>
+          <ul>
+            <li><strong>SELECT</strong> — choose fields to show. Example: <code>SELECT ModelNumber, Description, Price FROM CYCLE;</code></li>
+            <li><strong>FROM</strong> — specifies table. Example: <code>FROM CYCLE</code></li>
+            <li><strong>WHERE</strong> — filter records. Example: <code>WHERE WheelSize = 700</code></li>
+            <li><strong>SUM</strong> — add numeric field values. Example: <code>SELECT SUM(NumberInStock) FROM CYCLE;</code> returns total items in stock.</li>
+            <li><strong>ORDER BY</strong> — sort results. Example: <code>ORDER BY Price DESC</code> (highest price first).</li>
+          </ul>
+        </div>
+
+        <div class="exercise">
+          <strong>Question 3 — PERFORMANCE table</strong>
+          <p>Given table in question:</p>
+          <table>
+            <thead><tr><th>ShowNumber</th><th>Type</th><th>Title</th><th>Date</th><th>SoldOut</th></tr></thead>
+            <tbody>
+              <tr><td>SN091</td><td>Comedy</td><td>An Evening at Home</td><td>01-Sep</td><td>Yes</td></tr>
+              <tr><td>SN102</td><td>Drama</td><td>Old Places</td><td>02-Oct</td><td>No</td></tr>
+              <tr><td>SN113</td><td>Jazz</td><td>Acoustic Evening</td><td>03-Nov</td><td>No</td></tr>
+              <tr><td>SN124</td><td>Classical</td><td>Mozart Evening</td><td>04-Dec</td><td>Yes</td></tr>
+              <tr><td>SN021</td><td>Classical</td><td>Bach Favourites</td><td>01-Feb</td><td>Yes</td></tr>
+              <tr><td>SN032</td><td>Jazz</td><td>30 Years of Jazz</td><td>02-Mar</td><td>Yes</td></tr>
+              <tr><td>SN043</td><td>Comedy</td><td>Street Night</td><td>03-Apr</td><td>No</td></tr>
+              <tr><td>SN054</td><td>Comedy</td><td>Hoot</td><td>04-May</td><td>No</td></tr>
+            </tbody>
+          </table>
+          <p><em>a</em> Number of fields = <strong>5</strong>. Number of records = <strong>8</strong>.</p>
+          <p><em>b</em> Two validation checks for ShowNumber:</p>
+          <ol>
+            <li>Format check — must match pattern 'SN' followed by 3 digits (e.g., SN091).</li>
+            <li>Presence & uniqueness — cannot be blank and must be unique to identify each show.</li>
+          </ol>
+        </div>
+
+        <h2>Exam strategy & common pitfalls</h2>
+        <ul>
+          <li>Always specify field names and table names exactly as given (case-insensitive for most SQL but match exam wording).</li>
+          <li>When writing string/date values in WHERE, enclose in single quotes (e.g., 'Mr Smith').</li>
+          <li>Use parentheses when combining AND/OR conditions to avoid logic errors.</li>
+          <li>Remember SUM only works on numeric fields; COUNT(*) counts rows.</li>
+          <li>When asked to give outputs, list values/rows in the order that the SQL would produce them.</li>
+        </ul>
+
+        <footer>
+          <p class="small">Hope this webpage is useful for you. Ravi Raju</p>
+        </footer>
+      </main>
+
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Quick reference: SQL syntax</h3>
+          <pre class="sql">-- Select specific fields
+SELECT Field1, Field2
+FROM TableName
+WHERE Condition
+ORDER BY Field1 DESC;
+
+-- Aggregates
+SELECT SUM(Field) FROM TableName;
+SELECT COUNT(*) FROM TableName;</pre>
+        </div>
+
+        <div class="card">
+          <h3>Validation checklist (use in Access)</h3>
+          <ul class="small">
+            <li>Presence (NOT NULL)</li>
+            <li>Type (must be integer / date / text)</li>
+            <li>Range (e.g., 1–10)</li>
+            <li>Length (exact characters or max length)</li>
+            <li>Format (e.g., HN\d{6})</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Flashcard drill (quick)</h3>
+          <ol class="small">
+            <li>Q: What is a primary key? A: Unique identifier for records.</li>
+            <li>Q: Which SQL command sorts results? A: ORDER BY</li>
+            <li>Q: Which SQL aggregate returns total? A: SUM</li>
+            <li>Q: Text values in SQL are enclosed in? A: Single quotes</li>
+          </ol>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
