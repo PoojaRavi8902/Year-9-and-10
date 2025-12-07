@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IGCSE 0984 — Chapter 9: Databases — Assessment</title>
+  <style>
+    :root{--bg:#f6f8fb;--card:#fff;--accent:#2b7cff;--muted:#555}
+    body{font-family:Inter,Segoe UI,Helvetica,Arial;line-height:1.5;margin:0;background:var(--bg);color:#1f2937}
+    .wrap{max-width:1000px;margin:18px auto;padding:18px}
+    header{display:flex;align-items:center;gap:12px}
+    h1{margin:0;font-size:1.3rem}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(15,23,42,0.06);margin-top:12px}
+    label{display:block;margin:6px 0}
+    .question{padding:10px;border-radius:8px;margin:10px 0;border-left:4px solid #e6eefc}
+    .mcq .option{margin:6px 0}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;border:none;cursor:pointer}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .result{margin-top:12px;padding:12px;border-radius:8px;background:#f0fdf4;border:1px solid #d1fae5}
+    .hidden{display:none}
+    textarea{width:100%;height:90px;padding:8px}
+    input[type=text]{width:100%;padding:8px}
+    .answers{background:#fff7ed;border-left:4px solid #ffd166;padding:10px;margin-top:8px}
+    .score-badge{display:inline-block;padding:6px 10px;background:#eef2ff;color:#1e3a8a;border-radius:999px;font-weight:600}
+    .pass{color:green}
+    .fail{color:red}
+    .note{background:#f8fafc;padding:8px;border-radius:6px;margin-top:8px}
+    @media(max-width:720px){.wrap{padding:12px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>IGCSE 0984 — Databases: Chapter 9 — Assessment</h1>
+        <div class="small">20 MCQs, 20 Fill-in-the-blanks, 10 Short answers (model answers revealed), 5 Long answers (model answers revealed)</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <label for="studentName"><strong>Enter student name</strong></label>
+      <input id="studentName" type="text" placeholder="Student name" required />
+      <div class="small">Answers are auto-marked for MCQs and fill-in-the-blanks. Short and long answers are shown as model answers after submission.</div>
+
+      <form id="assessmentForm">
+        <h2>Section A — 20 Multiple Choice Questions (1 mark each)</h2>
+        <div id="mcqContainer"></div>
+
+        <h2>Section B — 20 Fill in the blanks (1 mark each)</h2>
+        <div id="fibContainer"></div>
+
+        <h2>Section C — 10 Short answer questions (model answers shown after submit)</h2>
+        <div id="shortContainer"></div>
+
+        <h2>Section D — 5 Long answer questions (model answers shown after submit)</h2>
+        <div id="longContainer"></div>
+
+        <div style="margin-top:12px">
+          <button type="button" class="btn" id="submitBtn">Submit</button>
+          <button type="button" id="resetBtn" style="margin-left:8px;padding:10px 12px;border-radius:8px;">Reset</button>
+        </div>
+
+        <div id="resultBox" class="result hidden"></div>
+      </form>
+
+      <div class="note">
+        <strong>Scoring:</strong> MCQs = 20 marks, Fill-in-the-blanks = 20 marks. Total auto-marked = 40. Short and long answers are for practice — model answers will be revealed so students can self-assess.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // QUESTION DATA: concise but exam-focused
+    const mcqs = [
+      {q: "1. Which SQL command is used to select fields from a table?", choices: ['FROM','SELECT','WHERE','ORDER BY'], a:1},
+      {q: "2. Which data type should you use for a person's name?", choices: ['INTEGER','REAL','TEXT','BOOLEAN'], a:2},
+      {q: "3. Which field would be appropriate as a primary key for books?", choices: ['Title','ISBN','Author','Price'], a:1},
+      {q: "4. Which operator checks inequality in SQL?", choices: ['<>','=','LIKE','BETWEEN'], a:0},
+      {q: "5. Which SQL aggregate returns the total of a numeric column?", choices: ['COUNT','TOTAL','SUM','AVG'], a:2},
+      {q: "6. Date/time values in SQL conditions are usually written in which format in the syllabus examples?", choices: ['DD/MM/YYYY','MM-DD-YYYY','YYYY-MM-DD','Text string only'], a:2},
+      {q: "7. Which validation would ensure a field has only values 1 to 10?", choices: ['Presence check','Range check','Format check','Length check'], a:1},
+      {q: "8. Which data type stores True/False?", choices: ['CHAR','BOOLEAN','REAL','DATE'], a:1},
+      {q: "9. In SQL, which clause filters rows based on a condition?", choices: ['ORDER BY','WHERE','SELECT','FROM'], a:1},
+      {q: "10. Which SQL keyword sorts results?", choices: ['GROUP BY','ORDER BY','SORT','ARRANGE'], a:1},
+      {q: "11. Which data type would you use for a price with cents?", choices: ['INTEGER','REAL','CHAR','BOOLEAN'], a:1},
+      {q: "12. Which is NOT a basic data type listed in the syllabus?", choices: ['text','bitmap image','integer','real'], a:1},
+      {q: "13. Which validation prevents empty entries?", choices: ['Presence check','Range check','Format check','Length check'], a:0},
+      {q: "14. What does PRIMARY KEY enforce on a field?", choices: ['Allow duplicates','Uniqueness','Make field optional','Change datatype'], a:1},
+      {q: "15. Which SQL expression finds a pattern?", choices: ['LIKE','BETWEEN','IN','COUNT'], a:0},
+      {q: "16. In the PATIENT table, which field should NOT be used with SUM?", choices: ['WardNumber','BedNumber','FirstName','RoomNumber'], a:2},
+      {q: "17. Which SQL returns the number of matching records?", choices: ['SUM','COUNT','TOTAL','NUMBER'], a:1},
+      {q: "18. What is the main advantage of databases over flat files?", choices: ['Faster internet','Reduced duplication of data','No need for backups','They are free'], a:1},
+      {q: "19. If you want 'red' OR 'blue' in SQL, which is correct?", choices: ["WHERE Colour = 'red' OR 'blue'","WHERE Colour IN ('red','blue')","WHERE Colour = 'red','blue'","WHERE Colour LIKE 'red,blue'"], a:1},
+      {q: "20. Which is a fixed-length text data type in SQL?", choices: ['VARCHAR(n)','CHAR(n)','TEXT','DATE'], a:1}
+    ];
+
+    const fibs = [
+      {q:"1. A table is made up of rows and ______.", a:'columns'},
+      {q:"2. A single row of data in a table is called a ______.", a:'record'},
+      {q:"3. A field that uniquely identifies each record is called the ______.", a:'primary key'},
+      {q:"4. SQL stands for Structured ______ Language.", a:'Query'},
+      {q:"5. The SQL clause used to filter rows is ______.", a:'WHERE'},
+      {q:"6. Use ______ to order results alphabetically or numerically.", a:'ORDER BY'},
+      {q:"7. The data type for True/False is ______.", a:'Boolean'},
+      {q:"8. The data type used for decimal numbers is ______.", a:'real'},
+      {q:"9. A check that forbids blank entries is called a ______ check.", a:'presence'},
+      {q:"10. Use ______ to add all values in a numeric field.", a:'SUM'},
+      {q:"11. The PATIENT table example used HospitalNumber as a ______.", a:'primary key'},
+      {q:"12. Character data type of length 1 is called ______.", a:'char'},
+      {q:"13. Use ______ to count matching rows.", a:'COUNT'},
+      {q:"14. A validation that forces values into a specific pattern is a ______ check.", a:'format'},
+      {q:"15. BETWEEN in SQL is used to select a ______ of values.", a:'range'},
+      {q:"16. The SQL keyword to choose columns is ______.", a:'SELECT'},
+      {q:"17. In SQL string values are enclosed in ______ quotes.", a:"'single'"},
+      {q:"18. A field that stores whole numbers uses the ______ data type.", a:'integer'},
+      {q:"19. The database used for practice in the chapter was ______ Access 365 (two words).", a:'Microsoft Access'},
+      {q:"20. A database that contains only one table is called a ______-table database.", a:'single'}
+    ];
+
+    const shorts = [
+      {q:"1. Define a 'field' in a database.", a:"A field is a single column in a table that stores one piece of information for each record (e.g., FirstName)."},
+      {q:"2. What is a 'record'?", a:"A record is one row in a table representing all the fields for a single item/person/event."},
+      {q:"3. Give two reasons why databases are useful.", a:"Databases prevent duplication of data and ensure consistency; they allow efficient searching and reporting for many users."},
+      {q:"4. What is a validation rule? Give an example.", a:"A validation rule automatically checks data before it is stored, e.g., WardNumber must be BETWEEN 1 AND 10."},
+      {q:"5. Why choose a VARCHAR for names?", a:"VARCHAR stores variable-length text so space is used efficiently and long names are allowed up to a maximum."},
+      {q:"6. Explain 'presence check'.", a:"Presence check ensures a value is entered (field is NOT NULL)."},
+      {q:"7. What is the difference between 'format' and 'range' checks?", a:"Format checks enforce a pattern (e.g., HN\d{6}); range checks enforce numeric limits (e.g., 1-10)."},
+      {q:"8. When should you use SUM vs COUNT?", a:"Use SUM to total numeric field values; COUNT to count matching rows or non-null values."},
+      {q:"9. Why use a primary key?", a:"To uniquely identify each record so it can be referenced and updated reliably."},
+      {q:"10. What is CHAR(1) useful for?", a:"CHAR(1) stores a single character such as gender code 'M' or 'F'."}
+    ];
+
+    const longs = [
+      {q:"1. Describe how to design a single-table database for a school's student register. Include fields, data types, primary key choice and validation rules.", a:"Design: Table STUDENT with fields StudentID (VARCHAR, PK, e.g., ST00001), FamilyName (VARCHAR), OtherNames (VARCHAR), DateOfBirth (DATE), DateOfEntry (DATE), Class (VARCHAR), Year (INTEGER), Email (VARCHAR). Validation: StudentID format check and uniqueness; DateOfBirth and DateOfEntry presence + valid dates; Email format check; Year range check (e.g., 7-13). Primary key StudentID ensures unique identification."},
+      {q:"2. Explain with examples how SQL SELECT, FROM, WHERE and ORDER BY work together.", a:"SELECT chooses the fields to display; FROM names the table; WHERE filters rows; ORDER BY sorts results. Example: SELECT FirstName, FamilyName FROM PATIENT WHERE Consultant = 'Mr Jones' ORDER BY FamilyName;"},
+      {q:"3. A hospital needs to ensure BedNumber stays between 1 and 8 and WardNumber between 1 and 10. Explain how to enforce these and why it matters.", a:"Enforce via validation rules: range checks on BedNumber and WardNumber. Also use presence check. It prevents invalid assignments (e.g., Bed 12) and keeps data reliable for locating patients."},
+      {q:"4. Describe how COUNT and SUM can be used in reporting for the CubScout database.", a:"COUNT can return number of cubs per Six: SELECT COUNT(*) FROM CUB WHERE Six='red'; SUM(Badges) returns total badges: SELECT SUM(Badges) FROM CUB; both useful for leader reports."},
+      {q:"5. Outline steps to create the PATIENT table in SQLite, insert records and run a query to list all patients for Miss Abebe.", a:"Steps: CREATE TABLE PATIENT(...); Use INSERT INTO PATIENT (...) VALUES (...); Repeat for each record. Then run SELECT HospitalNumber, FirstName, FamilyName FROM PATIENT WHERE Consultant='Miss Abebe';"}
+    ];
+
+    // Render functions
+    function renderMCQs(){
+      const container = document.getElementById('mcqContainer');
+      mcqs.forEach((m,i)=>{
+        const div = document.createElement('div'); div.className='question mcq';
+        div.innerHTML = `<strong>${m.q}</strong>`;
+        m.choices.forEach((c,j)=>{
+          const id = `mcq_${i}_${j}`;
+          const op = document.createElement('label'); op.className='option';
+          op.innerHTML = `<input type="radio" name="mcq_${i}" value="${j}" id="${id}"> ${c}`;
+          div.appendChild(op);
+        });
+        container.appendChild(div);
+      });
+    }
+
+    function renderFIBs(){
+      const container = document.getElementById('fibContainer');
+      fibs.forEach((f,i)=>{
+        const div = document.createElement('div'); div.className='question';
+        div.innerHTML = `<label><strong>${f.q}</strong><br><input type='text' id='fib_${i}' autocomplete='off' /></label>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderShorts(){
+      const container = document.getElementById('shortContainer');
+      shorts.forEach((s,i)=>{
+        const div = document.createElement('div'); div.className='question';
+        div.innerHTML = `<label><strong>${s.q}</strong><br><textarea id='short_${i}' placeholder='Write your answer here...'></textarea></label>
+        <div id='short_ans_${i}' class='answers hidden'><strong>Model answer:</strong><div>${s.a}</div></div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderLongs(){
+      const container = document.getElementById('longContainer');
+      longs.forEach((l,i)=>{
+        const div = document.createElement('div'); div.className='question';
+        div.innerHTML = `<label><strong>${l.q}</strong><br><textarea id='long_${i}' placeholder='Write your answer here (longer response)...'></textarea></label>
+        <div id='long_ans_${i}' class='answers hidden'><strong>Model answer:</strong><div>${l.a}</div></div>`;
+        container.appendChild(div);
+      });
+    }
+
+    // Marking logic
+    function grade(){
+      const name = document.getElementById('studentName').value.trim();
+      if(!name){alert('Please enter student name.');document.getElementById('studentName').focus();return}
+      let mcqScore=0; let fibScore=0;
+      mcqs.forEach((m,i)=>{
+        const selected = document.querySelector(`input[name='mcq_${i}']:checked`);
+        if(selected && parseInt(selected.value)===m.a) mcqScore++;
+      });
+      fibs.forEach((f,i)=>{
+        const val = (document.getElementById(`fib_${i}`).value || '').trim().toLowerCase();
+        const correct = (f.a || '').toString().trim().toLowerCase();
+        if(val === correct) fibScore++;
+      });
+
+      const totalAuto = mcqScore + fibScore;
+      const maxAuto = mcqs.length + fibs.length;
+      const percent = Math.round((totalAuto / maxAuto) * 100);
+
+      // Reveal model answers for short and long
+      shorts.forEach((s,i)=>{ document.getElementById(`short_ans_${i}`).classList.remove('hidden'); });
+      longs.forEach((l,i)=>{ document.getElementById(`long_ans_${i}`).classList.remove('hidden'); });
+
+      // Show results
+      const rb = document.getElementById('resultBox'); rb.classList.remove('hidden');
+      rb.innerHTML = `<strong>Student:</strong> ${escapeHtml(name)}<br>
+        <strong>Auto-marked score:</strong> <span class='score-badge'>${totalAuto} / ${maxAuto}</span> (${percent}%)<br>
+        <div style='margin-top:8px' class='small'>MCQs: ${mcqScore} / ${mcqs.length} &nbsp; | &nbsp; Fill-in-the-blanks: ${fibScore} / ${fibs.length}</div>
+        <p class='small' style='margin-top:8px'>Short and long answers are shown as model answers above. You can manually award marks for those and add to the auto-marked score for a full total.</p>`;
+
+      // Scroll to results
+      rb.scrollIntoView({behavior:'smooth'});
+    }
+
+    // Utility
+    function escapeHtml(text){
+      return text.replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m];});
+    }
+
+    // Reset
+    function resetForm(){
+      if(!confirm('Reset all answers?')) return;
+      document.getElementById('assessmentForm').reset();
+      document.getElementById('resultBox').classList.add('hidden');
+      shorts.forEach((s,i)=>{ document.getElementById(`short_ans_${i}`).classList.add('hidden'); });
+      longs.forEach((l,i)=>{ document.getElementById(`long_ans_${i}`).classList.add('hidden'); });
+    }
+
+    // Initialize
+    renderMCQs(); renderFIBs(); renderShorts(); renderLongs();
+    document.getElementById('submitBtn').addEventListener('click', grade);
+    document.getElementById('resetBtn').addEventListener('click', resetForm);
+  </script>
+</body>
+</html>
