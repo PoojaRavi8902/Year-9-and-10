@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IGCSE Computer Science – Types of Software & Interrupts</title>
+<style>
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#FFF9C4; /* lemon yellow */
+  color:#1B5E20; /* leafy green */
+}
+header{
+  padding:15px;
+  text-align:center;
+  background:#FFF59D;
+  border-bottom:3px solid #1B5E20;
+}
+.container{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  padding:10px;
+}
+.pane{
+  background:#FFFDE7;
+  padding:15px;
+  overflow-y:auto;
+  height:90vh;
+  border:2px solid #2E7D32;
+  border-radius:10px;
+}
+.pane h2, .pane h3{
+  border-bottom:2px solid #2E7D32;
+  padding-bottom:4px;
+}
+.box{
+  background:#F1F8E9;
+  padding:10px;
+  border-left:6px solid #2E7D32;
+  margin:10px 0;
+}
+.exercise{
+  background:#E8F5E9;
+  padding:10px;
+  border:2px dashed #1B5E20;
+  margin:10px 0;
+}
+.teacher-note{
+  background:#DCEDC8;
+  padding:10px;
+  border:2px solid #558B2F;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>IGCSE Computer Science – Section 4.1</h1>
+  <h3>Types of Software, Operating Systems & Interrupts</h3>
+</header>
+
+<div class="container">
+
+<!-- TEACHER PANE -->
+<div class="pane">
+<h2>Teacher Pane (Concept Mastery & Teaching Flow)</h2>
+
+<h3>4.1 Types of Software</h3>
+<div class="box">
+<b>Key idea:</b> Hardware is useless without software. Software provides instructions that tell hardware what to do.
+</div>
+
+<h3>Software Classification</h3>
+<ul>
+<li><b>System Software</b> – Controls and manages hardware, provides a platform</li>
+<li><b>Application Software</b> – Performs specific user tasks</li>
+</ul>
+
+<h3>System Software – Teaching Points</h3>
+<ul>
+<li>Controls hardware resources</li>
+<li>Provides Human Computer Interface (HCI)</li>
+<li>Includes OS, utilities, drivers, translators</li>
+</ul>
+
+<h3>Application Software – Teaching Points</h3>
+<ul>
+<li>Single programs or suites</li>
+<li>Executed when required by the user</li>
+<li>Relies on system software to run</li>
+</ul>
+
+<h3>Application Software Examples – Emphasis</h3>
+<ul>
+<li>Spreadsheet – modelling, formulas, graphs</li>
+<li>Database – tables, records, fields, queries</li>
+<li>Word Processor – text manipulation</li>
+<li>Graphics, Photo & Video Editing – media manipulation</li>
+<li>Control & Measurement – sensors and actuators</li>
+<li>Apps – mobile‑based applications</li>
+</ul>
+
+<h3>System Software Examples – Emphasis</h3>
+<ul>
+<li>Operating System – resource manager</li>
+<li>Utilities – maintenance tools</li>
+<li>Device Drivers – hardware communication</li>
+<li>Compilers & Linkers – program translation</li>
+</ul>
+
+<h3>Operating System – Core Functions</h3>
+<ul>
+<li>HCI (CLI vs GUI)</li>
+<li>Memory management</li>
+<li>File management</li>
+<li>Security management</li>
+<li>Peripheral management</li>
+<li>Multitasking</li>
+<li>User account management</li>
+<li>Interrupt handling</li>
+</ul>
+
+<div class="teacher-note">
+<b>Exam Tip:</b> Students must describe <i>function + purpose</i>. One‑line answers lose marks.
+</div>
+
+<h3>Interrupts – Teaching Flow</h3>
+<ul>
+<li>Interrupt = signal to CPU</li>
+<li>CPU saves current state</li>
+<li>ISR executed</li>
+<li>Task resumed</li>
+</ul>
+
+<div class="teacher-note">
+<b>Analogy:</b> Phone call interrupting your work → you answer → continue work.
+</div>
+
+<h3>Buffers & Interrupts</h3>
+<ul>
+<li>Buffers store data temporarily</li>
+<li>Used when device speed ≠ CPU speed</li>
+<li>Improves efficiency and multitasking</li>
+</ul>
+
+</div>
+
+<!-- STUDENT PANE -->
+<div class="pane">
+<h2>Student Pane (Detailed Notes & Heavy Practice)</h2>
+
+<h3>What is Software?</h3>
+<p>Software is a collection of programs that instruct computer hardware to perform tasks. Without software, hardware cannot function.</p>
+
+<h3>Types of Software</h3>
+<div class="box">
+<b>System Software:</b> Controls the computer and manages hardware.<br>
+<b>Application Software:</b> Helps users perform tasks.
+</div>
+
+<h3>Application Software – Explained</h3>
+<ul>
+<li><b>Spreadsheet:</b> Uses rows, columns, cells, formulas, graphs</li>
+<li><b>Database:</b> Stores data in tables (records & fields)</li>
+<li><b>Word Processor:</b> Create and edit text documents</li>
+<li><b>Graphics Software:</b> Bitmap (pixels) & Vector (lines)</li>
+<li><b>Photo Editing:</b> Modify images, remove defects</li>
+<li><b>Video Editing:</b> Cut, merge, add effects</li>
+<li><b>Control Software:</b> Uses sensors & actuators</li>
+<li><b>Apps:</b> Mobile applications downloaded from app stores</li>
+</ul>
+
+<h3>System Software – Explained</h3>
+<ul>
+<li><b>Operating System:</b> Manages hardware and software</li>
+<li><b>Utilities:</b> Antivirus, backup, compression</li>
+<li><b>Device Drivers:</b> Allow hardware to work</li>
+<li><b>Compiler:</b> HLL → machine code</li>
+<li><b>Linker:</b> Combines object files</li>
+</ul>
+
+<h3>Operating System Interfaces</h3>
+<div class="box">
+<b>CLI:</b> Text commands, fast, powerful, hard to learn<br>
+<b>GUI:</b> Icons, mouse/touch, user‑friendly, memory‑intensive
+</div>
+
+<h3>Interrupts</h3>
+<p>An interrupt is a signal that causes the CPU to temporarily stop its current task and handle an urgent event.</p>
+
+<ul>
+<li>Hardware interrupts</li>
+<li>Software interrupts</li>
+<li>User interrupts</li>
+</ul>
+
+<h3>Buffers</h3>
+<p>Buffers temporarily store data to handle speed differences between devices.</p>
+
+<h2>EXERCISES (Practice Heavily)</h2>
+
+<div class="exercise">
+<b>1. Classification</b><br>
+Classify the following as System or Application Software:<br>
+Antivirus, Spreadsheet, Printer Driver, Video Editor, Compiler, Calculator App
+</div>
+
+<div class="exercise">
+<b>2. Short Answer</b><br>
+Explain why hardware cannot work without software.
+</div>
+
+<div class="exercise">
+<b>3. Operating System</b><br>
+Describe ANY four functions of an operating system.
+</div>
+
+<div class="exercise">
+<b>4. Interrupt Scenario</b><br>
+A student is listening to music while printing notes. Explain how interrupts and buffers help.
+</div>
+
+<div class="exercise">
+<b>5. CLI vs GUI</b><br>
+Give two advantages and two disadvantages of CLI.
+</div>
+
+<div class="exercise">
+<b>6. Exam‑Style</b><br>
+Explain what happens when a printer runs out of ink during printing.
+</div>
+
+<div class="exercise">
+<b>7. Challenge</b><br>
+Explain the role of BIOS during booting and why EEPROM and CMOS are both needed.
+</div>
+
+</div>
+</div>
+
+</body>
+</html>
