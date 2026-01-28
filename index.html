@@ -1,166 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Computer Science Index</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #6D83F2, #5563DE);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #fff;
-    }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px 50px;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      width: 90%;
-      max-width: 800px;
-      overflow-y: auto;
-      max-height: 90vh;
-    }
-    h1 {
-      margin-bottom: 20px;
-      font-size: 2.4em;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    h2 {
-      font-size: 1.4em;
-      margin-top: 35px;
-      margin-bottom: 15px;
-      text-align: left;
-      border-left: 5px solid #fff;
-      padding-left: 10px;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .nav-links li {
-      margin: 10px 0;
-    }
-    .nav-links a {
-      display: block;
-      text-decoration: none;
-      font-size: 1.1em;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 10px 20px;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-    }
-    .nav-links a:hover {
-      background: #fff;
-      color: #5563DE;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    footer {
-      margin-top: 30px;
-      font-size: 0.9em;
-      opacity: 0.8;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Computer Science Teaching Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f2f4f7;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.4em;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 1150px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        section {
+            background: white;
+            margin-bottom: 28px;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        section h2 {
+            margin-top: 0;
+            color: #243b55;
+            border-left: 6px solid #3a7bd5;
+            padding-left: 12px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            columns: 2;
+        }
+
+        li {
+            margin: 9px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3a7bd5;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #243b55;
+        }
+
+        footer {
+            background: #e6e9ef;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        @media (max-width: 750px) {
+            ul {
+                columns: 1;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Computer Science Navigation</h1>
 
-    <h2>📘 Chapter 1 — Data Representation</h2>
-    <ul class="nav-links">
-      <li><a href="IG-1-dataRepresentation.html">Notes: Data Representation</a></li>
-      <li><a href="data-rep-book-quest.html">Book Questions: Data Representation</a></li>
-      <li><a href="1-assessment-data-rep.html">Assessment: Data Representation</a></li>
-      <li><a href="test-data-representation-modified.html">Test: Data Representation (Modified)</a></li>
-      <li><a href="Basic-Test-Data-Rep.html">Practice Test</a></li>
-      <li><a href="DataRep-Repeat.html">🧠 Repeat Lesson: Data Representation</a></li>
-     <li> <a href="SpillOvers.html">leftOvers Of Data rep</a></li>
-    </ul>
+<header>
+    <h1>Computer Science Teaching Hub</h1>
+    <p>IGCSE • AS Level • Theory • Tests • Databases</p>
+</header>
 
-    <h2>🔗 Chapter 2 — Data Transmission</h2>
-    <ul class="nav-links">
-      <li><a href="ch-2-data-transmission.html">Notes & Exam-Style Questions</a></li>
-       <li><a href="DataTransmission-Teaching.html">Data Transmission-Teaching</a></li>
+<main>
 
-    </ul>
+    <section>
+        <h2>📘 Data Representation</h2>
+        <ul>
+            <li><a href="IG-1-dataRepresentation.html">IGCSE – Data Representation</a></li>
+            <li><a href="DataRep-Repeat.html">Data Representation – Revision</a></li>
+            <li><a href="data-rep-book-quest.html">Book Questions – Data Representation</a></li>
+            <li><a href="test-data-representation.html">Test – Data Representation</a></li>
+            <li><a href="test-data-representation-modified.html">Test – Data Rep (Modified)</a></li>
+            <li><a href="Test1-datarep.html">Test 1 – Data Representation</a></li>
+            <li><a href="Basic-Test-Data-Rep.html">Basic Test – Data Representation</a></li>
+            <li><a href="1-assessment-data-rep.html">Assessment – Data Representation</a></li>
+        </ul>
+    </section>
 
-    <h2>💻 Chapter 3 — Hardware</h2>
-    <ul class="nav-links">
-      <li><a href="ch-3-hardware.html">Notes: Hardware</a></li>
-      <li><a href="Hardware-test.html">Test: Hardware</a></li>
-      <li><a href="Hardware-new.html">🧠 New Interactive Lesson Page</a></li>
-      <li><a href="Computer-Architecture.html">🧠 New Interactive Lesson Page</a></li>
-    </ul>
+    <section>
+        <h2>📡 Data Transmission & Communication</h2>
+        <ul>
+            <li><a href="ch-2-data-transmission.html">Chapter 2 – Data Transmission</a></li>
+            <li><a href="DataTransmission-Teaching.html">Data Transmission – Teaching Notes</a></li>
+            <li><a href="data-trans-test.html">Test – Data Transmission</a></li>
+            <li><a href="BooleanLogic-Test.html">Boolean Logic – Test</a></li>
+        </ul>
+    </section>
 
-    <h2>💻 Chapter 9 — Database</h2>
-    <ul class="nav-links">
-      <li><a href="Database21-11-2025.html"> Intro to Database</a></li>
-      <li><a href="Database2-21-11-2025.html"> Intro to Database with exercises</a></li>
-      <li><a href="Database-SQL-21-11-2025.html">Database with SQL</a></li>
-      <li><a href="DatabaseExtension.html">Intro+SQL+Extension</a></li>
-      <li><a href="Database-ExamStyle-Quest.html">Book Questions</a></li>
-      <li><a href="CompleteDatabase.html">Complete Database</a></li>
-       <li><a href="database-IGCSE.html">Database 7/12/2025</a></li>
-      <li><a href="database-assessment-7-12-2025.html">Database-Assess 7/12/2025</a></li>
-      <li><a href="software.html">Software and types 14-12-25</a></li>
-    </ul>
-        
-    <h2>🧩 Other Lessons</h2>
-    <ul class="nav-links">
-      <li><a href="system-software-part2.html">Lesson Delivery: System Software</a></li>
-    </ul>
+    <section>
+        <h2>🖥️ Hardware & Computer Architecture</h2>
+        <ul>
+            <li><a href="ch-3-hardware.html">Chapter 3 – Hardware</a></li>
+            <li><a href="Hardware-new.html">Hardware – Teaching Notes</a></li>
+            <li><a href="Hardware-test.html">Hardware Test</a></li>
+            <li><a href="hardware-test2.html">Hardware Test 2</a></li>
+            <li><a href="Computer-Architecture.html">Computer Architecture</a></li>
+        </ul>
+    </section>
 
-    
-    <h2>🧩 Assessment Set 1</h2>
-    <ul class="nav-links">
-      <li><a href="twoChaptersAssessment.html">Lesson Delivery: November 10th</a></li>
-      <li><a href="IGCSE-CSc-test-16-11-2025.html">Test 16-Nov-2025</a></li>
+    <section>
+        <h2>🧩 System Software</h2>
+        <ul>
+            <li><a href="software.html">System Software – Overview</a></li>
+            <li><a href="system-software-part2.html">System Software – Part 2</a></li>
+        </ul>
+    </section>
 
-      
-    </ul> <h2>🔗 Assessment Set 2</h2>
-        <ul class="nav-links">
-      <li><a href="BooleanLogic-Test.html">Boolean Logic Test</a></li>
-      <li><a href="hardware-test2.html">Hardware-Test</a></li>
-      <li><a href="data-trans-test.html">Data Transmission-Test</a></li>
-      <li><a href="Test1-datarep">Data Representation Test</a></li>
-    </ul>
+    <section>
+        <h2>🗄️ Databases</h2>
+        <ul>
+            <li><a href="database-IGCSE.html">Databases – IGCSE</a></li>
+            <li><a href="CompleteDatabase.html">Complete Database Notes</a></li>
+            <li><a href="Database21-11-2025.html">Database Lesson – 21-11-2025</a></li>
+            <li><a href="Database2-21-11-2025.html">Database Lesson 2 – 21-11-2025</a></li>
+            <li><a href="Database-SQL-21-11-2025.html">SQL – 21-11-2025</a></li>
+            <li><a href="Database-ExamStyle-Quest.html">Exam-Style Database Questions</a></li>
+            <li><a href="DatabaseExtension.html">Database Extension</a></li>
+            <li><a href="database-assessment-7-12-2025.html">Database Assessment</a></li>
+        </ul>
+    </section>
 
-    
-    <footer>© Modern English School Cairo — Prepared by Ravi Raju</footer>
-  </div>
+    <section>
+        <h2>📝 Mixed Tests & Assessments</h2>
+        <ul>
+            <li><a href="twoChaptersAssessment.html">Two Chapters – Assessment</a></li>
+            <li><a href="IGCSE-CSc-test-16-11-2025.html">IGCSE CS Test – 16-11-2025</a></li>
+            <li><a href="SpillOvers.html">Spill Overs</a></li>
+        </ul>
+    </section>
+
+</main>
+
+<footer>
+    © Computer Science Teaching Resources | Designed for clarity & learning
+</footer>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
