@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>9618 Chapter 1 – Flowcharts & Trace Tables (50 Tasks)</title>
+  <style>
+    :root{
+      --bg:#071023;
+      --panel:#0f1b38;
+      --card:#13244a;
+      --card2:#102042;
+      --text:#eef4ff;
+      --muted:#b9c7ff;
+      --accent:#6aa9ff;
+      --accent2:#57f0b3;
+      --warn:#ffcc66;
+      --bad:#ff6b6b;
+      --border:rgba(255,255,255,0.14);
+      --shadow: 0 14px 36px rgba(0,0,0,0.35);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(106,169,255,0.22), transparent 60%),
+        radial-gradient(900px 520px at 85% 20%, rgba(87,240,179,0.14), transparent 60%),
+        linear-gradient(180deg, var(--bg), #050914 75%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    /* Sticky topbar (timer never hides) */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(5,9,20,0.86);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+    .wrap{max-width:1200px; margin:0 auto;}
+    .bar{
+      display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    }
+    .title{
+      display:flex; flex-direction:column; gap:2px; min-width:260px;
+    }
+    h1{margin:0; font-size:15.5px; letter-spacing:0.2px;}
+    .sub{margin:0; color:var(--muted); font-size:12.4px; line-height:1.35}
+    .controls{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .pill{
+      display:flex; gap:8px; align-items:center;
+      background: rgba(15,27,56,0.60);
+      border:1px solid var(--border);
+      padding:8px 10px;
+      border-radius:999px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+      font-size:12.6px;
+      color:var(--text);
+    }
+    select, input[type="text"]{
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.25);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      outline:none;
+      font-size:13px;
+    }
+    input[type="text"]{width:220px; max-width:60vw;}
+    button{
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(106,169,255,0.18);
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    button:hover{background: rgba(106,169,255,0.28)}
+    button.secondary{background: rgba(87,240,179,0.12)}
+    button.secondary:hover{background: rgba(87,240,179,0.20)}
+    button.danger{background: rgba(255,107,107,0.12)}
+    button.danger:hover{background: rgba(255,107,107,0.20)}
+    button.ghost{background: rgba(255,255,255,0.06)}
+    button.ghost:hover{background: rgba(255,255,255,0.10)}
+
+    .timer{
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.22);
+    }
+    .timer strong{color:var(--accent2)}
+    .kpi{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      font-size:12.6px; color:var(--muted);
+    }
+    .kpi b{color:var(--text)}
+    .badge{
+      font-size:11.5px; padding:5px 9px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+    }
+
+    main{max-width:1200px; margin:0 auto; padding:14px 12px 40px;}
+    .grid{display:grid; gap:14px;}
+    .section{
+      background: linear-gradient(180deg, rgba(15,27,56,0.95), rgba(10,18,40,0.94));
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sectionHead{
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--border);
+      display:flex; gap:10px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+    }
+    .sectionHead h2{margin:0; font-size:15px;}
+    .sectionHead p{margin:6px 0 0; color:var(--muted); font-size:12.6px; line-height:1.35;}
+    .content{padding:14px;}
+
+    .card{
+      background: rgba(19,36,74,0.56);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .cardTop{
+      display:flex; gap:10px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+    }
+    .card h3{margin:0; font-size:13.8px;}
+    .meta{
+      display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 10px;
+    }
+    .qbox{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      border-radius:14px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .qtext{
+      margin:0;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .hint{
+      margin:8px 0 0;
+      color: var(--muted);
+      font-size: 12.2px;
+      line-height: 1.35;
+    }
+
+    details{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      padding:10px 12px;
+      border-radius:14px;
+      margin-top:12px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:900;
+      color: var(--accent2);
+    }
+    .key{
+      margin-top:10px;
+      font-family: var(--mono);
+      font-size: 12.6px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      color:#eaf1ff;
+    }
+
+    /* Flowchart drawing area */
+    .toolrow{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      margin-top:10px;
+    }
+    .tools{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    }
+    .tools label{
+      font-size:12px; color:var(--muted);
+      display:flex; gap:6px; align-items:center;
+      padding:7px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+    }
+    .tools input[type="color"]{
+      width:28px; height:28px; border:none; background:none; padding:0;
+    }
+    .tools input[type="range"]{width:120px}
+    canvas.draw{
+      width:100%;
+      height:360px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.10)),
+        radial-gradient(600px 200px at 20% 0%, rgba(106,169,255,0.10), transparent 60%),
+        radial-gradient(500px 220px at 80% 20%, rgba(87,240,179,0.08), transparent 60%);
+      cursor: crosshair;
+      touch-action:none;
+      display:block;
+    }
+    .smallnote{color:var(--muted); font-size:12.2px; line-height:1.35; margin-top:8px}
+
+    /* Trace tables */
+    pre.code{
+      margin:0;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      overflow:auto;
+      font-family: var(--mono);
+      font-size: 12.6px;
+      line-height: 1.45;
+      color:#eaf1ff;
+    }
+    table.trace{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      margin-top:10px;
+      background: rgba(0,0,0,0.18);
+    }
+    .trace th, .trace td{
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      border-right: 1px solid rgba(255,255,255,0.10);
+      padding:8px 8px;
+      font-size:12.4px;
+      vertical-align:top;
+    }
+    .trace th{
+      text-align:left;
+      color: var(--text);
+      background: rgba(106,169,255,0.12);
+      font-weight:900;
+    }
+    .trace td:last-child, .trace th:last-child{border-right:none}
+    .trace tr:last-child td{border-bottom:none}
+    .cell{
+      width:100%;
+      border:none;
+      outline:none;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding:7px 8px;
+      border-radius:10px;
+      font-family: var(--mono);
+      font-size:12.4px;
+    }
+    .cell:focus{box-shadow: 0 0 0 2px rgba(106,169,255,0.35)}
+    .markline{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      color: var(--muted);
+      font-size:12.6px;
+    }
+    .markline b{color: var(--text)}
+    .ok{color:var(--accent2); font-weight:900}
+    .warn{color:var(--warn); font-weight:900}
+    .bad{color:var(--bad); font-weight:900}
+
+    .footer{
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      font-size:12px;
+    }
+
+    @media (max-width:860px){
+      canvas.draw{height:300px}
+      input[type="text"]{width: 180px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky timer bar -->
+  <div class="topbar">
+    <div class="wrap bar">
+      <div class="title">
+        <h1>AS Level Computer Science (9618) – Chapter 1: Flowchart + Trace Table Practice</h1>
+        <p class="sub">25 Flowchart tasks (draw on canvas) + 25 Trace Table tasks (fill the table). Each has a high-quality reference diagram/table hidden under “Reveal”.</p>
+      </div>
+
+      <div class="controls">
+        <div class="timer" id="timer">
+          ⏱ <strong>00:00</strong> <span style="opacity:.85">|</span> <span id="timerState">Stopped</span>
+        </div>
+
+        <button class="secondary" id="btnStart">Start</button>
+        <button class="ghost" id="btnPause">Pause</button>
+        <button class="danger" id="btnResetTime">Reset</button>
+
+        <input id="search" type="text" placeholder="Search (e.g., two's complement, loop)" />
+
+        <div class="pill">
+          <span>Jump</span>
+          <select id="jump">
+            <option value="top">Top</option>
+            <option value="flow">Flowcharts (25)</option>
+            <option value="trace">Trace Tables (25)</option>
+          </select>
+        </div>
+
+        <button class="ghost" onclick="expandAll()">Reveal ALL</button>
+        <button class="ghost" onclick="collapseAll()">Hide ALL</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" id="top">
+    <div class="grid">
+
+      <section class="section">
+        <div class="sectionHead">
+          <div>
+            <h2>How students use this page</h2>
+            <p>
+              <span class="badge">Flowcharts</span> Use the drawing canvas (pen/eraser/colors) to draw a complete flowchart solution.
+              <br/>
+              <span class="badge">Trace tables</span> Read the pseudocode, then fill the table row by row (variables, conditions, outputs).
+            </p>
+          </div>
+          <div class="kpi">
+            <span>Questions: <b>50</b></span>
+            <span>Flowcharts: <b>25</b></span>
+            <span>Trace tables: <b>25</b></span>
+          </div>
+        </div>
+        <div class="content">
+          <div class="markline">
+            <b>Tip:</b> Flowchart symbols (Start/End, Input/Output, Process, Decision) should be clear.
+            For trace tables, write values exactly as they change (including output lines).
+          </div>
+        </div>
+      </section>
+
+      <!-- =================== FLOWCHARTS =================== -->
+      <section class="section" id="flow">
+        <div class="sectionHead">
+          <div>
+            <h2>Part A – Flowcharts (25 questions)</h2>
+            <p>Draw your flowchart on the canvas. Use “Reveal Reference Flowchart” to self-check.</p>
+          </div>
+          <div class="kpi">
+            <button class="secondary" onclick="downloadAllFlowPNGs()">Download ALL Flowchart Canvases (PNG)</button>
+          </div>
+        </div>
+        <div class="content" id="flowHost"></div>
+      </section>
+
+      <!-- =================== TRACE TABLES =================== -->
+      <section class="section" id="trace">
+        <div class="sectionHead">
+          <div>
+            <h2>Part B – Trace Tables (25 questions)</h2>
+            <p>Fill the trace table cells. Use “Check” to compare with the reference, then “Reveal” to view the full correct table.</p>
+          </div>
+          <div class="kpi">
+            <button class="secondary" onclick="checkAllTrace()">Check ALL Trace Tables</button>
+            <button class="danger" onclick="resetAll()">Reset ALL Answers</button>
+          </div>
+        </div>
+        <div class="content" id="traceHost"></div>
+      </section>
+
+      <section class="section">
+        <div class="sectionHead">
+          <div>
+            <h2>Prepared by Ravi</h2>
+            <p>Use this page in class or as homework. Works offline as a single HTML file.</p>
+          </div>
+        </div>
+        <div class="content">
+          <div class="footer">© Classroom resource – 9618 Chapter 1 practice</div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+<script>
+/* =========================================================
+   TIMER (sticky)
+========================================================= */
+let tRunning = false;
+let tStart = 0;
+let tAccum = 0;
+let tRAF = null;
+
+function fmt(ms){
+  const s = Math.floor(ms/1000);
+  const m = Math.floor(s/60);
+  const r = s%60;
+  return String(m).padStart(2,'0') + ':' + String(r).padStart(2,'0');
+}
+function updateTimer(){
+  const now = performance.now();
+  const elapsed = tAccum + (tRunning ? (now - tStart) : 0);
+  document.querySelector('#timer strong').textContent = fmt(elapsed);
+  document.getElementById('timerState').textContent = tRunning ? 'Running' : 'Stopped';
+  tRAF = requestAnimationFrame(updateTimer);
+}
+updateTimer();
+
+document.getElementById('btnStart').addEventListener('click', ()=>{
+  if(!tRunning){
+    tRunning = true;
+    tStart = performance.now();
+  }
+});
+document.getElementById('btnPause').addEventListener('click', ()=>{
+  if(tRunning){
+    tRunning = false;
+    tAccum += performance.now() - tStart;
+  }
+});
+document.getElementById('btnResetTime').addEventListener('click', ()=>{
+  tRunning = false;
+  tStart = 0;
+  tAccum = 0;
+});
+
+/* =========================================================
+   NAV + SEARCH
+========================================================= */
+document.getElementById('jump').addEventListener('change', (e)=>{
+  const id = e.target.value;
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+const search = document.getElementById('search');
+search.addEventListener('input', ()=>{
+  const q = search.value.trim().toLowerCase();
+  const blocks = document.querySelectorAll('.section, .card, .qbox');
+  blocks.forEach(b=>{
+    if(!q){ b.style.display=''; return; }
+    const txt = b.innerText.toLowerCase();
+    b.style.display = txt.includes(q) ? '' : 'none';
+  });
+});
+
+function expandAll(){ document.querySelectorAll('details').forEach(d=>d.open=true); }
+function collapseAll(){ document.querySelectorAll('details').forEach(d=>d.open=false); }
+
+/* =========================================================
+   FLOWCHART REFERENCE SVG RENDERER
+   - Produces "true images" as SVG (high quality, scalable)
+========================================================= */
+function esc(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+function flowNodeSVG(n){
+  // n: {id, type, x, y, w, h, text}
+  const {type,x,y,w,h,text} = n;
+  const cx = x + w/2, cy = y + h/2;
+
+  const fill = {
+    start:'#163a2f',
+    end:'#3a1f2b',
+    io:'#102b52',
+    process:'#2a1f55',
+    decision:'#503b12'
+  }[type] || '#162147';
+
+  const stroke = 'rgba(255,255,255,0.22)';
+
+  let shape = '';
+  if(type==='start' || type==='end'){
+    shape = `<rect x="${x}" y="${y}" rx="${h/2}" ry="${h/2}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }else if(type==='process'){
+    shape = `<rect x="${x}" y="${y}" rx="12" ry="12" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }else if(type==='io'){
+    // Parallelogram
+    const sl = 18;
+    const p = `${x+sl},${y} ${x+w},${y} ${x+w-sl},${y+h} ${x},${y+h}`;
+    shape = `<polygon points="${p}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }else if(type==='decision'){
+    // Diamond
+    const p = `${cx},${y} ${x+w},${cy} ${cx},${y+h} ${x},${cy}`;
+    shape = `<polygon points="${p}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }else{
+    shape = `<rect x="${x}" y="${y}" rx="12" ry="12" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+
+  const lines = wrapText(text, Math.floor(w/9));
+  const lineH = 14;
+  const startY = cy - ((lines.length-1)*lineH)/2;
+  const t = lines.map((ln,i)=>(
+    `<text x="${cx}" y="${startY + i*lineH}" text-anchor="middle" font-size="12.4" fill="#eef4ff" font-weight="700">${esc(ln)}</text>`
+  )).join('');
+
+  return shape + t;
+}
+
+function wrapText(text, maxChars){
+  const words = String(text).split(' ');
+  const lines = [];
+  let cur = '';
+  for(const w of words){
+    if((cur + ' ' + w).trim().length <= maxChars){
+      cur = (cur + ' ' + w).trim();
+    }else{
+      if(cur) lines.push(cur);
+      cur = w;
+    }
+  }
+  if(cur) lines.push(cur);
+  return lines.length ? lines : [''];
+}
+
+function arrow(x1,y1,x2,y2,label){
+  const stroke = 'rgba(255,255,255,0.35)';
+  const dx = x2-x1, dy = y2-y1;
+  const len = Math.max(1, Math.hypot(dx,dy));
+  const ux = dx/len, uy = dy/len;
+  const ax = x2 - ux*10, ay = y2 - uy*10;
+  const left = `${ax + (-uy)*6},${ay + (ux)*6}`;
+  const right = `${ax + (uy)*6},${ay + (-ux)*6}`;
+  const midx = (x1+x2)/2, midy=(y1+y2)/2;
+
+  return `
+    <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="2"/>
+    <polygon points="${x2},${y2} ${left} ${right}" fill="${stroke}"/>
+    ${label ? `<text x="${midx}" y="${midy-6}" text-anchor="middle" font-size="12" fill="#ffcc66" font-weight="900">${esc(label)}</text>` : ''}
+  `;
+}
+
+function renderFlowSVG(spec){
+  // spec: {title, nodes:[...], links:[{from,to,label?}] , w,h}
+  const w = spec.w || 720;
+  const h = spec.h || 720;
+  const bg = `
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0.12)"/>
+      </linearGradient>
+      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(0,0,0,0.35)"/>
+      </filter>
+    </defs>
+    <rect x="0" y="0" width="${w}" height="${h}" rx="18" ry="18" fill="url(#bg)" stroke="rgba(255,255,255,0.14)"/>
+  `;
+
+  const nodeMap = new Map(spec.nodes.map(n=>[n.id,n]));
+  const links = (spec.links||[]).map(l=>{
+    const a = nodeMap.get(l.from);
+    const b = nodeMap.get(l.to);
+    if(!a || !b) return '';
+    // connect bottom of a to top of b by default
+    const x1 = a.x + a.w/2;
+    const y1 = a.y + a.h;
+    const x2 = b.x + b.w/2;
+    const y2 = b.y;
+    // If spec provides explicit points
+    if(l.p1 && l.p2){
+      return arrow(l.p1.x, l.p1.y, l.p2.x, l.p2.y, l.label||'');
+    }
+    return arrow(x1,y1,x2,y2,l.label||'');
+  }).join('');
+
+  const nodes = spec.nodes.map(n=>`<g filter="url(#glow)">${flowNodeSVG(n)}</g>`).join('');
+
+  return `
+    <svg viewBox="0 0 ${w} ${h}" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(spec.title)}">
+      ${bg}
+      ${links}
+      ${nodes}
+    </svg>
+  `;
+}
+
+/* =========================================================
+   FLOWCHART QUESTIONS (25)
+   Students DRAW on canvas; Reference is SVG image.
+========================================================= */
+const flowQs = [
+  { id:'F01', topic:'Sequence', marks:5,
+    q:'Input two numbers A and B. Output the larger number.',
+    hint:'Use a single Decision: A > B ?',
+    ref: makeIfElseFlow('F01','INPUT A,B','A > B ?','OUTPUT A','OUTPUT B')
+  },
+  { id:'F02', topic:'Selection', marks:6,
+    q:'Input a mark (0–100). Output "Pass" if mark ≥ 50 else "Fail".',
+    hint:'Decision mark ≥ 50',
+    ref: makeIfElseFlow('F02','INPUT mark','mark ≥ 50 ?','OUTPUT "Pass"','OUTPUT "Fail"')
+  },
+  { id:'F03', topic:'Validation', marks:7,
+    q:'Input age. If age is less than 0 or greater than 120, output "Invalid", otherwise output "Valid".',
+    hint:'Use OR in the decision.',
+    ref: makeIfElseFlow('F03','INPUT age','age < 0 OR age > 120 ?','OUTPUT "Invalid"','OUTPUT "Valid"')
+  },
+  { id:'F04', topic:'Counting', marks:7,
+    q:'Input N. Output the numbers from 1 to N (inclusive).',
+    hint:'Counter-controlled loop.',
+    ref: makeForFlow('F04','INPUT N','i ← 1','i ≤ N ?','OUTPUT i','i ← i+1')
+  },
+  { id:'F05', topic:'Totals', marks:8,
+    q:'Input 5 numbers. Output their total.',
+    hint:'total starts at 0; loop 5 times.',
+    ref: makeForSumFlow('F05','INPUT x','total ← total + x',5)
+  },
+  { id:'F06', topic:'Average', marks:9,
+    q:'Input 4 numbers. Output the average.',
+    hint:'total then divide by 4 at end.',
+    ref: makeForAvgFlow('F06',4)
+  },
+  { id:'F07', topic:'Max', marks:10,
+    q:'Input 5 numbers. Output the largest.',
+    hint:'Set max to first input, then compare.',
+    ref: makeMaxFlow('F07',5)
+  },
+  { id:'F08', topic:'Min', marks:10,
+    q:'Input 5 numbers. Output the smallest.',
+    hint:'Set min to first input, then compare.',
+    ref: makeMinFlow('F08',5)
+  },
+  { id:'F09', topic:'While loop', marks:8,
+    q:'Input a positive integer N. While N > 0, output N then reduce N by 1.',
+    hint:'Entry-controlled loop (While).',
+    ref: makeWhileCountdownFlow('F09')
+  },
+  { id:'F10', topic:'Repeat..until', marks:9,
+    q:'Keep inputting a number until the user enters 0. Then output "Done".',
+    hint:'Exit-controlled loop (Repeat..Until).',
+    ref: makeRepeatUntilFlow('F10')
+  },
+  { id:'F11', topic:'Validation loop', marks:9,
+    q:'Input temperature until it is between -20 and 50 (inclusive). Then output the accepted temperature.',
+    hint:'Repeat..Until condition is valid range.',
+    ref: makeValidationRepeatFlow('F11','temp','temp ≥ -20 AND temp ≤ 50','OUTPUT temp')
+  },
+  { id:'F12', topic:'Parity', marks:10,
+    q:'Input an integer X. Output "Even" if X mod 2 = 0 else "Odd".',
+    hint:'Decision: X MOD 2 = 0',
+    ref: makeIfElseFlow('F12','INPUT X','X MOD 2 = 0 ?','OUTPUT "Even"','OUTPUT "Odd"')
+  },
+  { id:'F13', topic:'Nested decision', marks:11,
+    q:'Input mark. Output "A" if ≥ 80, "B" if 65–79, else "C".',
+    hint:'Two decisions in sequence.',
+    ref: makeGradeFlow('F13')
+  },
+  { id:'F14', topic:'Bitmap size', marks:10,
+    q:'Input width, height, bpp. Calculate bits = width × height × bpp and output bits.',
+    hint:'A straight sequence.',
+    ref: makeProcessFlow('F14',[
+      'INPUT width,height,bpp',
+      'bits ← width × height × bpp',
+      'OUTPUT bits'
+    ])
+  },
+  { id:'F15', topic:'Sound size', marks:10,
+    q:'Input rate, depth, duration, channels. Calculate bits = rate × depth × duration × channels. Output bits.',
+    hint:'A straight sequence.',
+    ref: makeProcessFlow('F15',[
+      'INPUT rate,depth,duration,channels',
+      'bits ← rate×depth×duration×channels',
+      'OUTPUT bits'
+    ])
+  },
+  { id:'F16', topic:'Binary decision', marks:8,
+    q:'Input a binary digit B (0 or 1). If B is not 0 and not 1, output "Invalid", else output "OK".',
+    hint:'Decision: (B ≠ 0 AND B ≠ 1)',
+    ref: makeIfElseFlow('F16','INPUT B','B ≠ 0 AND B ≠ 1 ?','OUTPUT "Invalid"','OUTPUT "OK"')
+  },
+  { id:'F17', topic:'Counting', marks:9,
+    q:'Input 10 numbers. Count how many are greater than 50. Output the count.',
+    hint:'if x>50 then count++',
+    ref: makeCountConditionFlow('F17',10,'x > 50')
+  },
+  { id:'F18', topic:'Totals', marks:9,
+    q:'Input N numbers (N given first). Output the total.',
+    hint:'Loop i=1..N',
+    ref: makeForSumNFlow('F18')
+  },
+  { id:'F19', topic:'Stops on sentinel', marks:10,
+    q:'Input numbers until -1. Output how many numbers were entered (excluding -1).',
+    hint:'Sentinel loop; count increments each valid entry.',
+    ref: makeSentinelCountFlow('F19')
+  },
+  { id:'F20', topic:'ASCII/Unicode idea', marks:7,
+    q:'Input numberOfChars and bytesPerChar. Output fileSizeBytes = numberOfChars × bytesPerChar.',
+    hint:'Sequence.',
+    ref: makeProcessFlow('F20',[
+      'INPUT numberOfChars, bytesPerChar',
+      'fileSizeBytes ← numberOfChars × bytesPerChar',
+      'OUTPUT fileSizeBytes'
+    ])
+  },
+  { id:'F21', topic:'Range check', marks:9,
+    q:'Input integer X. If X is between 0 and 255 inclusive, output "Fits in 8-bit unsigned" else output "Too large/small".',
+    hint:'Decision uses AND.',
+    ref: makeIfElseFlow('F21','INPUT X','X ≥ 0 AND X ≤ 255 ?','OUTPUT "Fits in 8-bit unsigned"','OUTPUT "Too large/small"')
+  },
+  { id:'F22', topic:'Loop + decision', marks:11,
+    q:'Input N. Output all even numbers from 1..N.',
+    hint:'Loop i=1..N and inside decision i mod 2 = 0',
+    ref: makeEvenListFlow('F22')
+  },
+  { id:'F23', topic:'Simple checksum (concept)', marks:10,
+    q:'Input 4 bytes b1..b4. checksum = (b1+b2+b3+b4) mod 256. Output checksum.',
+    hint:'Sequence with mod.',
+    ref: makeProcessFlow('F23',[
+      'INPUT b1,b2,b3,b4',
+      'checksum ← (b1+b2+b3+b4) MOD 256',
+      'OUTPUT checksum'
+    ])
+  },
+  { id:'F24', topic:'Compression ratio', marks:9,
+    q:'Input originalBytes and compressedBytes. Output ratio = originalBytes / compressedBytes.',
+    hint:'Sequence.',
+    ref: makeProcessFlow('F24',[
+      'INPUT originalBytes, compressedBytes',
+      'ratio ← originalBytes / compressedBytes',
+      'OUTPUT ratio'
+    ])
+  },
+  { id:'F25', topic:'Repeat validation', marks:11,
+    q:'Input a mark until it is between 0 and 100 inclusive, then output the mark and "Accepted".',
+    hint:'Repeat..Until valid range.',
+    ref: makeValidationRepeatFlow('F25','mark','mark ≥ 0 AND mark ≤ 100','OUTPUT mark; OUTPUT "Accepted"')
+  }
+];
+
+// Helper flow builders
+function makeProcessFlow(id, steps){
+  const nodes = [];
+  const links = [];
+  const w=720, h=700;
+  const x=210, y0=70, gap=92;
+  nodes.push(node('s','start',x,y0,300,58,'START'));
+  let prev='s';
+  steps.forEach((st,i)=>{
+    const nid='p'+i;
+    const type = st.startsWith('INPUT') || st.startsWith('OUTPUT') ? 'io' : 'process';
+    nodes.push(node(nid,type,x,y0+gap*(i+1),300,64,st));
+    links.push({from:prev,to:nid});
+    prev=nid;
+  });
+  nodes.push(node('e','end',x,y0+gap*(steps.length+1),300,58,'END'));
+  links.push({from:prev,to:'e'});
+  return {title:id, w, h, nodes, links};
+}
+function makeIfElseFlow(id, ioText, cond, thenText, elseText){
+  const w=720,h=720;
+  const nodes=[
+    node('s','start',210,60,300,58,'START'),
+    node('in','io',210,140,300,64,ioText),
+    node('d','decision',260,230,200,120,cond),
+    node('t','io',70,380,260,64,thenText),
+    node('f','io',390,380,260,64,elseText),
+    node('e','end',210,560,300,58,'END'),
+  ];
+  const links=[
+    {from:'s',to:'in'},
+    {from:'in',to:'d'},
+    // decision to branches (custom points)
+    {from:'d',to:'t',label:'YES', p1:{x:260,y:290}, p2:{x:200,y:380}},
+    {from:'d',to:'f',label:'NO',  p1:{x:460,y:290}, p2:{x:520,y:380}},
+    // branches to end
+    {from:'t',to:'e', p1:{x:200,y:444}, p2:{x:360,y:560}},
+    {from:'f',to:'e', p1:{x:520,y:444}, p2:{x:360,y:560}},
+  ];
+  return {title:id,w,h,nodes,links};
+}
+function makeForFlow(id, inputText, initText, condText, bodyText, incText){
+  const w=720,h=760;
+  const nodes=[
+    node('s','start',210,50,300,58,'START'),
+    node('in','io',210,130,300,64,inputText),
+    node('init','process',210,220,300,64,initText),
+    node('d','decision',260,320,200,120,condText),
+    node('body','io',210,480,300,64,bodyText),
+    node('inc','process',210,570,300,64,incText),
+    node('e','end',210,660,300,58,'END')
+  ];
+  const links=[
+    {from:'s',to:'in'},
+    {from:'in',to:'init'},
+    {from:'init',to:'d'},
+    {from:'d',to:'body',label:'YES', p1:{x:360,y:440}, p2:{x:360,y:480}},
+    {from:'body',to:'inc'},
+    // loop back
+    {from:'inc',to:'d', p1:{x:360,y:634}, p2:{x:560,y:380}},
+    // no branch to end
+    {from:'d',to:'e',label:'NO', p1:{x:460,y:380}, p2:{x:360,y:660}}
+  ];
+  return {title:id,w,h,nodes,links};
+}
+function makeForSumFlow(id, inputEach, addStep, times){
+  const w=720,h=820;
+  const nodes=[
+    node('s','start',210,40,300,58,'START'),
+    node('set','process',210,120,300,64,'total ← 0'),
+    node('init','process',210,210,300,64,'i ← 1'),
+    node('d','decision',260,310,200,120,`i ≤ ${times} ?`),
+    node('in','io',210,470,300,64,inputEach),
+    node('add','process',210,560,300,64,addStep),
+    node('inc','process',210,650,300,64,'i ← i + 1'),
+    node('out','io',210,740,300,64,'OUTPUT total'),
+    node('e','end',210,820,300,58,'END'),
+  ];
+  const links=[
+    {from:'s',to:'set'},
+    {from:'set',to:'init'},
+    {from:'init',to:'d'},
+    {from:'d',to:'in',label:'YES', p1:{x:360,y:430}, p2:{x:360,y:470}},
+    {from:'in',to:'add'},
+    {from:'add',to:'inc'},
+    {from:'inc',to:'d', p1:{x:360,y:714}, p2:{x:560,y:370}},
+    {from:'d',to:'out',label:'NO', p1:{x:460,y:370}, p2:{x:360,y:740}},
+    {from:'out',to:'e'}
+  ];
+  return {title:id,w,h:900,nodes,links};
+}
+function makeForAvgFlow(id, n){
+  return makeProcessFlow(id,[
+    `total ← 0`,
+    `i ← 1`,
+    `LOOP until i > ${n} (use decision)`,
+    `INPUT x`,
+    `total ← total + x`,
+    `i ← i + 1`,
+    `avg ← total / ${n}`,
+    `OUTPUT avg`
+  ]);
+}
+function makeMaxFlow(id, n){
+  return makeProcessFlow(id,[
+    `INPUT x`,
+    `max ← x`,
+    `i ← 2`,
+    `WHILE i ≤ ${n}`,
+    `INPUT x`,
+    `IF x > max THEN max ← x`,
+    `i ← i + 1`,
+    `OUTPUT max`
+  ]);
+}
+function makeMinFlow(id, n){
+  return makeProcessFlow(id,[
+    `INPUT x`,
+    `min ← x`,
+    `i ← 2`,
+    `WHILE i ≤ ${n}`,
+    `INPUT x`,
+    `IF x < min THEN min ← x`,
+    `i ← i + 1`,
+    `OUTPUT min`
+  ]);
+}
+function makeWhileCountdownFlow(id){
+  return makeProcessFlow(id,[
+    `INPUT N`,
+    `WHILE N > 0`,
+    `OUTPUT N`,
+    `N ← N - 1`,
+    `ENDWHILE`
+  ]);
+}
+function makeRepeatUntilFlow(id){
+  return makeProcessFlow(id,[
+    `REPEAT`,
+    `INPUT x`,
+    `UNTIL x = 0`,
+    `OUTPUT "Done"`
+  ]);
+}
+function makeValidationRepeatFlow(id, varName, cond, finalOut){
+  return makeProcessFlow(id,[
+    `REPEAT`,
+    `INPUT ${varName}`,
+    `UNTIL ${cond}`,
+    `${finalOut}`
+  ]);
+}
+function makeGradeFlow(id){
+  const w=720,h=760;
+  const nodes=[
+    node('s','start',210,50,300,58,'START'),
+    node('in','io',210,130,300,64,'INPUT mark'),
+    node('d1','decision',260,230,200,120,'mark ≥ 80 ?'),
+    node('outA','io',70,380,260,64,'OUTPUT "A"'),
+    node('d2','decision',390,360,200,120,'mark ≥ 65 ?'),
+    node('outB','io',500,520,200,64,'OUTPUT "B"'),
+    node('outC','io',280,520,200,64,'OUTPUT "C"'),
+    node('e','end',210,660,300,58,'END')
+  ];
+  const links=[
+    {from:'s',to:'in'},
+    {from:'in',to:'d1'},
+    {from:'d1',to:'outA',label:'YES', p1:{x:260,y:290}, p2:{x:200,y:380}},
+    {from:'d1',to:'d2',label:'NO', p1:{x:460,y:290}, p2:{x:490,y:360}},
+    {from:'d2',to:'outB',label:'YES', p1:{x:590,y:420}, p2:{x:600,y:520}},
+    {from:'d2',to:'outC',label:'NO',  p1:{x:490,y:420}, p2:{x:380,y:520}},
+    {from:'outA',to:'e', p1:{x:200,y:444}, p2:{x:360,y:660}},
+    {from:'outB',to:'e', p1:{x:600,y:584}, p2:{x:360,y:660}},
+    {from:'outC',to:'e', p1:{x:380,y:584}, p2:{x:360,y:660}}
+  ];
+  return {title:id,w,h,nodes,links};
+}
+function makeCountConditionFlow(id, n, cond){
+  return makeProcessFlow(id,[
+    `count ← 0`,
+    `i ← 1`,
+    `WHILE i ≤ ${n}`,
+    `INPUT x`,
+    `IF ${cond} THEN count ← count + 1`,
+    `i ← i + 1`,
+    `OUTPUT count`
+  ]);
+}
+function makeForSumNFlow(id){
+  return makeProcessFlow(id,[
+    `INPUT N`,
+    `total ← 0`,
+    `i ← 1`,
+    `WHILE i ≤ N`,
+    `INPUT x`,
+    `total ← total + x`,
+    `i ← i + 1`,
+    `OUTPUT total`
+  ]);
+}
+function makeSentinelCountFlow(id){
+  return makeProcessFlow(id,[
+    `count ← 0`,
+    `REPEAT`,
+    `INPUT x`,
+    `IF x ≠ -1 THEN count ← count + 1`,
+    `UNTIL x = -1`,
+    `OUTPUT count`
+  ]);
+}
+function makeEvenListFlow(id){
+  return makeProcessFlow(id,[
+    `INPUT N`,
+    `i ← 1`,
+    `WHILE i ≤ N`,
+    `IF i MOD 2 = 0 THEN OUTPUT i`,
+    `i ← i + 1`,
+    `ENDWHILE`
+  ]);
+}
+
+function node(id,type,x,y,w,h,text){ return {id,type,x,y,w,h,text}; }
+
+/* =========================================================
+   DRAWING CANVAS (per flow question)
+========================================================= */
+function setupCanvas(canvas){
+  const ctx = canvas.getContext('2d');
+  // Handle high DPI
+  function resize(){
+    const cssW = canvas.clientWidth;
+    const cssH = canvas.clientHeight;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(cssW*dpr);
+    canvas.height = Math.floor(cssH*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    // soft grid
+    ctx.clearRect(0,0,cssW,cssH);
+    ctx.globalAlpha = 0.25;
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    for(let x=0;x<cssW;x+=24){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,cssH); ctx.stroke(); }
+    for(let y=0;y<cssH;y+=24){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cssW,y); ctx.stroke(); }
+    ctx.globalAlpha = 1;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const state = {
+    drawing:false,
+    penColor:'#6aa9ff',
+    penSize:4,
+    mode:'pen' // pen or eraser
+  };
+
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return {x,y};
+  }
+
+  let last = null;
+
+  function start(e){
+    e.preventDefault();
+    state.drawing = true;
+    last = pos(e);
+  }
+  function move(e){
+    if(!state.drawing) return;
+    e.preventDefault();
+    const p = pos(e);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = state.penSize;
+    if(state.mode==='eraser'){
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+    }else{
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = state.penColor;
+    }
+    ctx.beginPath();
+    ctx.moveTo(last.x,last.y);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    last = p;
+  }
+  function end(e){
+    if(!state.drawing) return;
+    e.preventDefault();
+    state.drawing = false;
+    last = null;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', end, {passive:false});
+
+  return {ctx, resize, state};
+}
+
+function canvasToPNG(canvas, filename){
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* =========================================================
+   TRACE TABLE QUESTIONS (25)
+   Each question includes pseudocode + table skeleton + reference rows
+========================================================= */
+const traceQs = [
+  traceQ('T01','Sequence / variables',
+`a ← 5
+b ← 2
+c ← a + b
+OUTPUT c`,
+['a','b','c','OUTPUT'], 3,
+[
+  ['5','2','',''],
+  ['5','2','7',''],
+  ['5','2','7','7']
+]),
+  traceQ('T02','If statement',
+`x ← 10
+IF x > 5 THEN
+  y ← x * 2
+ELSE
+  y ← x + 2
+ENDIF
+OUTPUT y`,
+['x','y','(x>5?)','OUTPUT'], 4,
+[
+  ['10','','T',''],
+  ['10','20','T',''],
+  ['10','20','T','20'],
+  ['10','20','T','20']
+]),
+  traceQ('T03','While loop (countdown)',
+`n ← 3
+WHILE n > 0
+  OUTPUT n
+  n ← n - 1
+ENDWHILE`,
+['n','(n>0?)','OUTPUT'], 6,
+[
+  ['3','T',''],
+  ['3','T','3'],
+  ['2','T',''],
+  ['2','T','2'],
+  ['1','T','1'],
+  ['0','F','']
+]),
+  traceQ('T04','Counter loop (sum)',
+`total ← 0
+FOR i ← 1 TO 4
+  total ← total + i
+NEXT i
+OUTPUT total`,
+['i','total','OUTPUT'], 6,
+[
+  ['1','0',''],
+  ['1','1',''],
+  ['2','3',''],
+  ['3','6',''],
+  ['4','10',''],
+  ['4','10','10']
+]),
+  traceQ('T05','Repeat..Until (input validation)',
+`REPEAT
+  INPUT temp
+UNTIL temp >= -20 AND temp <= 50
+OUTPUT temp`,
+['temp','valid?','OUTPUT'], 4,
+[
+  ['-30','F',''],
+  ['60','F',''],
+  ['25','T',''],
+  ['25','T','25']
+]),
+  traceQ('T06','Max of 3 (selection)',
+`INPUT a
+INPUT b
+INPUT c
+max ← a
+IF b > max THEN max ← b ENDIF
+IF c > max THEN max ← c ENDIF
+OUTPUT max`,
+['a','b','c','max','OUTPUT'], 5,
+[
+  ['7','3','9','7',''],
+  ['7','3','9','7',''],
+  ['7','3','9','9',''],
+  ['7','3','9','9','9'],
+  ['7','3','9','9','9']
+], {inputs:['a=7','b=3','c=9']}),
+  traceQ('T07','Counting condition',
+`count ← 0
+FOR i ← 1 TO 5
+  INPUT x
+  IF x > 50 THEN count ← count + 1 ENDIF
+NEXT i
+OUTPUT count`,
+['i','x','count','(x>50?)','OUTPUT'], 7,
+[
+  ['1','40','0','F',''],
+  ['2','55','1','T',''],
+  ['3','51','2','T',''],
+  ['4','10','2','F',''],
+  ['5','99','3','T',''],
+  ['5','3','T','3'],
+  ['5','99','3','T','3']
+], {inputs:['x sequence: 40, 55, 51, 10, 99']}),
+  traceQ('T08','MOD (even/odd)',
+`x ← 7
+IF x MOD 2 = 0 THEN
+  OUTPUT "Even"
+ELSE
+  OUTPUT "Odd"
+ENDIF`,
+['x','x MOD 2','(=0?)','OUTPUT'], 3,
+[
+  ['7','1','F',''],
+  ['7','1','F','Odd'],
+  ['7','1','F','Odd']
+]),
+  traceQ('T09','Image size (bits)',
+`width ← 200
+height ← 100
+bpp ← 1
+bits ← width * height * bpp
+OUTPUT bits`,
+['width','height','bpp','bits','OUTPUT'], 3,
+[
+  ['200','100','1','',''],
+  ['200','100','1','20000',''],
+  ['200','100','1','20000','20000']
+]),
+  traceQ('T10','Sound size (bits)',
+`rate ← 8000
+depth ← 8
+duration ← 2
+channels ← 1
+bits ← rate * depth * duration * channels
+OUTPUT bits`,
+['rate','depth','duration','channels','bits','OUTPUT'], 3,
+[
+  ['8000','8','2','1','',''],
+  ['8000','8','2','1','128000',''],
+  ['8000','8','2','1','128000','128000']
+]),
+
+  // 15 more (T11–T25)
+  traceQ('T11','Two’s complement idea (sign check)',
+`b ← "10010101"
+IF b[1] = "1" THEN
+  OUTPUT "Negative"
+ELSE
+  OUTPUT "Non-negative"
+ENDIF`,
+['b','MSB','OUTPUT'], 2,
+[
+  ['10010101','1','Negative'],
+  ['10010101','1','Negative']
+]),
+  traceQ('T12','ASCII size',
+`chars ← 200
+bytesPerChar ← 1
+size ← chars * bytesPerChar
+OUTPUT size`,
+['chars','bytesPerChar','size','OUTPUT'], 2,
+[
+  ['200','1','200','200'],
+  ['200','1','200','200']
+]),
+  traceQ('T13','Unicode size (2 bytes)',
+`chars ← 200
+bytesPerChar ← 2
+size ← chars * bytesPerChar
+OUTPUT size`,
+['chars','bytesPerChar','size','OUTPUT'], 2,
+[
+  ['200','2','400','400'],
+  ['200','2','400','400']
+]),
+  traceQ('T14','Simple checksum mod 256',
+`b1 ← 250
+b2 ← 10
+sum ← b1 + b2
+checksum ← sum MOD 256
+OUTPUT checksum`,
+['b1','b2','sum','checksum','OUTPUT'], 3,
+[
+  ['250','10','260','',''],
+  ['250','10','260','4',''],
+  ['250','10','260','4','4']
+]),
+  traceQ('T15','For loop outputs',
+`FOR i ← 1 TO 3
+  OUTPUT i * i
+NEXT i`,
+['i','i*i','OUTPUT'], 3,
+[
+  ['1','1','1'],
+  ['2','4','4'],
+  ['3','9','9']
+]),
+  traceQ('T16','While loop (halve)',
+`x ← 20
+WHILE x > 1
+  x ← x / 2
+ENDWHILE
+OUTPUT x`,
+['x','(x>1?)','OUTPUT'], 5,
+[
+  ['20','T',''],
+  ['10','T',''],
+  ['5','T',''],
+  ['2.5','T',''],
+  ['1.25','F','1.25']
+]),
+  traceQ('T17','Repeat until 0 (count)',
+`count ← 0
+REPEAT
+  INPUT x
+  IF x <> 0 THEN count ← count + 1 ENDIF
+UNTIL x = 0
+OUTPUT count`,
+['x','count','(x=0?)','OUTPUT'], 5,
+[
+  ['5','1','F',''],
+  ['9','2','F',''],
+  ['2','3','F',''],
+  ['0','3','T',''],
+  ['0','3','T','3']
+], {inputs:['x sequence: 5, 9, 2, 0']}),
+  traceQ('T18','Min of 3',
+`a ← 6
+b ← 2
+c ← 9
+min ← a
+IF b < min THEN min ← b ENDIF
+IF c < min THEN min ← c ENDIF
+OUTPUT min`,
+['a','b','c','min','OUTPUT'], 4,
+[
+  ['6','2','9','6',''],
+  ['6','2','9','2',''],
+  ['6','2','9','2',''],
+  ['6','2','9','2','2']
+]),
+  traceQ('T19','Bit depth levels',
+`bits ← 8
+levels ← 2 ^ bits
+OUTPUT levels`,
+['bits','levels','OUTPUT'], 2,
+[
+  ['8','256','256'],
+  ['8','256','256']
+]),
+  traceQ('T20','Resolution pixels',
+`w ← 640
+h ← 480
+pixels ← w * h
+OUTPUT pixels`,
+['w','h','pixels','OUTPUT'], 2,
+[
+  ['640','480','307200','307200'],
+  ['640','480','307200','307200']
+]),
+  traceQ('T21','If-else string',
+`x ← 3
+IF x = 3 THEN
+  OUTPUT "YES"
+ELSE
+  OUTPUT "NO"
+ENDIF`,
+['x','(x=3?)','OUTPUT'], 2,
+[
+  ['3','T','YES'],
+  ['3','T','YES']
+]),
+  traceQ('T22','Sum 1..N',
+`N ← 5
+total ← 0
+FOR i ← 1 TO N
+  total ← total + i
+NEXT i
+OUTPUT total`,
+['i','total','OUTPUT'], 6,
+[
+  ['1','1',''],
+  ['2','3',''],
+  ['3','6',''],
+  ['4','10',''],
+  ['5','15',''],
+  ['5','15','15']
+]),
+  traceQ('T23','Overflow concept (sign check only)',
+`a ← 120
+b ← 50
+sum ← a + b
+IF sum > 127 THEN
+  OUTPUT "Overflow in 8-bit two’s complement"
+ELSE
+  OUTPUT "No overflow"
+ENDIF`,
+['a','b','sum','(sum>127?)','OUTPUT'], 3,
+[
+  ['120','50','170','T',''],
+  ['120','50','170','T','Overflow in 8-bit two’s complement'],
+  ['120','50','170','T','Overflow in 8-bit two’s complement']
+]),
+  traceQ('T24','Compression ratio',
+`orig ← 900
+comp ← 100
+ratio ← orig / comp
+OUTPUT ratio`,
+['orig','comp','ratio','OUTPUT'], 2,
+[
+  ['900','100','9','9'],
+  ['900','100','9','9']
+]),
+  traceQ('T25','Loop with condition output',
+`FOR i ← 1 TO 6
+  IF i MOD 2 = 0 THEN OUTPUT i ENDIF
+NEXT i`,
+['i','(i MOD 2=0?)','OUTPUT'], 6,
+[
+  ['1','F',''],
+  ['2','T','2'],
+  ['3','F',''],
+  ['4','T','4'],
+  ['5','F',''],
+  ['6','T','6']
+])
+];
+
+function traceQ(id, topic, code, cols, rows, answerRows, extra){
+  return {id, topic, code, cols, rows, answerRows, extra: extra||{}};
+}
+
+/* =========================================================
+   RENDER FLOWCHART SECTION
+========================================================= */
+const flowHost = document.getElementById('flowHost');
+
+function flowCardHTML(item, idx){
+  const canvasId = `cv_${item.id}`;
+  const refId = `ref_${item.id}`;
+  return `
+    <div class="card" id="${item.id}">
+      <div class="cardTop">
+        <div>
+          <h3>${idx+1}. (${item.id}) Flowchart Task – ${esc(item.topic)}</h3>
+          <div class="meta">
+            <span class="badge">Marks: ${item.marks}</span>
+            <span class="badge">Draw on canvas</span>
+          </div>
+        </div>
+        <div class="tools">
+          <button class="ghost" onclick="clearCanvas('${canvasId}')">Clear</button>
+          <button class="ghost" onclick="downloadCanvas('${canvasId}','${item.id}_flowchart.png')">Download PNG</button>
+        </div>
+      </div>
+
+      <div class="qbox">
+        <p class="qtext">${esc(item.q)}</p>
+        <p class="hint">Hint: ${esc(item.hint)}</p>
+
+        <div class="toolrow">
+          <div class="tools">
+            <label>Mode
+              <select onchange="setMode('${canvasId}', this.value)">
+                <option value="pen">Pen</option>
+                <option value="eraser">Eraser</option>
+              </select>
+            </label>
+            <label>Colour <input type="color" value="#6aa9ff" onchange="setColor('${canvasId}', this.value)" /></label>
+            <label>Size <input type="range" min="2" max="14" value="4" oninput="setSize('${canvasId}', this.value)" /></label>
+          </div>
+          <div class="smallnote">Draw Start/End, Input/Output, Process, Decision clearly.</div>
+        </div>
+
+        <canvas class="draw" id="${canvasId}"></canvas>
+
+        <details id="${refId}">
+          <summary>Reveal Reference Flowchart (High-quality SVG)</summary>
+          <div class="key" style="font-family: var(--sans); white-space:normal">
+            ${renderFlowSVG(item.ref)}
+            <div class="smallnote">Use this to self-check structure and logic.</div>
+          </div>
+        </details>
+      </div>
+    </div>
+  `;
+}
+
+flowHost.innerHTML = flowQs.map(flowCardHTML).join('');
+
+/* Attach canvas engines */
+const canvases = new Map();
+flowQs.forEach(q=>{
+  const c = document.getElementById(`cv_${q.id}`);
+  const engine = setupCanvas(c);
+  canvases.set(c.id, engine);
+});
+
+/* Canvas control functions */
+function clearCanvas(canvasId){
+  const c = document.getElementById(canvasId);
+  const ctx = c.getContext('2d');
+  const w = c.clientWidth, h = c.clientHeight;
+  // clear + re-grid
+  ctx.clearRect(0,0,w,h);
+  const eng = canvases.get(canvasId);
+  if(eng) eng.resize();
+}
+function downloadCanvas(canvasId, filename){
+  const c = document.getElementById(canvasId);
+  canvasToPNG(c, filename);
+}
+function setColor(canvasId, color){
+  const eng = canvases.get(canvasId); if(eng) eng.state.penColor = color;
+}
+function setSize(canvasId, size){
+  const eng = canvases.get(canvasId); if(eng) eng.state.penSize = Number(size);
+}
+function setMode(canvasId, mode){
+  const eng = canvases.get(canvasId); if(eng) eng.state.mode = mode;
+}
+function downloadAllFlowPNGs(){
+  flowQs.forEach(q=>{
+    const id = `cv_${q.id}`;
+    downloadCanvas(id, `${q.id}_flowchart.png`);
+  });
+}
+
+/* =========================================================
+   RENDER TRACE SECTION
+========================================================= */
+const traceHost = document.getElementById('traceHost');
+
+function renderTraceTable(q){
+  const tableId = `tbl_${q.id}`;
+  const checkId = `chk_${q.id}`;
+  const revealId = `rev_${q.id}`;
+  const noteInputs = (q.extra.inputs && q.extra.inputs.length)
+    ? `<div class="smallnote"><b>Given inputs:</b> ${q.extra.inputs.map(esc).join(' | ')}</div>`
+    : `<div class="smallnote">If INPUT appears, use the given inputs (shown when provided) or choose sensible values.</div>`;
+
+  const head = q.cols.map(c=>`<th>${esc(c)}</th>`).join('');
+  const body = Array.from({length:q.rows}).map((_,r)=>{
+    const tds = q.cols.map((_,c)=>(
+      `<td><input class="cell" data-q="${q.id}" data-r="${r}" data-c="${c}" placeholder=""/></td>`
+    )).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+
+  return `
+    <div class="card" id="${q.id}">
+      <div class="cardTop">
+        <div>
+          <h3>${q.id} – Trace Table – ${esc(q.topic)}</h3>
+          <div class="meta">
+            <span class="badge">Fill the table</span>
+            <span class="badge">${q.rows} rows</span>
+            <span class="badge">${q.cols.length} columns</span>
+          </div>
+        </div>
+        <div class="tools">
+          <button class="secondary" onclick="checkTrace('${q.id}')">Check</button>
+          <button class="ghost" onclick="clearTrace('${q.id}')">Clear</button>
+        </div>
+      </div>
+
+      <div class="qbox">
+        <p class="qtext">Trace the algorithm and complete the table row-by-row.</p>
+        ${noteInputs}
+        <pre class="code">${esc(q.code)}</pre>
+
+        <table class="trace" id="${tableId}">
+          <thead><tr>${head}</tr></thead>
+          <tbody>${body}</tbody>
+        </table>
+
+        <div class="markline" id="${checkId}">
+          <b>Check:</b> Fill the table, then press <b>Check</b>. You can still edit after checking.
+        </div>
+
+        <details id="${revealId}">
+          <summary>Reveal Reference Trace Table</summary>
+          <div class="key" style="font-family: var(--sans); white-space:normal">
+            ${renderAnswerTable(q)}
+          </div>
+        </details>
+      </div>
+    </div>
+  `;
+}
+
+function renderAnswerTable(q){
+  const head = q.cols.map(c=>`<th>${esc(c)}</th>`).join('');
+  const rows = q.answerRows.map(r=>{
+    const tds = q.cols.map((_,i)=>`<td style="color:#eef4ff">${esc(r[i] ?? '')}</td>`).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+  return `
+    <div class="smallnote">Reference (one valid complete trace):</div>
+    <table class="trace">
+      <thead><tr>${head}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+traceHost.innerHTML = traceQs.map(renderTraceTable).join('');
+
+/* =========================================================
+   TRACE CHECKING (cell-by-cell compare)
+========================================================= */
+function norm(v){
+  return String(v ?? '').trim().replace(/\s+/g,' ').toLowerCase();
+}
+
+function checkTrace(qid){
+  const q = traceQs.find(x=>x.id===qid);
+  if(!q) return;
+
+  const inputs = document.querySelectorAll(`input.cell[data-q="${qid}"]`);
+  let total=0, correct=0, filled=0;
+
+  inputs.forEach(inp=>{
+    const r = Number(inp.dataset.r);
+    const c = Number(inp.dataset.c);
+    const want = norm((q.answerRows[r]||[])[c] ?? '');
+    const got = norm(inp.value);
+
+    total++;
+    if(got.length) filled++;
+
+    // reset style
+    inp.style.outline = 'none';
+    inp.style.boxShadow = '';
+    inp.style.background = 'rgba(255,255,255,0.06)';
+
+    if(!got) return;
+    if(got === want){
+      correct++;
+      inp.style.background = 'rgba(87,240,179,0.14)';
+      inp.style.boxShadow = '0 0 0 2px rgba(87,240,179,0.18)';
+    }else{
+      inp.style.background = 'rgba(255,107,107,0.12)';
+      inp.style.boxShadow = '0 0 0 2px rgba(255,107,107,0.18)';
+    }
+  });
+
+  const pct = total ? Math.round((correct/total)*100) : 0;
+  const cls = pct>=75 ? 'ok' : (pct>=50 ? 'warn' : 'bad');
+  const box = document.getElementById(`chk_${qid}`);
+  box.innerHTML = `
+    <b>Check:</b>
+    Filled: <b>${filled}</b> / ${total}
+    &nbsp;|&nbsp; Correct: <b>${correct}</b>
+    &nbsp;|&nbsp; Accuracy: <span class="${cls}"><b>${pct}%</b></span>
+    &nbsp;|&nbsp; Use “Reveal Reference Trace Table” to self-correct.
+  `;
+}
+
+function clearTrace(qid){
+  document.querySelectorAll(`input.cell[data-q="${qid}"]`).forEach(inp=>{
+    inp.value='';
+    inp.style.background = 'rgba(255,255,255,0.06)';
+    inp.style.boxShadow = '';
+  });
+  const box = document.getElementById(`chk_${qid}`);
+  box.innerHTML = `<b>Check:</b> Fill the table, then press <b>Check</b>. You can still edit after checking.`;
+}
+
+function checkAllTrace(){
+  traceQs.forEach(q=>checkTrace(q.id));
+}
+
+function resetAll(){
+  // Clear all trace
+  traceQs.forEach(q=>clearTrace(q.id));
+  // Clear all flow canvases
+  flowQs.forEach(q=>clearCanvas(`cv_${q.id}`));
+  // Collapse all details
+  collapseAll();
+  // Clear search and show all
+  search.value='';
+  document.querySelectorAll('.section, .card, .qbox').forEach(b=>b.style.display='');
+}
+
+/* =========================================================
+   UTILS
+========================================================= */
+window.expandAll = expandAll;
+window.collapseAll = collapseAll;
+window.clearCanvas = clearCanvas;
+window.downloadCanvas = downloadCanvas;
+window.setColor = setColor;
+window.setSize = setSize;
+window.setMode = setMode;
+window.downloadAllFlowPNGs = downloadAllFlowPNGs;
+window.checkTrace = checkTrace;
+window.clearTrace = clearTrace;
+window.checkAllTrace = checkAllTrace;
+window.resetAll = resetAll;
+</script>
+
+</body>
+</html>

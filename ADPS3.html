@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IGCSE CS 0984 (Year 9) — Algorithm Design & Problem Solving (Learning + Test)</title>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#111b31; --card:#0f1930; --ink:#e9eefc; --muted:#b8c3e6;
+      --accent:#7dd3fc; --accent2:#a7f3d0; --warn:#fbbf24; --bad:#fb7185; --good:#34d399;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 8px 24px rgba(0,0,0,.35);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:radial-gradient(1000px 500px at 15% 10%, rgba(125,211,252,.15), transparent 55%),
+                 radial-gradient(900px 600px at 85% 15%, rgba(167,243,208,.12), transparent 55%),
+                 var(--bg);
+      color:var(--ink);
+    }
+    a{color:var(--accent)}
+    header{
+      padding:18px 16px 10px;
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(10px);
+      background:linear-gradient(to bottom, rgba(11,18,32,.92), rgba(11,18,32,.75));
+      border-bottom:1px solid var(--border);
+    }
+    .topbar{
+      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+      max-width:1200px; margin:0 auto;
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      background:linear-gradient(135deg, rgba(125,211,252,.9), rgba(167,243,208,.9));
+      box-shadow:var(--shadow);
+    }
+    h1{margin:0; font-size:18px; letter-spacing:.2px}
+    .sub{margin:0; color:var(--muted); font-size:12px}
+    .chips{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .chip{
+      border:1px solid var(--border);
+      background:rgba(17,27,49,.6);
+      padding:10px 12px; border-radius:999px;
+      display:flex; gap:10px; align-items:center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+      font-size:13px;
+    }
+    .chip b{color:var(--accent)}
+    button{
+      border:1px solid var(--border);
+      background:rgba(17,27,49,.85);
+      color:var(--ink);
+      padding:10px 12px; border-radius:12px;
+      cursor:pointer;
+      transition:.15s transform ease, .15s background ease, .15s border ease;
+    }
+    button:hover{transform:translateY(-1px); background:rgba(17,27,49,.98)}
+    button:active{transform:translateY(0)}
+    .btn-primary{border-color:rgba(125,211,252,.6)}
+    .btn-good{border-color:rgba(52,211,153,.6)}
+    .btn-warn{border-color:rgba(251,191,36,.55)}
+    .btn-bad{border-color:rgba(251,113,133,.55)}
+    .wrap{max-width:1200px; margin:0 auto; padding:14px 16px 80px}
+    .grid{
+      display:grid; gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 1000px){
+      .grid{grid-template-columns: 1.05fr .95fr}
+    }
+    .panel{
+      background:rgba(17,27,49,.6);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panel header{
+      position:unset; backdrop-filter:none; background:transparent; border:0;
+      padding:16px 16px 6px;
+    }
+    .panel h2{margin:0; font-size:16px}
+    .panel p{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55}
+    .panel .content{padding:10px 16px 16px}
+    .pill{
+      display:inline-block; font-size:12px; color:rgba(255,255,255,.9);
+      border:1px solid var(--border); background:rgba(15,25,48,.55);
+      padding:6px 10px; border-radius:999px; margin:6px 6px 0 0;
+    }
+    details{
+      border:1px solid var(--border);
+      background:rgba(15,25,48,.6);
+      border-radius:14px;
+      padding:10px 12px;
+      margin:10px 0;
+    }
+    details summary{
+      cursor:pointer;
+      font-weight:650;
+      list-style:none;
+    }
+    details summary::-webkit-details-marker{display:none}
+    .card{
+      border:1px solid var(--border);
+      background:rgba(15,25,48,.55);
+      border-radius:14px;
+      padding:12px 12px;
+      margin:10px 0;
+    }
+    .qhead{
+      display:flex; gap:10px; align-items:flex-start; justify-content:space-between;
+    }
+    .qid{
+      font-weight:800; color:var(--accent); font-size:13px; min-width:52px;
+    }
+    .qtext{margin:0; line-height:1.5; color:var(--ink); font-size:13.5px}
+    .meta{color:var(--muted); font-size:12px; margin-top:6px}
+    .opts{margin-top:10px; display:grid; gap:8px}
+    label.opt{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:10px 10px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(17,27,49,.35);
+      cursor:pointer;
+    }
+    input[type="radio"]{margin-top:3px}
+    textarea, input[type="text"]{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(17,27,49,.35);
+      border-radius:12px;
+      padding:10px 10px;
+      color:var(--ink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:13px;
+      line-height:1.5;
+      outline:none;
+    }
+    textarea{min-height:110px; resize:vertical}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+    .answer{
+      display:none;
+      border-left:3px solid rgba(167,243,208,.7);
+      background:rgba(167,243,208,.08);
+      padding:10px 10px;
+      border-radius:12px;
+      margin-top:10px;
+      color:rgba(255,255,255,.92);
+      font-size:13px;
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+    .result{
+      margin-left:auto; font-weight:750; font-size:13px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(17,27,49,.45);
+      color:var(--muted);
+    }
+    .ok{color:var(--good); border-color:rgba(52,211,153,.55)}
+    .no{color:var(--bad); border-color:rgba(251,113,133,.55)}
+    .note{
+      border:1px dashed rgba(125,211,252,.35);
+      background:rgba(125,211,252,.08);
+      padding:10px 12px; border-radius:14px; color:rgba(255,255,255,.9);
+      font-size:13px; line-height:1.6;
+    }
+    .kbd{
+      padding:2px 7px; border-radius:8px; border:1px solid rgba(255,255,255,.16);
+      background:rgba(17,27,49,.55); font-family:ui-monospace,monospace; font-size:12px;
+    }
+    footer{
+      max-width:1200px; margin:0 auto; padding:0 16px 24px; color:var(--muted);
+      font-size:12px;
+    }
+    .endbar{
+      position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
+      z-index:25;
+      width:min(1200px, calc(100% - 24px));
+      display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+      border:1px solid var(--border);
+      background:rgba(17,27,49,.72);
+      backdrop-filter: blur(10px);
+      border-radius:18px;
+      padding:10px 10px;
+      box-shadow:var(--shadow);
+    }
+    .endbar .left{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .endbar .right{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .small{font-size:12px; color:var(--muted)}
+    .badge{
+      padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.12);
+      background:rgba(15,25,48,.55);
+      font-weight:700;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>Algorithm Design & Problem Solving — Learning + Test (IGCSE CS 0984, Year 9)</h1>
+        <p class="sub">Sequential • Selection (IF + SELECT/CASE) • Iteration (FOR / WHILE / REPEAT-UNTIL) • Trace tables • Debugging • Flowcharts</p>
+      </div>
+    </div>
+
+    <div class="chips">
+      <div class="chip"><span>⏱️ Timer:</span> <b id="timer">00:00:00</b></div>
+      <div class="chip"><span>Auto-marked score:</span> <b id="score">0</b><span>/</span><b id="maxScore">0</b></div>
+      <button class="btn-primary" onclick="scrollToId('practice')">Go to Practice</button>
+      <button class="btn-warn" onclick="resetAll()">Reset attempts</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <!-- LEARNING PANEL -->
+    <section class="panel" id="learn">
+      <header>
+        <h2>Teacher / Learning Pane</h2>
+        <p>Quick notes + worked examples. Students: read, then jump to the practice bank (100+ questions).</p>
+        <div>
+          <span class="pill">Pseudocode rules</span>
+          <span class="pill">Trace tables</span>
+          <span class="pill">IF & SELECT/CASE</span>
+          <span class="pill">FOR / WHILE / REPEAT-UNTIL</span>
+          <span class="pill">Debugging patterns</span>
+          <span class="pill">Flowchart prompts</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="note">
+          <b>Exam-friendly pseudocode reminders (0984):</b><br/>
+          • Use clear variable names, consistent indentation.<br/>
+          • Use standard constructs: <span class="kbd">IF...THEN...ENDIF</span>, <span class="kbd">CASE/SELECT</span>, <span class="kbd">FOR...NEXT</span>, <span class="kbd">WHILE...ENDWHILE</span>, <span class="kbd">REPEAT...UNTIL</span>.<br/>
+          • Use <span class="kbd">INPUT</span> / <span class="kbd">OUTPUT</span>. Use comparisons carefully: <span class="kbd">=</span>, <span class="kbd">&lt;</span>, <span class="kbd">&gt;=</span> etc.<br/>
+          • Validation: <span class="kbd">REPEAT...UNTIL</span> is great for “keep asking until valid”.
+        </div>
+
+        <details open>
+          <summary>1) Sequential algorithms (step-by-step)</summary>
+          <div class="card">
+            <p class="qtext"><b>Worked example:</b> Input 3 marks, output average and “PASS” if average ≥ 50.</p>
+            <div class="answer" style="display:block">
+INPUT M1
+INPUT M2
+INPUT M3
+Avg ← (M1 + M2 + M3) / 3
+OUTPUT Avg
+IF Avg ≥ 50 THEN
+  OUTPUT "PASS"
+ELSE
+  OUTPUT "RETRY"
+ENDIF
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>2) Selection: IF and SELECT/CASE</summary>
+          <div class="card">
+            <p class="qtext"><b>IF</b> is for true/false decisions. <b>SELECT/CASE</b> is best when one variable is matched to many possible values (e.g., grade letters).</p>
+            <div class="answer" style="display:block">
+INPUT GradeLetter
+CASE GradeLetter OF
+  "A": OUTPUT "Excellent"
+  "B": OUTPUT "Very good"
+  "C": OUTPUT "Good"
+  "D": OUTPUT "Pass"
+  OTHERWISE: OUTPUT "Check input"
+ENDCASE
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>3) Iteration: FOR, WHILE, REPEAT-UNTIL</summary>
+          <div class="card">
+            <p class="qtext"><b>FOR</b> = counter-controlled (known number of repeats). <b>WHILE</b> = entry-controlled (check first). <b>REPEAT-UNTIL</b> = exit-controlled (run at least once).</p>
+            <div class="answer" style="display:block">
+Total ← 0
+FOR i ← 1 TO 5
+  INPUT x
+  Total ← Total + x
+NEXT i
+OUTPUT Total
+
+// Entry-controlled
+i ← 1
+WHILE i ≤ 5
+  OUTPUT i
+  i ← i + 1
+ENDWHILE
+
+// Exit-controlled validation
+REPEAT
+  INPUT Age
+UNTIL Age ≥ 5 AND Age ≤ 18
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>4) Trace tables (how to score fast)</summary>
+          <div class="card">
+            <p class="qtext">Make columns for variables that change. Fill row-by-row after each key line.</p>
+            <div class="answer" style="display:block">
+Example:
+Total ← 0
+FOR i ← 1 TO 3
+  Total ← Total + i
+NEXT i
+
+Trace (i, Total):
+Start: Total=0
+i=1 → Total=1
+i=2 → Total=3
+i=3 → Total=6
+Output: 6
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>5) Debugging checklist</summary>
+          <div class="card">
+            <div class="answer" style="display:block">
+Common bugs:
+1) Wrong comparison (>, ≥, =)
+2) Off-by-one loops (1..10 vs 0..9)
+3) Variable not initialised (Total ← 0 missing)
+4) Updating the wrong variable (i ← i + 1 missing)
+5) Using AND/OR incorrectly
+6) Output inside loop instead of after (or vice versa)
+Fix method:
+• Read the task • Identify inputs/outputs • Trace 2–3 test cases • Correct one thing at a time
+            </div>
+          </div>
+        </details>
+
+        <div class="note">
+          <b>Flowcharts:</b> In this page, flowchart questions are written as prompts. Students can draw on paper or on a diagram app.
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICE PANEL -->
+    <section class="panel" id="practice">
+      <header>
+        <h2>Student / Practice Pane — 100+ Questions</h2>
+        <p>Answer in the boxes. Use <b>Check</b> for auto-marked items and <b>Show Mark Scheme</b> for model answers.</p>
+      </header>
+
+      <div class="content" id="questionBank"></div>
+
+      <div class="card" id="totalArea">
+        <div class="qhead">
+          <div>
+            <div class="qid">TOTAL</div>
+            <p class="qtext">When you reach the end, click <b>Reveal Total</b> to see your auto-marked score.</p>
+            <div class="meta">Open-ended questions are not auto-marked (use the mark scheme to self-check).</div>
+          </div>
+          <span class="result" id="finalBadge">Not revealed</span>
+        </div>
+        <div class="row">
+          <button class="btn-good" onclick="revealTotal()">Reveal Total</button>
+          <button class="btn-primary" onclick="scrollToId('learn')">Back to Learning</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  Prepared by Ravi
+</footer>
+
+<div class="endbar" role="status" aria-live="polite">
+  <div class="left">
+    <span class="badge">Questions: <span id="qCount">0</span></span>
+    <span class="badge">Auto-marked: <span id="autoCount">0</span></span>
+    <span class="badge">Score: <span id="score2">0</span>/<span id="maxScore2">0</span></span>
+    <span class="small">Tip: Do a quick trace table for any loop question.</span>
+  </div>
+  <div class="right">
+    <button class="btn-primary" onclick="expandAll(true)">Expand all mark schemes</button>
+    <button class="btn-primary" onclick="expandAll(false)">Collapse all</button>
+    <button class="btn-warn" onclick="scrollToId('totalArea')">Go to Total</button>
+  </div>
+</div>
+
+<script>
+  // =========================
+  // TIMER
+  // =========================
+  let seconds = 0;
+  setInterval(() => {
+    seconds++;
+    const h = String(Math.floor(seconds/3600)).padStart(2,'0');
+    const m = String(Math.floor((seconds%3600)/60)).padStart(2,'0');
+    const s = String(seconds%60).padStart(2,'0');
+    document.getElementById('timer').textContent = `${h}:${m}:${s}`;
+  }, 1000);
+
+  // =========================
+  // QUESTION DATA (100+)
+  // Types:
+  //  - "mcq" (auto-marked)
+  //  - "fill" (auto-marked exact/normalised)
+  //  - "open" (not auto-marked; mark scheme reveal)
+  // =========================
+  const Q = [];
+
+  // Helper: add questions
+  const addMCQ = (id, topic, text, options, correctIndex, markScheme) => {
+    Q.push({id, topic, type:"mcq", text, options, correctIndex, markScheme, marks:1});
+  };
+  const addFill = (id, topic, text, answer, markScheme) => {
+    Q.push({id, topic, type:"fill", text, answer, markScheme, marks:1});
+  };
+  const addOpen = (id, topic, text, markScheme) => {
+    Q.push({id, topic, type:"open", text, markScheme, marks:0});
+  };
+
+  // -------------------------
+  // SECTION A: PSEUDOCODE WRITING (30)
+  // -------------------------
+  addOpen("Q1","Pseudocode (Sequential)","Write pseudocode to input two numbers and output their sum and product.","Model:\nINPUT A\nINPUT B\nOUTPUT A + B\nOUTPUT A * B");
+  addOpen("Q2","Pseudocode (Sequential)","Write pseudocode to input a name and output: \"Hello <name>\".","Model:\nINPUT Name\nOUTPUT \"Hello \" & Name");
+  addOpen("Q3","Pseudocode (Selection IF)","Write pseudocode: input mark (0–100). Output \"PASS\" if mark ≥ 50 else \"FAIL\".","Model:\nINPUT Mark\nIF Mark ≥ 50 THEN\n  OUTPUT \"PASS\"\nELSE\n  OUTPUT \"FAIL\"\nENDIF");
+  addOpen("Q4","Pseudocode (Selection IF)","Write pseudocode: input temperature. If temp < 0 output \"ICE\" else output \"WATER\".","Model:\nINPUT T\nIF T < 0 THEN OUTPUT \"ICE\" ELSE OUTPUT \"WATER\" ENDIF");
+  addOpen("Q5","Pseudocode (Selection IF)","Write pseudocode: input age. If age between 5 and 18 inclusive output \"STUDENT\" else \"NOT STUDENT\".","Model:\nINPUT Age\nIF Age ≥ 5 AND Age ≤ 18 THEN\n  OUTPUT \"STUDENT\"\nELSE\n  OUTPUT \"NOT STUDENT\"\nENDIF");
+  addOpen("Q6","Pseudocode (SELECT/CASE)","Write pseudocode using CASE: input dayNumber (1–7) and output day name (1=Mon, … 7=Sun).","Model:\nINPUT D\nCASE D OF\n  1: OUTPUT \"Mon\"\n  2: OUTPUT \"Tue\"\n  3: OUTPUT \"Wed\"\n  4: OUTPUT \"Thu\"\n  5: OUTPUT \"Fri\"\n  6: OUTPUT \"Sat\"\n  7: OUTPUT \"Sun\"\n  OTHERWISE: OUTPUT \"Invalid\"\nENDCASE");
+  addOpen("Q7","Pseudocode (FOR loop)","Write pseudocode to output numbers 1 to 10 using a FOR loop.","Model:\nFOR i ← 1 TO 10\n  OUTPUT i\nNEXT i");
+  addOpen("Q8","Pseudocode (FOR loop)","Write pseudocode to input 5 numbers and output their total.","Model:\nTotal ← 0\nFOR i ← 1 TO 5\n  INPUT x\n  Total ← Total + x\nNEXT i\nOUTPUT Total");
+  addOpen("Q9","Pseudocode (WHILE)","Write pseudocode to output even numbers from 2 to 20 using WHILE.","Model:\ni ← 2\nWHILE i ≤ 20\n  OUTPUT i\n  i ← i + 2\nENDWHILE");
+  addOpen("Q10","Pseudocode (REPEAT-UNTIL)","Write pseudocode to keep asking for a password until the user types \"CS0984\".","Model:\nREPEAT\n  INPUT P\nUNTIL P = \"CS0984\"\nOUTPUT \"Access granted\"");
+  addOpen("Q11","Pseudocode (Validation)","Write pseudocode to input a mark until it is between 0 and 100 inclusive.","Model:\nREPEAT\n  INPUT Mark\nUNTIL Mark ≥ 0 AND Mark ≤ 100");
+  addOpen("Q12","Pseudocode (Selection + loop)","Write pseudocode: input 10 marks; count how many are ≥ 50; output the count.","Model:\nCount ← 0\nFOR i ← 1 TO 10\n  INPUT M\n  IF M ≥ 50 THEN Count ← Count + 1 ENDIF\nNEXT i\nOUTPUT Count");
+  addOpen("Q13","Pseudocode (Branching)","Write pseudocode: input a number. Output \"POS\" if >0, \"NEG\" if <0, else \"ZERO\".","Model:\nINPUT N\nIF N > 0 THEN OUTPUT \"POS\"\nELSE\n  IF N < 0 THEN OUTPUT \"NEG\" ELSE OUTPUT \"ZERO\" ENDIF\nENDIF");
+  addOpen("Q14","Pseudocode (Sequential)","Write pseudocode: input length and width of a rectangle; output area and perimeter.","Model:\nINPUT L\nINPUT W\nOUTPUT L*W\nOUTPUT 2*(L+W)");
+  addOpen("Q15","Pseudocode (FOR)","Write pseudocode: output the 12 times table from 12×1 to 12×12.","Model:\nFOR i ← 1 TO 12\n  OUTPUT 12 & \" x \" & i & \" = \" & (12*i)\nNEXT i");
+  addOpen("Q16","Pseudocode (WHILE)","Write pseudocode: keep inputting numbers until user enters 0; output the total.","Model:\nTotal ← 0\nINPUT x\nWHILE x ≠ 0\n  Total ← Total + x\n  INPUT x\nENDWHILE\nOUTPUT Total");
+  addOpen("Q17","Pseudocode (REPEAT)","Write pseudocode: ask for a number 1–5 until valid, then output \"OK\".","Model:\nREPEAT\n  INPUT N\nUNTIL N ≥ 1 AND N ≤ 5\nOUTPUT \"OK\"");
+  addOpen("Q18","Pseudocode (SELECT)","Using CASE: input menu option (\"A\",\"B\",\"C\") and output its price (A=10, B=15, C=20).","Model:\nINPUT Opt\nCASE Opt OF\n  \"A\": OUTPUT 10\n  \"B\": OUTPUT 15\n  \"C\": OUTPUT 20\n  OTHERWISE: OUTPUT \"Invalid\"\nENDCASE");
+  addOpen("Q19","Pseudocode (FOR + average)","Input 6 numbers and output their average.","Model:\nTotal ← 0\nFOR i ← 1 TO 6\n  INPUT x\n  Total ← Total + x\nNEXT i\nOUTPUT Total / 6");
+  addOpen("Q20","Pseudocode (IF + comparison)","Input two numbers. Output the larger number.","Model:\nINPUT A\nINPUT B\nIF A > B THEN OUTPUT A ELSE OUTPUT B ENDIF");
+  addOpen("Q21","Pseudocode (Nested IF)","Input a mark. Output grade: A (≥80), B (≥70), C (≥60), D (≥50) else E.","Model:\nINPUT M\nIF M ≥ 80 THEN OUTPUT \"A\"\nELSEIF M ≥ 70 THEN OUTPUT \"B\"\nELSEIF M ≥ 60 THEN OUTPUT \"C\"\nELSEIF M ≥ 50 THEN OUTPUT \"D\"\nELSE OUTPUT \"E\"\nENDIF");
+  addOpen("Q22","Pseudocode (Counting)","Input 8 numbers; count how many are negative; output the count.","Model:\nCount ← 0\nFOR i ← 1 TO 8\n  INPUT x\n  IF x < 0 THEN Count ← Count + 1 ENDIF\nNEXT i\nOUTPUT Count");
+  addOpen("Q23","Pseudocode (Counter loop)","Output all multiples of 3 from 3 to 30 (FOR).","Model:\nFOR n ← 3 TO 30 STEP 3\n  OUTPUT n\nNEXT n");
+  addOpen("Q24","Pseudocode (Entry controlled)","Input a positive number. If user enters negative, keep asking until positive.","Model:\nINPUT x\nWHILE x ≤ 0\n  INPUT x\nENDWHILE");
+  addOpen("Q25","Pseudocode (Exit controlled)","Ask for username (must be at least 3 characters). Use REPEAT-UNTIL.","Model:\nREPEAT\n  INPUT U\nUNTIL LENGTH(U) ≥ 3");
+  addOpen("Q26","Pseudocode (Process list)","Input 5 temperatures and output the maximum.","Model:\nMax ← -9999\nFOR i ← 1 TO 5\n  INPUT T\n  IF T > Max THEN Max ← T ENDIF\nNEXT i\nOUTPUT Max");
+  addOpen("Q27","Pseudocode (Min)","Input 7 numbers and output the minimum.","Model:\nMin ← 999999\nFOR i ← 1 TO 7\n  INPUT x\n  IF x < Min THEN Min ← x ENDIF\nNEXT i\nOUTPUT Min");
+  addOpen("Q28","Pseudocode (Running total)","Input numbers until -1; output how many numbers were entered (not counting -1).","Model:\nCount ← 0\nREPEAT\n  INPUT x\n  IF x ≠ -1 THEN Count ← Count + 1 ENDIF\nUNTIL x = -1\nOUTPUT Count");
+  addOpen("Q29","Pseudocode (IF logic)","Input A and B (0 or 1). Output 1 if A=1 AND B=1 else 0.","Model:\nINPUT A\nINPUT B\nIF A=1 AND B=1 THEN OUTPUT 1 ELSE OUTPUT 0 ENDIF");
+  addOpen("Q30","Pseudocode (IF logic)","Input A and B (0 or 1). Output 1 if A=1 OR B=1 else 0.","Model:\nINPUT A\nINPUT B\nIF A=1 OR B=1 THEN OUTPUT 1 ELSE OUTPUT 0 ENDIF");
+
+  // -------------------------
+  // SECTION B: DEBUGGING (20)
+  // -------------------------
+  addOpen("Q31","Debugging (Initialisation)","Bug fix: The algorithm should total 5 inputs. What is missing?\n\nTotal ← ?\nFOR i ← 1 TO 5\n  INPUT x\n  Total ← Total + x\nNEXT i\nOUTPUT Total","Fix: initialise Total.\n\nTotal ← 0");
+  addOpen("Q32","Debugging (Loop update)","Bug fix: This WHILE loop should output 1 to 5.\n\ni ← 1\nWHILE i ≤ 5\n  OUTPUT i\nENDWHILE","Fix: i must change.\n\ni ← 1\nWHILE i ≤ 5\n  OUTPUT i\n  i ← i + 1\nENDWHILE");
+  addOpen("Q33","Debugging (Condition)","Bug fix: Should validate mark 0..100 inclusive.\n\nREPEAT\n  INPUT Mark\nUNTIL Mark > 0 AND Mark < 100","Fix: use ≥ and ≤ (and allow 0 and 100).\nUNTIL Mark ≥ 0 AND Mark ≤ 100");
+  addOpen("Q34","Debugging (Off-by-one)","Bug fix: Should input exactly 10 numbers.\n\nFOR i ← 0 TO 10\n  INPUT x\nNEXT i","Fix: that's 11 inputs. Use 1..10 or 0..9.\nFOR i ← 1 TO 10 ...");
+  addOpen("Q35","Debugging (Wrong variable)","Bug fix: Should count passes.\n\nPass ← 0\nFOR i ← 1 TO 6\n  INPUT Mark\n  IF Mark ≥ 50 THEN\n    Mark ← Mark + 1\n  ENDIF\nNEXT i\nOUTPUT Pass","Fix: increment Pass, not Mark.\nIF Mark ≥ 50 THEN Pass ← Pass + 1 ENDIF");
+  addOpen("Q36","Debugging (AND/OR)","Bug fix: Valid age is 5..18.\n\nUNTIL Age ≥ 5 OR Age ≤ 18","Fix: must be AND.\nUNTIL Age ≥ 5 AND Age ≤ 18");
+  addOpen("Q37","Debugging (Selection)","Bug fix: Should output \"EVEN\" if number divisible by 2.\n\nIF N MOD 2 = 1 THEN OUTPUT \"EVEN\" ELSE OUTPUT \"ODD\" ENDIF","Fix: MOD 2 = 0 means even.\nIF N MOD 2 = 0 THEN OUTPUT \"EVEN\" ELSE OUTPUT \"ODD\" ENDIF");
+  addOpen("Q38","Debugging (Output place)","Bug fix: Should output only final total, not after each input.\n\nTotal ← 0\nFOR i ← 1 TO 5\n  INPUT x\n  Total ← Total + x\n  OUTPUT Total\nNEXT i","Fix: move OUTPUT after loop.");
+  addOpen("Q39","Debugging (CASE)","Bug fix: CASE missing OTHERWISE for invalid option.","Add OTHERWISE to handle unexpected inputs.");
+  addOpen("Q40","Debugging (WHILE read)","Bug fix: total numbers until 0.\n\nTotal ← 0\nWHILE x ≠ 0\n  INPUT x\n  Total ← Total + x\nENDWHILE","Fix: x used before input.\nINPUT x\nWHILE x ≠ 0\n  Total ← Total + x\n  INPUT x\nENDWHILE");
+  addOpen("Q41","Debugging (Max)","Bug fix: max of 5 numbers.\n\nMax ← 0\nFOR i ← 1 TO 5\n  INPUT x\n  IF x > Max THEN Max ← x ENDIF\nNEXT i\nOUTPUT Max\n\nWhy could this fail?","If all numbers are negative, Max=0 is wrong. Use very small start (e.g., -9999) or first input as Max.");
+  addOpen("Q42","Debugging (Min)","Bug fix: min of 5 numbers.\n\nMin ← 0\n... IF x < Min THEN Min ← x","If all numbers are positive, starting Min=0 may be wrong. Start large or use first input as Min.");
+  addOpen("Q43","Debugging (Infinite loop)","Bug fix: loop should count down 10 to 1.\n\ni ← 10\nWHILE i ≥ 1\n  OUTPUT i\n  i ← i + 1\nENDWHILE","Fix: i should decrease.\n i ← i - 1");
+  addOpen("Q44","Debugging (Boundary)","Bug fix: Should accept 1..5.\n\nUNTIL N > 1 AND N < 5","Fix: use ≥ and ≤.\nUNTIL N ≥ 1 AND N ≤ 5");
+  addOpen("Q45","Debugging (Nested IF)","Bug fix: grade boundaries:\nIF M ≥ 50 THEN OUTPUT \"D\"\nELSEIF M ≥ 80 THEN OUTPUT \"A\" ...","Order is wrong. Check highest first (80,70,60,50).");
+  addOpen("Q46","Debugging (Counter)","Bug fix: count of inputs until -1.\n\nCount ← 1\nREPEAT\n  INPUT x\n  Count ← Count + 1\nUNTIL x = -1","Fix: start Count=0 and only increment when x ≠ -1.");
+  addOpen("Q47","Debugging (Logic)","Bug fix: Output \"Teen\" if 13..19.\n\nIF Age ≥ 13 AND Age ≤ 19 THEN OUTPUT \"Teen\" ELSE OUTPUT \"Not\" ENDIF\nWhy might this still be wrong?","Only if Age can be non-integer/invalid; needs validation first if required.");
+  addOpen("Q48","Debugging (Incorrect operator)","Bug fix: compare strings.\n\nIF Name = Ravi THEN ...","Strings need quotes: IF Name = \"Ravi\" THEN ...");
+  addOpen("Q49","Debugging (Update wrong)","Bug fix: average of 4 numbers.\n\nTotal ← 0\nFOR i ← 1 TO 4\n  INPUT x\n  Total ← Total + i\nNEXT i\nOUTPUT Total / 4","Fix: add x, not i.\nTotal ← Total + x");
+  addOpen("Q50","Debugging (REPEAT)","Bug fix: REPEAT-UNTIL should stop when score is valid.\n\nREPEAT\n  INPUT Score\nUNTIL Score < 0 AND Score > 100","Fix: impossible condition. Use Score ≥ 0 AND Score ≤ 100.");
+
+  // -------------------------
+  // SECTION C: FLOWCHART PROMPTS (15)
+  // (Students draw; mark scheme describes the logic)
+  // -------------------------
+  addOpen("Q51","Flowchart (Sequential)","Draw a flowchart to input length and width and output the area.","Start → Input L,W → Process Area=L×W → Output Area → End");
+  addOpen("Q52","Flowchart (IF)","Draw a flowchart: input number; output \"EVEN\" if divisible by 2 else \"ODD\".","Decision: N MOD 2 = 0?");
+  addOpen("Q53","Flowchart (IF)","Draw a flowchart: input mark; output \"PASS\" if ≥50 else \"FAIL\".","Decision: Mark ≥ 50?");
+  addOpen("Q54","Flowchart (CASE)","Draw a flowchart using a multi-branch selection: input option A/B/C and output price 10/15/20.","Use decision chain or CASE-style branches.");
+  addOpen("Q55","Flowchart (FOR)","Draw a flowchart to output numbers 1 to 10.","Loop with counter i from 1 to 10.");
+  addOpen("Q56","Flowchart (WHILE)","Draw a flowchart to input numbers until 0 then output total.","Entry-controlled loop with decision x ≠ 0.");
+  addOpen("Q57","Flowchart (REPEAT)","Draw a flowchart to input age until 5..18 valid.","Exit-controlled loop: input then decision valid?");
+  addOpen("Q58","Flowchart (Counting)","Draw a flowchart: input 10 marks; count passes (≥50); output count.","Loop + decision each mark.");
+  addOpen("Q59","Flowchart (Max)","Draw a flowchart to find the maximum of 5 inputs.","Initialise Max then compare each input.");
+  addOpen("Q60","Flowchart (Min)","Draw a flowchart to find the minimum of 6 inputs.","Initialise Min then compare each input.");
+  addOpen("Q61","Flowchart (Branching)","Draw a flowchart: input temp; output ICE if temp<0 else WATER.","Single decision.");
+  addOpen("Q62","Flowchart (Nested IF)","Draw a flowchart: input number; output POS/NEG/ZERO.","Two decisions or nested decision.");
+  addOpen("Q63","Flowchart (Counter loop)","Draw a flowchart: output multiples of 3 from 3 to 30.","Counter loop step 3.");
+  addOpen("Q64","Flowchart (Validation)","Draw a flowchart to input mark until 0..100.","Repeat/validate.");
+  addOpen("Q65","Flowchart (Menu)","Draw a flowchart: input choice 1/2/3; output message; invalid otherwise.","Multi-branch selection.");
+
+  // -------------------------
+  // SECTION D: TRACE TABLES (20)
+  // Mix MCQ + Fill (auto-mark) + Open
+  // -------------------------
+  addFill("Q66","Trace Table","Trace: Total ← 0; FOR i←1 TO 3: Total←Total+i; NEXT. Final Total = ?","6","Total after i=1→1, i=2→3, i=3→6.");
+  addFill("Q67","Trace Table","Trace: i←2; WHILE i ≤ 8: OUTPUT i; i←i+2; ENDWHILE. How many outputs?","4","Outputs: 2,4,6,8.");
+  addFill("Q68","Trace Table","Trace: x←5; REPEAT x←x-1 UNTIL x=2. Final x = ?","2","REPEAT runs until x becomes 2.");
+  addFill("Q69","Trace Table","Trace: Count←0; FOR i←1 TO 5: IF i MOD 2=0 THEN Count←Count+1 ENDIF; NEXT. Final Count = ?","2","Even i are 2 and 4.");
+  addFill("Q70","Trace Table","Trace: Sum←0; FOR i←1 TO 4: Sum←Sum+(i*2); NEXT. Final Sum = ?","20","2+4+6+8=20.");
+  addOpen("Q71","Trace Table","Complete a trace table for:\nA←3\nB←10\nWHILE A < 6\n  B←B - A\n  A←A + 1\nENDWHILE\nOutput B\n(Show A and B each loop).","Rows:\nStart A=3,B=10\nLoop1: B=7,A=4\nLoop2: B=3,A=5\nLoop3: B=-2,A=6\nStop (A not <6). Output -2");
+  addOpen("Q72","Trace Table","Complete a trace table for:\nX←1\nTotal←0\nFOR i←1 TO 5\n  Total←Total + X\n  X←X*2\nNEXT i\nOutput Total","X sequence:1,2,4,8,16. Total=1+2+4+8+16=31.");
+  addOpen("Q73","Trace Table","Complete a trace table:\nN←9\nCount←0\nREPEAT\n  N←N-2\n  Count←Count+1\nUNTIL N ≤ 1\nOutput Count","N: 7 (1), 5 (2), 3 (3), 1 (4) stop. Count=4.");
+  addFill("Q74","Trace Table","Trace: A←4; B←1; FOR i←1 TO 3: B←B*A; NEXT. Final B = ?","64","B=1*4=4, then 16, then 64.");
+  addFill("Q75","Trace Table","Trace: i←1; WHILE i < 4: i←i+1; ENDWHILE. Final i = ?","4","Stops when i is 4 (not <4).");
+  addFill("Q76","Trace Table","Trace: T←0; FOR i←1 TO 5: IF i>3 THEN T←T+i ENDIF; NEXT. Final T=?","9","Adds 4+5=9.");
+  addFill("Q77","Trace Table","Trace: P←2; FOR i←1 TO 4: P←P+P; NEXT. Final P=?","32","Doubling 4 times: 2→4→8→16→32.");
+  addFill("Q78","Trace Table","Trace: x←10; REPEAT x←x-3 UNTIL x<4. Final x=?","1","10→7→4→1 stop (1<4).");
+  addFill("Q79","Trace Table","Trace: C←0; FOR i←1 TO 6: IF i MOD 3=0 THEN C←C+1 ENDIF; NEXT. Final C=?","2","i=3,6.");
+  addFill("Q80","Trace Table","Trace: A←1; FOR i←1 TO 5: A←A+i; NEXT. Final A=?","16","1+1+2+3+4+5=16.");
+  addOpen("Q81","Trace Table","Create a trace table for:\nA←10\nB←0\nWHILE A ≥ 6\n  B←B+2\n  A←A-1\nENDWHILE\nOutput A and B","Loops: A 10→9→8→7→6→5 stop. B 0→2→4→6→8→10. Output A=5,B=10.");
+  addOpen("Q82","Trace Table","Trace:\nS←0\nFOR i←5 TO 1 STEP -2\n  S←S+i\nNEXT i\nOutput S","i values: 5,3,1. S=9.");
+  addOpen("Q83","Trace Table","Trace:\nX←3\nY←12\nREPEAT\n  Y←Y-X\n  X←X+1\nUNTIL Y ≤ 5\nOutput X and Y","Start X=3,Y=12\n1)Y=9,X=4\n2)Y=5,X=5 stop (Y≤5).\nOutput X=5,Y=5");
+  addMCQ("Q84","Trace Table (MCQ)","For the loop: FOR i←1 TO 4: OUTPUT i*i. What is the last output?","4, 9, 12, 16".split(", "),3,"i=4 => 16");
+  addMCQ("Q85","Trace Table (MCQ)","In WHILE loops, the condition is checked...","after the loop runs each time","before the loop runs each time","only at the end","never",1,"WHILE is entry-controlled.");
+
+  // -------------------------
+  // SECTION E: CONCEPT CHECK MCQ (20)
+  // -------------------------
+  addMCQ("Q86","Concept (Sequential)","Which is a sequential step?","A decision","A loop","An assignment like Total ← 0","A selection",2,"Assignments are sequential statements.");
+  addMCQ("Q87","Concept (IF)","Which operator means 'AND' (both conditions true)?","OR","AND","NOT","MOD",1,"AND requires both true.");
+  addMCQ("Q88","Concept (IF)","IF (A>5) OR (B>5) is true when...","both A and B >5","either A or B >5 (or both)","A is not >5","only B is >5",1,"OR: at least one true.");
+  addMCQ("Q89","Concept (CASE)","SELECT/CASE is best used when...","you repeat a task many times","you choose between many fixed values of one variable","you validate input","you add numbers",1,"CASE matches many discrete options.");
+  addMCQ("Q90","Concept (FOR)","A FOR loop is most suitable when...","number of repeats is known","you must run at least once","input validation is needed","condition is checked at the end",0,"FOR is counter-controlled.");
+  addMCQ("Q91","Concept (REPEAT)","REPEAT-UNTIL is...","entry-controlled","exit-controlled","only for counting","only for selection",1,"Condition checked at the end.");
+  addMCQ("Q92","Concept (WHILE)","WHILE loop might run zero times because...","it always runs once","the condition can be false at the start","it has no ENDWHILE","it uses a counter",1,"Entry-controlled.");
+  addMCQ("Q93","Concept (Trace tables)","In a trace table, you should include...","every word of the question paper","only variables that change (and outputs)","only the final answer","only inputs",1,"Focus on changing variables.");
+  addMCQ("Q94","Concept (Validation)","Which is validation?","Checking data was typed correctly from a form","Checking data makes sense (range/format)","Encrypting data","Compressing data",1,"Validation checks reasonableness.");
+  addMCQ("Q95","Concept (Debugging)","Off-by-one error often happens when...","you forget to declare variables","you use wrong loop bounds like 0..10 for 10 items","you use CASE","you use OUTPUT",1,"0..10 gives 11 items.");
+  addMCQ("Q96","Concept (MOD)","What does N MOD 2 give?","N divided by 2","remainder after dividing N by 2","2 divided by N","a random number",1,"MOD returns remainder.");
+  addMCQ("Q97","Concept (Branching)","Which condition checks 'between 10 and 20 inclusive'?","x > 10 AND x < 20","x ≥ 10 AND x ≤ 20","x ≥ 10 OR x ≤ 20","x = 10 AND x = 20",1,"Use ≥ and ≤ with AND.");
+  addMCQ("Q98","Concept (Boolean)","NOT True becomes...","True","False","1","0",1,"NOT flips truth value.");
+  addMCQ("Q99","Concept (Algorithm)","An algorithm is...","a programming language","a step-by-step method to solve a problem","a computer virus","a spreadsheet",1,"Definition.");
+  addMCQ("Q100","Concept (Selection)","Which is selection?","IF...THEN...ENDIF","FOR...NEXT","INPUT/OUTPUT only","assignment only",0,"IF is selection.");
+  addMCQ("Q101","Concept (Iteration)","Which is iteration?","CASE...ENDCASE","WHILE...ENDWHILE","IF...ENDIF","OUTPUT",1,"WHILE is iteration.");
+  addMCQ("Q102","Concept (Flowchart)","In flowcharts, a decision is usually shown using a...","rectangle","parallelogram","diamond","circle",2,"Diamond = decision.");
+  addMCQ("Q103","Concept (Flowchart)","In flowcharts, input/output is usually shown using a...","diamond","parallelogram","rectangle","arrow",1,"Parallelogram = I/O.");
+  addMCQ("Q104","Concept (Debugging)","Best first step when code is wrong is...","rewrite everything","trace with a small test case","ignore it","delete the loop",1,"Trace quickly reveals issues.");
+  addMCQ("Q105","Concept (Pseudocode)","Which is the best pseudocode output statement?","PRINTLN(x)","OUTPUT x","System.out.println(x)","console.log(x)",1,"Use OUTPUT for IGCSE style.");
+
+  // -------------------------
+  // SECTION F: CHANGE REQUESTS / CORRECTIONS (10)
+  // -------------------------
+  addOpen("Q106","Changes (Requirements)","A program currently outputs the total of 5 inputs. Change it to output the average instead. (Write the changed lines).","Change OUTPUT Total to OUTPUT Total / 5 (and keep Total logic same).");
+  addOpen("Q107","Changes (Requirements)","A validation currently checks 1..10. Change it to 0..9 inclusive.","Change: UNTIL N ≥ 0 AND N ≤ 9");
+  addOpen("Q108","Changes (Requirements)","A loop outputs 1..10. Change it to output 10..1.","Use FOR i ← 10 TO 1 STEP -1 (or WHILE with decrement).");
+  addOpen("Q109","Changes (Requirements)","An IF checks pass mark as 50. School changes pass to 60. Update the condition.","Change Mark ≥ 50 to Mark ≥ 60.");
+  addOpen("Q110","Changes (Requirements)","A CASE handles A,B,C only. Add option D with output 25.","Add: \"D\": OUTPUT 25");
+  addOpen("Q111","Changes (Requirements)","A counter loop reads 10 marks. Change it to read 'N marks' where N is input first.","INPUT N\nFOR i ← 1 TO N\n  ...\nNEXT i");
+  addOpen("Q112","Changes (Requirements)","A program counts positives. Change it to count negatives instead.","Change condition from x>0 to x<0.");
+  addOpen("Q113","Changes (Requirements)","A program outputs every number. Change it to output only numbers greater than 100.","Add IF x > 100 THEN OUTPUT x ENDIF");
+  addOpen("Q114","Changes (Requirements)","A REPEAT-UNTIL validates a password equals \"1234\". Change it so password must be length ≥ 6.","UNTIL LENGTH(P) ≥ 6 (or combine with other rules if needed).");
+  addOpen("Q115","Changes (Requirements)","A program finds maximum. Change it to find minimum.","Swap comparison: IF x < Min THEN Min ← x; initialise Min large.");
+
+  // Ensure 115 questions total
+  // =========================
+  // RENDER
+  // =========================
+  const bank = document.getElementById("questionBank");
+
+  let score = 0;
+  let maxScore = 0;
+
+  function norm(s){
+    return String(s ?? "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g," ");
+  }
+
+  function scrollToId(id){
+    document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  function makeCard(q){
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.qid = q.id;
+    card.dataset.type = q.type;
+
+    const head = document.createElement("div");
+    head.className = "qhead";
+
+    const left = document.createElement("div");
+    const qid = document.createElement("div");
+    qid.className = "qid";
+    qid.textContent = q.id;
+
+    const p = document.createElement("p");
+    p.className = "qtext";
+    p.textContent = q.text;
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = q.topic + (q.type === "mcq" || q.type === "fill" ? " • Auto-marked (1 mark)" : " • Open response (self-check)");
+
+    left.appendChild(qid);
+    left.appendChild(p);
+    left.appendChild(meta);
+
+    const badge = document.createElement("span");
+    badge.className = "result";
+    badge.id = `res_${q.id}`;
+    badge.textContent = q.type === "open" ? "Self-check" : "Not checked";
+
+    head.appendChild(left);
+    head.appendChild(badge);
+
+    card.appendChild(head);
+
+    // Body
+    if(q.type === "mcq"){
+      maxScore += q.marks;
+      const opts = document.createElement("div");
+      opts.className = "opts";
+      q.options.forEach((opt, idx) => {
+        const lab = document.createElement("label");
+        lab.className = "opt";
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = `mcq_${q.id}`;
+        radio.value = idx;
+        const span = document.createElement("span");
+        span.textContent = opt;
+        lab.appendChild(radio);
+        lab.appendChild(span);
+        opts.appendChild(lab);
+      });
+      card.appendChild(opts);
+
+      const row = document.createElement("div");
+      row.className = "row";
+      const btn = document.createElement("button");
+      btn.className = "btn-primary";
+      btn.textContent = "Check";
+      btn.onclick = () => checkMCQ(q);
+      const btn2 = document.createElement("button");
+      btn2.className = "btn-good";
+      btn2.textContent = "Show Mark Scheme";
+      btn2.onclick = () => toggleAnswer(q.id);
+
+      row.appendChild(btn);
+      row.appendChild(btn2);
+      card.appendChild(row);
+
+    } else if(q.type === "fill"){
+      maxScore += q.marks;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Type your answer (number/word).";
+      input.id = `in_${q.id}`;
+      input.autocomplete = "off";
+      card.appendChild(document.createElement("div")).className="row";
+      card.querySelector(".row").appendChild(input);
+
+      const row = document.createElement("div");
+      row.className = "row";
+      const btn = document.createElement("button");
+      btn.className = "btn-primary";
+      btn.textContent = "Check";
+      btn.onclick = () => checkFill(q);
+      const btn2 = document.createElement("button");
+      btn2.className = "btn-good";
+      btn2.textContent = "Show Mark Scheme";
+      btn2.onclick = () => toggleAnswer(q.id);
+      row.appendChild(btn);
+      row.appendChild(btn2);
+      card.appendChild(row);
+
+    } else {
+      const ta = document.createElement("textarea");
+      ta.placeholder = "Write your answer here (pseudocode / explanation / trace table / steps).";
+      ta.id = `ta_${q.id}`;
+      card.appendChild(ta);
+
+      const row = document.createElement("div");
+      row.className = "row";
+      const btn2 = document.createElement("button");
+      btn2.className = "btn-good";
+      btn2.textContent = "Show Mark Scheme";
+      btn2.onclick = () => toggleAnswer(q.id);
+      row.appendChild(btn2);
+
+      const hint = document.createElement("span");
+      hint.className = "small";
+      hint.textContent = "Compare with the mark scheme and award yourself marks like an examiner.";
+      row.appendChild(hint);
+
+      card.appendChild(row);
+    }
+
+    // Answer panel
+    const ans = document.createElement("div");
+    ans.className = "answer";
+    ans.id = `ans_${q.id}`;
+    ans.textContent = q.markScheme || "No mark scheme provided.";
+    card.appendChild(ans);
+
+    return card;
+  }
+
+  function toggleAnswer(id){
+    const a = document.getElementById(`ans_${id}`);
+    a.style.display = (a.style.display === "block") ? "none" : "block";
+  }
+
+  function setBadge(id, text, ok){
+    const b = document.getElementById(`res_${id}`);
+    b.textContent = text;
+    b.classList.remove("ok","no");
+    if(ok === true) b.classList.add("ok");
+    if(ok === false) b.classList.add("no");
+  }
+
+  function updateScoreUI(){
+    document.getElementById("score").textContent = score;
+    document.getElementById("maxScore").textContent = maxScore;
+    document.getElementById("score2").textContent = score;
+    document.getElementById("maxScore2").textContent = maxScore;
+  }
+
+  // Track which auto questions already scored to avoid double scoring
+  const scored = new Set();
+
+  function checkMCQ(q){
+    const chosen = document.querySelector(`input[name="mcq_${q.id}"]:checked`);
+    if(!chosen){
+      setBadge(q.id, "Choose an option", null);
+      return;
+    }
+    const isCorrect = Number(chosen.value) === q.correctIndex;
+    setBadge(q.id, isCorrect ? "Correct (+1)" : "Incorrect (0)", isCorrect);
+
+    // scoring once
+    if(!scored.has(q.id)){
+      if(isCorrect) score += 1;
+      scored.add(q.id);
+    } else {
+      // if already scored and they change: we won't rescore; badge just informs
+    }
+    updateScoreUI();
+  }
+
+  function checkFill(q){
+    const val = document.getElementById(`in_${q.id}`).value;
+    const isCorrect = norm(val) === norm(q.answer);
+    setBadge(q.id, isCorrect ? "Correct (+1)" : "Incorrect (0)", isCorrect);
+
+    if(!scored.has(q.id)){
+      if(isCorrect) score += 1;
+      scored.add(q.id);
+    }
+    updateScoreUI();
+  }
+
+  function expandAll(open){
+    Q.forEach(q => {
+      const a = document.getElementById(`ans_${q.id}`);
+      if(a) a.style.display = open ? "block" : "none";
+    });
+  }
+
+  function resetAll(){
+    // reset inputs
+    Q.forEach(q => {
+      if(q.type === "mcq"){
+        document.querySelectorAll(`input[name="mcq_${q.id}"]`).forEach(r => r.checked = false);
+        setBadge(q.id, "Not checked", null);
+      }
+      if(q.type === "fill"){
+        const i = document.getElementById(`in_${q.id}`);
+        if(i) i.value = "";
+        setBadge(q.id, "Not checked", null);
+      }
+      if(q.type === "open"){
+        const t = document.getElementById(`ta_${q.id}`);
+        if(t) t.value = "";
+      }
+      const a = document.getElementById(`ans_${q.id}`);
+      if(a) a.style.display = "none";
+    });
+    score = 0;
+    scored.clear();
+    updateScoreUI();
+    document.getElementById("finalBadge").textContent = "Not revealed";
+    document.getElementById("finalBadge").classList.remove("ok","no");
+  }
+
+  function revealTotal(){
+    const badge = document.getElementById("finalBadge");
+    badge.textContent = `Auto-marked score: ${score} / ${maxScore}`;
+    badge.classList.add("ok");
+  }
+
+  // Render all questions
+  Q.forEach(q => bank.appendChild(makeCard(q)));
+
+  // Counts
+  document.getElementById("qCount").textContent = Q.length;
+  document.getElementById("autoCount").textContent = Q.filter(x => x.type==="mcq" || x.type==="fill").length;
+
+  updateScoreUI();
+</script>
+</body>
+</html>

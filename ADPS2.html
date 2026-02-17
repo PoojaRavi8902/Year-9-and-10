@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IGCSE 0984 — Standard Methods, Validation, Testing (Interactive Assessment)</title>
+  <style>
+    :root{
+      --bg:#0b1220; --card:#121b2f; --muted:#98a6bd; --text:#eaf0ff;
+      --line:#243252; --accent:#6aa9ff; --good:#35d07f; --bad:#ff5a6a; --warn:#ffd166;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#071022,#0b1220);color:var(--text);}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(11,18,32,.92);backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--line);
+      padding:10px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    }
+    .pill{border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:#0f1830;font-size:13px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    button{
+      cursor:pointer;border:1px solid var(--line);background:#0f1830;color:var(--text);
+      padding:8px 10px;border-radius:10px;font-weight:700
+    }
+    button:hover{border-color:#36508b}
+    .btnA{background:linear-gradient(180deg,#16315f,#0f1830);border-color:#2b4b8f}
+    .btnGood{background:linear-gradient(180deg,#1f6b4a,#0f1830);border-color:#2a8a62}
+    .btnWarn{background:linear-gradient(180deg,#7a5a11,#0f1830);border-color:#b88a1d}
+    .btnBad{background:linear-gradient(180deg,#7a1e2a,#0f1830);border-color:#b13a4d}
+    main{max-width:1200px;margin:0 auto;padding:16px 14px 90px}
+    h1{font-size:20px;margin:6px 0 0}
+    p{margin:8px 0;color:var(--muted);line-height:1.45}
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:12px}
+    @media (max-width: 980px){ .layout{grid-template-columns:1fr} }
+    .panel{background:rgba(18,27,47,.92);border:1px solid var(--line);border-radius:16px;padding:12px}
+    .topicBtn{
+      width:100%;text-align:left;display:flex;justify-content:space-between;gap:10px;align-items:center;
+      padding:10px;border-radius:12px;border:1px solid var(--line);background:#0c1427;color:var(--text);margin:8px 0
+    }
+    .topicBtn.active{border-color:#3d5aa3;background:#0f1830}
+    .tag{font-size:12px;color:var(--muted)}
+    .qCard{background:#0c1427;border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}
+    .qHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .qNo{font-weight:900}
+    .marks{font-size:12px;color:var(--muted)}
+    .prompt{margin:8px 0 10px;color:#dfe9ff}
+    select,input,textarea{
+      width:100%;background:#081126;color:var(--text);
+      border:1px solid var(--line);border-radius:12px;padding:10px;outline:none
+    }
+    textarea{min-height:110px;resize:vertical}
+    pre{white-space:pre-wrap;background:#081126;border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0;color:#eaf0ff}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+    .fb{display:none;margin-top:10px;border:1px dashed var(--line);border-radius:12px;padding:10px}
+    .fb.ok{display:block;border-color:rgba(53,208,127,.6);background:rgba(53,208,127,.08)}
+    .fb.no{display:block;border-color:rgba(255,90,106,.7);background:rgba(255,90,106,.08)}
+    .model{display:none;margin-top:10px;border-left:3px solid #3d5aa3;padding-left:10px;color:#dbe6ff}
+    .footer{
+      position:fixed;left:0;right:0;bottom:0;z-index:60;
+      background:rgba(11,18,32,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+      padding:10px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    }
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="row">
+    <span class="pill"><b>IGCSE 0984</b> • Algorithm Design & Problem Solving</span>
+    <span class="pill">7.4–7.8 • Standard Methods • Validation • Testing • Trace Tables</span>
+  </div>
+  <div class="row">
+    <span class="pill">Timer: <b id="timerTxt">00:00</b></span>
+    <button class="btnA" id="startBtn">Start</button>
+    <button id="pauseBtn">Pause</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<main>
+  <h1>Interactive Assessment Webpage</h1>
+  <p>
+    Choose a sub-topic on the left. Each sub-topic has <b>10 questions</b>.
+    Use <b>Submit This Sub-topic</b> to mark objective questions instantly.
+    Use <b>Show Model Answer</b> for pseudocode/trace-table style items where needed.
+    Use <b>TOTAL</b> at the bottom to reveal overall score at the end.
+  </p>
+
+  <div class="layout">
+    <aside class="panel" id="topicsPanel">
+      <div class="tag">Sub-topics (10 questions each)</div>
+      <!-- buttons injected -->
+    </aside>
+
+    <section class="panel">
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="pill" id="topicTitlePill"><b>Pick a sub-topic</b></div>
+          <div class="tag" id="topicDesc">Your questions will appear here.</div>
+        </div>
+        <div class="row">
+          <span class="pill">This Sub-topic Score: <b id="topicScore">0</b>/<b id="topicMax">0</b></span>
+        </div>
+      </div>
+
+      <div id="questionsArea"></div>
+
+      <div class="actions">
+        <button class="btnGood" id="submitTopicBtn" disabled>Submit This Sub-topic</button>
+        <button class="btnWarn" id="resetTopicBtn" disabled>Reset This Sub-topic</button>
+        <span class="tag">Tip: For flowchart questions, answer the logic question (condition/step) and then draw on paper.</span>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="footer">
+  <div class="row">
+    <span class="pill">Marked Total: <b id="grandScore">0</b>/<b id="grandMax">0</b></span>
+    <span class="pill">Sub-topics Submitted: <b id="submittedCount">0</b>/<b id="topicCount">0</b></span>
+  </div>
+  <div class="row">
+    <button class="btnA" id="totalBtn">TOTAL</button>
+    <span class="pill hidden" id="finalBox">Final Score: <b id="finalScore">0</b>/<b id="finalMax">0</b></span>
+  </div>
+</div>
+
+<script>
+/* ---------------- TIMER ---------------- */
+let t=0, timer=null;
+const timerTxt=document.getElementById("timerTxt");
+const fmt=(s)=>String(Math.floor(s/60)).padStart(2,'0')+":"+String(s%60).padStart(2,'0');
+function tick(){t++;timerTxt.textContent=fmt(t);}
+document.getElementById("startBtn").onclick=()=>{ if(!timer) timer=setInterval(tick,1000); };
+document.getElementById("pauseBtn").onclick=()=>{ if(timer){ clearInterval(timer); timer=null; } };
+document.getElementById("resetBtn").onclick=()=>{ if(timer){ clearInterval(timer); timer=null; } t=0; timerTxt.textContent=fmt(t); };
+
+/* ---------------- QUESTION BANK ----------------
+Types:
+- mcq: choices[] + answer (index)
+- short: answer (string/number) (case-insensitive trim compare)
+- trace: short answer (final output / key value) + optional model (trace guidance)
+- pseudo: textarea self-check with model (not auto-marked, 0 marks here)
+Marks:
+- objective questions are marked; pseudo questions are "self" (model shown).
+*/
+function norm(s){ return (s ?? "").toString().trim().toLowerCase().replace(/\s+/g,' '); }
+
+const TOPICS = [
+  {
+    id:"totalling",
+    title:"7.4.1 Totalling",
+    desc:"Running totals (e.g., sum of marks).",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Which line correctly updates a running total?", choices:[
+        "Total ← Total - Value",
+        "Total ← Total + Value",
+        "Total ← Value",
+        "Value ← Total"
+      ], answer:1, explain:"Totalling means adding each value to an accumulator."},
+
+      {type:"short", marks:1, prompt:"If Total starts at 0 and you add 12, 7, 9, what is Total at the end?", answer:"28", explain:"0+12+7+9 = 28."},
+
+      {type:"trace", marks:1, prompt:"Final output?", code:
+`Total ← 0
+FOR i ← 1 TO 4
+  Total ← Total + i
+NEXT i
+OUTPUT Total`,
+        answer:"10", explain:"1+2+3+4 = 10."
+      },
+
+      {type:"mcq", marks:1, prompt:"Why do we initialise Total to 0?", choices:[
+        "So Total becomes the first mark",
+        "To avoid using loops",
+        "So the sum starts from zero (neutral for addition)",
+        "Because arrays require 0"
+      ], answer:2, explain:"0 is the identity for addition."},
+
+      {type:"short", marks:1, prompt:"A class has 6 students. Total of marks = 312. What is the mean (average)?", answer:"52", explain:"312 ÷ 6 = 52."},
+
+      {type:"trace", marks:1, prompt:"What is printed?", code:
+`Total ← 5
+FOR i ← 1 TO 3
+  Total ← Total + 10
+NEXT i
+OUTPUT Total`,
+        answer:"35", explain:"5 + 10 + 10 + 10 = 35."
+      },
+
+      {type:"mcq", marks:1, prompt:"Totalling over an array StudentMark[1..n] usually needs:", choices:[
+        "A loop and a Total variable",
+        "Only IF statements",
+        "Only a REPEAT…UNTIL loop",
+        "No variables"
+      ], answer:0, explain:"You iterate and add to Total."},
+
+      {type:"short", marks:1, prompt:"If Total = 0 and you add five numbers all equal to 50, what is Total?", answer:"250", explain:"5×50 = 250."},
+
+      {type:"trace", marks:1, prompt:"Final Total?", code:
+`Total ← 0
+FOR i ← 1 TO 5
+  Total ← Total + (i * 2)
+NEXT i
+OUTPUT Total`,
+        answer:"30", explain:"2+4+6+8+10 = 30."
+      },
+
+      {type:"pseudo", marks:0, prompt:"Write pseudocode to total 10 inputs and output the total.", model:
+`Total ← 0
+FOR i ← 1 TO 10
+  INPUT X
+  Total ← Total + X
+NEXT i
+OUTPUT Total`
+      }
+    ]
+  },
+
+  {
+    id:"counting",
+    title:"7.4.2 Counting",
+    desc:"Counting events (passes, matches, stock items).",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Counting usually uses a variable initialised to:", choices:["1","-1","0","the first data item"], answer:2, explain:"Counts normally start at 0."},
+      {type:"short", marks:1, prompt:"If PassCount starts at 0 and three students pass, what is PassCount?", answer:"3", explain:"Count increments once per pass."},
+      {type:"mcq", marks:1, prompt:"To count how many marks are > 50, you should increment the counter when:", choices:[
+        "StudentMark = 50",
+        "StudentMark > 50",
+        "StudentMark < 50",
+        "Always"
+      ], answer:1, explain:"Only when the condition is true."},
+
+      {type:"trace", marks:1, prompt:"What is output?", code:
+`Count ← 0
+FOR i ← 1 TO 5
+  Count ← Count + 1
+NEXT i
+OUTPUT Count`,
+        answer:"5", explain:"Loop runs 5 times."
+      },
+
+      {type:"short", marks:1, prompt:"Stock starts at 25. Each sale does NumberInStock ← NumberInStock - 1. After 8 sales, stock is:", answer:"17", explain:"25-8 = 17."},
+
+      {type:"mcq", marks:1, prompt:"If you must call Reorder() when stock drops below 20, which test is correct?", choices:[
+        "IF NumberInStock <= 20",
+        "IF NumberInStock < 20",
+        "IF NumberInStock > 20",
+        "IF NumberInStock = 20 only"
+      ], answer:1, explain:"The statement says 'below 20'."},
+
+      {type:"trace", marks:1, prompt:"How many passes?", code:
+`PassCount ← 0
+Marks ← [45, 51, 80, 50, 67]
+FOR i ← 1 TO 5
+  IF Marks[i] > 50 THEN
+    PassCount ← PassCount + 1
+  ENDIF
+NEXT i
+OUTPUT PassCount`,
+        answer:"3", explain:"51, 80, 67 are > 50."
+      },
+
+      {type:"mcq", marks:1, prompt:"Counting down is commonly done by:", choices:[
+        "Count ← Count + 1",
+        "Count ← Count - 1",
+        "Count ← 0",
+        "Count ← Count * 2"
+      ], answer:1, explain:"Down means decrement."},
+
+      {type:"short", marks:1, prompt:"A counter starts at 10 and is decremented 10 times. Final value is:", answer:"0", explain:"10-10 = 0."},
+
+      {type:"pseudo", marks:0, prompt:"Write pseudocode to count how many of 12 inputs are 'ice cream'.", model:
+`ChoiceCount ← 0
+FOR i ← 1 TO 12
+  INPUT Dessert
+  IF Dessert = "ice cream" THEN
+    ChoiceCount ← ChoiceCount + 1
+  ENDIF
+NEXT i
+OUTPUT ChoiceCount`
+      }
+    ]
+  },
+
+  {
+    id:"maxminavg",
+    title:"7.4.3 Maximum, Minimum, Average",
+    desc:"Find maximum/minimum and calculate mean using totalling.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"A common safe initial value for MaximumMark (if marks 0..100) is:", choices:["0","100","-1","50"], answer:0, explain:"Set max to lowest possible mark."},
+      {type:"mcq", marks:1, prompt:"A common safe initial value for MinimumMark (if marks 0..100) is:", choices:["0","100","-1","50"], answer:1, explain:"Set min to highest possible mark."},
+      {type:"short", marks:1, prompt:"Marks: 20, 60, 55, 90. Maximum is:", answer:"90", explain:"Largest value."},
+      {type:"short", marks:1, prompt:"Marks: 20, 60, 55, 90. Minimum is:", answer:"20", explain:"Smallest value."},
+      {type:"short", marks:1, prompt:"Marks: 20, 60, 55, 90. Average is (mean):", answer:"56.25", explain:"(20+60+55+90)/4 = 225/4 = 56.25."},
+      {type:"mcq", marks:1, prompt:"If you don't know the range of numbers, better initialisation is:", choices:[
+        "Max ← 0, Min ← 100",
+        "Max ← first item, Min ← first item",
+        "Max ← -1, Min ← -1",
+        "Max ← 999999, Min ← 0"
+      ], answer:1, explain:"Use the first item to avoid range assumptions."},
+      {type:"trace", marks:1, prompt:"Final Max?", code:
+`Data ← [4, 7, 2]
+Max ← Data[1]
+FOR i ← 2 TO 3
+  IF Data[i] > Max THEN
+    Max ← Data[i]
+  ENDIF
+NEXT i
+OUTPUT Max`,
+        answer:"7", explain:"Max becomes 7."
+      },
+      {type:"trace", marks:1, prompt:"Final Min?", code:
+`Data ← [9, 3, 12, 6]
+Min ← Data[1]
+FOR i ← 2 TO 4
+  IF Data[i] < Min THEN
+    Min ← Data[i]
+  ENDIF
+NEXT i
+OUTPUT Min`,
+        answer:"3", explain:"Smallest is 3."
+      },
+      {type:"mcq", marks:1, prompt:"To calculate average, you need:", choices:[
+        "Only maximum",
+        "Only minimum",
+        "Total and number of items",
+        "A bubble sort"
+      ], answer:2, explain:"Average = Total ÷ Count."},
+      {type:"pseudo", marks:0, prompt:"Write pseudocode to find max, min, and mean for 10 inputs.", model:
+`INPUT X
+Max ← X
+Min ← X
+Total ← X
+FOR i ← 2 TO 10
+  INPUT X
+  IF X > Max THEN Max ← X ENDIF
+  IF X < Min THEN Min ← X ENDIF
+  Total ← Total + X
+NEXT i
+Average ← Total / 10
+OUTPUT Max, Min, Average`
+      }
+    ]
+  },
+
+  {
+    id:"linearsearch",
+    title:"7.4.4 Linear Search",
+    desc:"Search by checking each item in order; can stop early (flag) or count matches.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Linear search checks:", choices:[
+        "Only the middle item",
+        "Each item one-by-one",
+        "Items in random order",
+        "Only sorted lists"
+      ], answer:1, explain:"It inspects each item in turn."},
+      {type:"mcq", marks:1, prompt:"A flag variable like Found is typically:", choices:["an integer","a real number","TRUE/FALSE","a character"], answer:2, explain:"Flags are boolean."},
+      {type:"short", marks:1, prompt:"Names = [Ali, Sara, Omar, Laila]. Search for Omar (0-based index).", answer:"2", explain:"Ali=0, Sara=1, Omar=2."},
+      {type:"mcq", marks:1, prompt:"Stop condition for 'find one match' is usually:", choices:[
+        "Until Found OR end of list",
+        "Until Counter = 1",
+        "Until Total = 0",
+        "Until list is sorted"
+      ], answer:0, explain:"Stop when found or finished."},
+      {type:"trace", marks:1, prompt:"Output?", code:
+`StudentName ← ["Ali","Sara","Omar","Laila"]
+Name ← "Laila"
+Found ← FALSE
+Counter ← 1
+REPEAT
+  IF Name = StudentName[Counter] THEN
+    Found ← TRUE
+  ELSE
+    Counter ← Counter + 1
+  ENDIF
+UNTIL Found OR Counter > 4
+IF Found THEN
+  OUTPUT Counter
+ELSE
+  OUTPUT -1
+ENDIF`,
+        answer:"4", explain:"Laila is at position 4 in 1-based list."
+      },
+      {type:"mcq", marks:1, prompt:"If list can contain duplicates and you want to count them, you should:", choices:[
+        "Stop at first match",
+        "Use a count and scan the whole list",
+        "Use Found flag only",
+        "Use Last ← Last - 1"
+      ], answer:1, explain:"Count matches across all items."},
+      {type:"short", marks:1, prompt:"Dessert list length 6 has 'ice cream' appearing 3 times. What will ChoiceCount be?", answer:"3", explain:"It counts all matches."},
+      {type:"mcq", marks:1, prompt:"Linear search works best when:", choices:[
+        "Data is always sorted",
+        "You need the simplest method",
+        "You can only use recursion",
+        "You must always stop early"
+      ], answer:1, explain:"It is simple and works on any list."},
+      {type:"trace", marks:1, prompt:"Output?", code:
+`A ← [2,4,6,8]
+Target ← 5
+Found ← FALSE
+i ← 1
+WHILE i <= 4 AND NOT Found
+  IF A[i] = Target THEN Found ← TRUE ENDIF
+  i ← i + 1
+ENDWHILE
+OUTPUT Found`,
+        answer:"FALSE", explain:"5 is not in the list."
+      },
+      {type:"pseudo", marks:0, prompt:"Write pseudocode for a linear search that outputs position or 'not found'.", model:
+`INPUT Target
+Found ← FALSE
+Pos ← 1
+REPEAT
+  IF Target = Data[Pos] THEN
+    Found ← TRUE
+  ELSE
+    Pos ← Pos + 1
+  ENDIF
+UNTIL Found OR Pos > Length
+IF Found THEN
+  OUTPUT Pos
+ELSE
+  OUTPUT "not found"
+ENDIF`
+      }
+    ]
+  },
+
+  {
+    id:"bubblesort",
+    title:"7.4.5 Bubble Sort",
+    desc:"Compare adjacent elements and swap; repeat passes until no swaps or list reduced.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Bubble sort repeatedly compares:", choices:[
+        "First and last only",
+        "Adjacent (neighbour) elements",
+        "Random pairs",
+        "Only the middle section"
+      ], answer:1, explain:"It compares each element with the next one."},
+      {type:"mcq", marks:1, prompt:"In ascending order, you swap when:", choices:[
+        "A[i] < A[i+1]",
+        "A[i] = A[i+1]",
+        "A[i] > A[i+1]",
+        "A[i] is odd"
+      ], answer:2, explain:"If left is bigger, swap."},
+      {type:"short", marks:1, prompt:"After one full pass of bubble sort, which item is guaranteed correct (ascending)?", answer:"largest", explain:"The largest bubbles to the end."},
+      {type:"mcq", marks:1, prompt:"Swap flag (Swap) is used to:", choices:[
+        "force a swap each time",
+        "stop early when no swaps happen",
+        "increase list size",
+        "change data type"
+      ], answer:1, explain:"No swaps means list already sorted."},
+      {type:"trace", marks:1, prompt:"One pass only (ascending). List: [3,1,2]. After one pass, list becomes:", answer:"1,2,3", explain:"Compare 3&1 swap → [1,3,2], compare 3&2 swap → [1,2,3]."},
+      {type:"short", marks:1, prompt:"Bubble sort is best described as:", answer:"comparison sort", explain:"It compares values to order them."},
+      {type:"mcq", marks:1, prompt:"What does 'Last ← Last - 1' do in the sample algorithm?", choices:[
+        "It skips the first item",
+        "It reduces the range because the last item is in place",
+        "It increases the range",
+        "It deletes an element"
+      ], answer:1, explain:"After each pass, the final element is correct."},
+      {type:"trace", marks:1, prompt:"Sorted ascending output for [4,2,5,1] is:", answer:"1,2,4,5", explain:"Final sorted list."},
+      {type:"mcq", marks:1, prompt:"Bubble sort generally needs:", choices:[
+        "two nested loops / repeated passes",
+        "no loops at all",
+        "only recursion",
+        "only selection statements"
+      ], answer:0, explain:"Passes + inner comparisons."},
+      {type:"pseudo", marks:0, prompt:"Write bubble sort pseudocode for an array A[1..n] ascending.", model:
+`Last ← n
+REPEAT
+  Swap ← FALSE
+  FOR i ← 1 TO Last - 1
+    IF A[i] > A[i+1] THEN
+      Temp ← A[i]
+      A[i] ← A[i+1]
+      A[i+1] ← Temp
+      Swap ← TRUE
+    ENDIF
+  NEXT i
+  Last ← Last - 1
+UNTIL (NOT Swap) OR Last = 1`
+      }
+    ]
+  },
+
+  {
+    id:"validation",
+    title:"7.5.1 Validation",
+    desc:"Automated checks for reasonable data: range, length, type, presence, format, check digit.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Validation ensures data is:", choices:["copied twice","reasonable before acceptance","encrypted","sorted"], answer:1, explain:"Validation is automated checking of reasonableness."},
+      {type:"mcq", marks:1, prompt:"A range check for marks out of 100 should accept:", choices:["-1..100","0..100","1..99","0..101"], answer:1, explain:"0 to 100 inclusive."},
+      {type:"mcq", marks:1, prompt:"A presence check rejects:", choices:["numbers only","blank input","letters","valid emails"], answer:1, explain:"Presence means not empty."},
+      {type:"short", marks:1, prompt:"Password must be exactly 8 characters. This is a ______ check.", answer:"length", explain:"Length check."},
+      {type:"short", marks:1, prompt:"Checking input is an integer (whole number) is a ______ check.", answer:"type", explain:"Type check."},
+      {type:"mcq", marks:1, prompt:"Which can detect many data-entry errors in codes like ISBN?", choices:["format check","check digit","presence check","range check"], answer:1, explain:"Check digits detect many common errors."},
+      {type:"mcq", marks:1, prompt:"For a family name length 2..30 inclusive, which is invalid?", choices:["A","Li","Ravi","AlexanderTheGreatTheThird"], answer:0, explain:"Length 1 is too short."},
+      {type:"trace", marks:1, prompt:"Validation loop: inputs 15, -3, 7 for range 1..10. Final output text is:", answer:"Accepted", explain:"Only 7 passes the range then prints Accepted."},
+      {type:"mcq", marks:1, prompt:"A format check for XXX999 ensures:", choices:[
+        "3 letters then 3 digits",
+        "3 digits then 3 letters",
+        "any 6 characters",
+        "only digits"
+      ], answer:0, explain:"Pattern letters then digits."},
+      {type:"pseudo", marks:0, prompt:"Write pseudocode to validate mark 0..100 with helpful error message.", model:
+`REPEAT
+  INPUT Mark
+  IF Mark < 0 OR Mark > 100 THEN
+    OUTPUT "Mark must be 0 to 100"
+  ENDIF
+UNTIL Mark >= 0 AND Mark <= 100`
+      }
+    ]
+  },
+
+  {
+    id:"verification",
+    title:"7.5.2 Verification",
+    desc:"Checking data copied accurately: double entry, visual/screen check.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Verification checks that data is:", choices:["reasonable","accurate copy from source","within range","encrypted"], answer:1, explain:"Verification = accurate copying."},
+      {type:"mcq", marks:1, prompt:"Double entry means:", choices:[
+        "two different passwords",
+        "enter data twice and compare",
+        "store data in two files",
+        "encrypt twice"
+      ], answer:1, explain:"The system compares both entries."},
+      {type:"mcq", marks:1, prompt:"A screen/visual check is:", choices:[
+        "automated range checking",
+        "manual check by the user",
+        "a sort algorithm",
+        "a search algorithm"
+      ], answer:1, explain:"User confirms displayed data matches source."},
+      {type:"short", marks:1, prompt:"State ONE situation where verification is important (one phrase).", answer:"data entry", explain:"Any accurate copying (e.g., typing form into computer)."},
+      {type:"mcq", marks:1, prompt:"Which pair is correct?", choices:[
+        "Validation = accuracy, Verification = reasonableness",
+        "Validation = reasonableness, Verification = accuracy",
+        "Both mean encryption",
+        "Both mean sorting"
+      ], answer:1, explain:"Validation: reasonable. Verification: accurate copy."},
+      {type:"short", marks:1, prompt:"Name one verification method besides double entry.", answer:"screen/visual check", explain:"Screen/visual check."},
+      {type:"mcq", marks:1, prompt:"If double entry differs, the system should:", choices:[
+        "accept anyway",
+        "ask to re-enter",
+        "sort the values",
+        "increase the counter"
+      ], answer:1, explain:"Re-enter until they match."},
+      {type:"mcq", marks:1, prompt:"Verification is mainly to reduce:", choices:["format errors","copying/typing errors","network speed","memory usage"], answer:1, explain:"It catches data entry mistakes."},
+      {type:"short", marks:1, prompt:"Verification is a ______ check: automated or manual? (one word)", answer:"manual", explain:"Double entry uses comparison, but overall verification is a user/entry accuracy process."},
+      {type:"pseudo", marks:0, prompt:"Write pseudocode for double entry of an email (repeat until both match).", model:
+`REPEAT
+  INPUT Email1
+  INPUT Email2
+  IF Email1 <> Email2 THEN
+    OUTPUT "Entries do not match"
+  ENDIF
+UNTIL Email1 = Email2
+OUTPUT "Saved"`
+      }
+    ]
+  },
+
+  {
+    id:"testdata",
+    title:"7.6 Test Data",
+    desc:"Normal, abnormal/erroneous, extreme, boundary test data with expected results.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"Normal test data is:", choices:[
+        "data that should be rejected",
+        "data typical of real use that should be accepted",
+        "only boundary values",
+        "random letters"
+      ], answer:1, explain:"Normal = realistic accepted values."},
+      {type:"mcq", marks:1, prompt:"Abnormal/erroneous data is:", choices:[
+        "data expected to be accepted",
+        "data expected to be rejected",
+        "only maximum values",
+        "only minimum values"
+      ], answer:1, explain:"Erroneous should be rejected."},
+      {type:"mcq", marks:1, prompt:"Extreme data for range 0..100 includes:", choices:[
+        "0 and 100",
+        "-1 and 101",
+        "1 and 99",
+        "50 only"
+      ], answer:0, explain:"Extremes are min/max valid values."},
+      {type:"mcq", marks:1, prompt:"Boundary data for the lower boundary 0 includes:", choices:[
+        "-1 and 0",
+        "0 and 1",
+        "-2 and -1",
+        "100 and 101"
+      ], answer:0, explain:"One rejected just outside, one accepted at boundary."},
+      {type:"short", marks:1, prompt:"Marks are whole numbers 0..100. Give ONE abnormal value (just write it).", answer:"-1", explain:"Any invalid value like -1 or 101."},
+      {type:"short", marks:1, prompt:"Marks are whole numbers 0..100. Give ONE boundary pair for upper end.", answer:"100,101", explain:"100 accepted, 101 rejected."},
+      {type:"mcq", marks:1, prompt:"If exams are out of 20, a valid range check is:", choices:["0..20","0..100","1..20","-20..20"], answer:0, explain:"0 to 20 inclusive."},
+      {type:"short", marks:1, prompt:"Out of 20, give one extreme value (write one).", answer:"20", explain:"Extremes are 0 or 20."},
+      {type:"mcq", marks:1, prompt:"Why test with several sets of data?", choices:[
+        "To make code longer",
+        "To prove it works and fails correctly",
+        "To avoid loops",
+        "To avoid arrays"
+      ], answer:1, explain:"You need to test acceptance and rejection."},
+      {type:"pseudo", marks:0, prompt:"Write a small plan: list Normal, Abnormal, Extreme, Boundary for a 1..10 input.", model:
+`Normal: 5 (accept)
+Abnormal: -3 (reject), 12 (reject)
+Extreme: 1 (accept), 10 (accept)
+Boundary: 0 (reject) & 1 (accept), 10 (accept) & 11 (reject)`
+      }
+    ]
+  },
+
+  {
+    id:"tracetables",
+    title:"7.7 Trace Tables (Dry Runs)",
+    desc:"Record variable changes step-by-step; identify algorithm purpose from outputs.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"A trace table records:", choices:[
+        "only final output",
+        "variable values whenever they change and outputs",
+        "only inputs",
+        "only comments"
+      ], answer:1, explain:"It logs changes and outputs step-by-step."},
+      {type:"mcq", marks:1, prompt:"A dry run is:", choices:[
+        "running code on a computer",
+        "manual step-by-step working through an algorithm",
+        "a type of validation",
+        "a sorting method"
+      ], answer:1, explain:"Dry run = manual tracing."},
+      {type:"trace", marks:1, prompt:"Final output?", code:
+`A ← 0
+REPEAT
+  A ← A + 1
+UNTIL A = 10
+OUTPUT A`,
+        answer:"10", explain:"Loop ends when A becomes 10."
+      },
+      {type:"trace", marks:1, prompt:"Output sequence (space-separated):", code:
+`X ← 1
+WHILE X <= 4
+  OUTPUT X
+  X ← X + 1
+ENDWHILE`,
+        answer:"1 2 3 4", explain:"Outputs 1 to 4."
+      },
+      {type:"mcq", marks:1, prompt:"In a trace table, when do you write a value?", choices:[
+        "only at the end",
+        "whenever it changes",
+        "never",
+        "only for arrays"
+      ], answer:1, explain:"Record each change."},
+      {type:"trace", marks:1, prompt:"Final values of B and C (max and min) for inputs 9,7,3?", code:
+`B ← 0
+C ← 100
+FOR i ← 1 TO 3
+  INPUT X
+  IF X > B THEN B ← X ENDIF
+  IF X < C THEN C ← X ENDIF
+NEXT i
+OUTPUT B, C`,
+        answer:"9,3", explain:"Max=9, Min=3."
+      },
+      {type:"mcq", marks:1, prompt:"If an algorithm outputs largest and smallest numbers, its purpose is to:", choices:[
+        "sort a list",
+        "find max and min",
+        "count items",
+        "encrypt data"
+      ], answer:1, explain:"It identifies extremes."},
+      {type:"trace", marks:1, prompt:"Final output?", code:
+`Total ← 0
+FOR i ← 1 TO 3
+  INPUT X
+  Total ← Total + X
+NEXT i
+OUTPUT Total`,
+        answer:"(depends)", explain:"Use your chosen test data; total is sum of 3 inputs."
+      },
+      {type:"short", marks:1, prompt:"If you see B updates only when X > B, what does B store?", answer:"maximum", explain:"B stores the maximum seen so far."},
+      {type:"pseudo", marks:0, prompt:"Create a trace table header for variables A, B, C, X, OUTPUT.", model:
+`A | B | C | X | OUTPUT`
+      }
+    ]
+  },
+
+  {
+    id:"debugging",
+    title:"7.8 Identifying Errors in Algorithms",
+    desc:"Use trace tables + test data to find faults and improve initialisation.",
+    questions:[
+      {type:"mcq", marks:1, prompt:"If min is initialised to 100 and inputs may be >1000, the algorithm may:", choices:[
+        "always succeed",
+        "fail to find the real minimum if all values >100",
+        "sort the list",
+        "count correctly"
+      ], answer:1, explain:"Wrong starting min/max can break results."},
+      {type:"mcq", marks:1, prompt:"A better approach when range unknown is:", choices:[
+        "set Max=0 Min=100 always",
+        "set Max and Min to first input value",
+        "set Max=999999 Min=0",
+        "never initialise"
+      ], answer:1, explain:"Use first item to avoid range assumptions."},
+      {type:"short", marks:1, prompt:"Fix: FOR I ← 10 TO 1 should count down using:", answer:"STEP -1", explain:"Need STEP -1 to decrement."},
+      {type:"mcq", marks:1, prompt:"Why test with negative data when algorithm expects 0..100?", choices:[
+        "to prove it can reject/handle unexpected inputs",
+        "to speed up the program",
+        "to sort faster",
+        "to avoid trace tables"
+      ], answer:0, explain:"It exposes hidden assumptions/bugs."},
+      {type:"mcq", marks:1, prompt:"If you initialise Max to 0 and all inputs are negative, Max will be wrong because:", choices:[
+        "0 is not in the list",
+        "arrays start at 0",
+        "loops stop early",
+        "SWAP is false"
+      ], answer:0, explain:"Max should come from data, not an assumed value."},
+      {type:"short", marks:1, prompt:"To handle any range, initial Max and Min should be set to the ______ input.", answer:"first", explain:"Set to the first value input."},
+      {type:"mcq", marks:1, prompt:"In the 'much better algorithm' idea, why is the counter tested for 9 instead of 10?", choices:[
+        "because first input is used to initialise max/min, leaving 9 remaining inputs",
+        "because 10 is invalid",
+        "because loops require odd numbers",
+        "because min must be 9"
+      ], answer:0, explain:"First value consumed for initialisation."},
+      {type:"trace", marks:1, prompt:"If Max starts at 0 and inputs are -5, -2, -9, output Max would be:", answer:"0", explain:"This shows the bug (wrong), because true max is -2."},
+      {type:"mcq", marks:1, prompt:"What is the correct fix for the above bug?", choices:[
+        "Set Max to 0 and ignore negatives",
+        "Validate to reject negatives (if allowed by problem)",
+        "Set Max to first input then compare remaining",
+        "Use bubble sort instead"
+      ], answer:2, explain:"Use first input initialisation to work for any range."},
+      {type:"pseudo", marks:0, prompt:"Write corrected pseudocode to find max/min for 10 inputs of ANY range.", model:
+`INPUT X
+Max ← X
+Min ← X
+FOR i ← 2 TO 10
+  INPUT X
+  IF X > Max THEN Max ← X ENDIF
+  IF X < Min THEN Min ← X ENDIF
+NEXT i
+OUTPUT Max, Min`
+      }
+    ]
+  }
+];
+
+/* ---------------- APP STATE ---------------- */
+const topicsPanel = document.getElementById("topicsPanel");
+const questionsArea = document.getElementById("questionsArea");
+const topicTitlePill = document.getElementById("topicTitlePill");
+const topicDesc = document.getElementById("topicDesc");
+const submitTopicBtn = document.getElementById("submitTopicBtn");
+const resetTopicBtn = document.getElementById("resetTopicBtn");
+
+const topicScoreEl = document.getElementById("topicScore");
+const topicMaxEl = document.getElementById("topicMax");
+const grandScoreEl = document.getElementById("grandScore");
+const grandMaxEl = document.getElementById("grandMax");
+const submittedCountEl = document.getElementById("submittedCount");
+document.getElementById("topicCount").textContent = TOPICS.length;
+
+const state = {
+  activeTopicId: null,
+  // per topic: {submitted:boolean, score:number, max:number}
+  topic: Object.fromEntries(TOPICS.map(t => [t.id, {submitted:false, score:0, max: calcMax(t)}]))
+};
+function calcMax(topic){
+  return topic.questions.reduce((sum,q)=>sum + (q.type==="pseudo" ? 0 : (q.marks||0)), 0);
+}
+function updateGrand(){
+  let score=0, max=0, submitted=0;
+  for(const t of TOPICS){
+    const st=state.topic[t.id];
+    max += st.max;
+    score += st.score;
+    if(st.submitted) submitted++;
+  }
+  grandScoreEl.textContent = score;
+  grandMaxEl.textContent = max;
+  submittedCountEl.textContent = submitted;
+}
+updateGrand();
+
+/* ---------------- RENDER TOPIC LIST ---------------- */
+function renderTopicButtons(){
+  TOPICS.forEach(t=>{
+    const btn=document.createElement("button");
+    btn.className="topicBtn";
+    btn.id="btn-"+t.id;
+    btn.innerHTML = `
+      <span><b>${t.title}</b><div class="tag">${t.desc}</div></span>
+      <span class="pill" style="padding:4px 8px">${state.topic[t.id].score}/${state.topic[t.id].max}</span>
+    `;
+    btn.onclick=()=>selectTopic(t.id);
+    topicsPanel.appendChild(btn);
+  });
+}
+renderTopicButtons();
+
+function setActiveBtn(id){
+  TOPICS.forEach(t=>{
+    const b=document.getElementById("btn-"+t.id);
+    if(!b) return;
+    b.classList.toggle("active", t.id===id);
+    // refresh score pill
+    b.querySelector(".pill").textContent = `${state.topic[t.id].score}/${state.topic[t.id].max}`;
+  });
+}
+
+/* ---------------- RENDER QUESTIONS ---------------- */
+function mkQCard(topicId, idx, q){
+  const card=document.createElement("div");
+  card.className="qCard";
+  card.dataset.qtype=q.type;
+  card.dataset.marks=q.type==="pseudo" ? "0" : (q.marks||0);
+
+  const qid = `${topicId}_${idx+1}`;
+  card.dataset.qid = qid;
+
+  const head = document.createElement("div");
+  head.className="qHead";
+  head.innerHTML = `<div class="qNo">Q${idx+1}</div><div class="marks">${q.type==="pseudo" ? "[Self-check]" : `[${q.marks} mark${q.marks>1?'s':''}]`}</div>`;
+  card.appendChild(head);
+
+  const prompt = document.createElement("div");
+  prompt.className="prompt";
+  prompt.textContent = q.prompt;
+  card.appendChild(prompt);
+
+  if(q.code){
+    const pre=document.createElement("pre");
+    pre.className="mono";
+    pre.textContent=q.code;
+    card.appendChild(pre);
+  }
+
+  // input control
+  if(q.type==="mcq"){
+    const sel=document.createElement("select");
+    sel.innerHTML = `<option value="">Select…</option>` + q.choices.map((c,i)=>`<option value="${i}">${c}</option>`).join("");
+    card.appendChild(sel);
+  } else if(q.type==="short" || q.type==="trace"){
+    const inp=document.createElement("input");
+    inp.type="text";
+    inp.placeholder="Type your answer here…";
+    card.appendChild(inp);
+    if(q.type==="trace"){
+      const small=document.createElement("div");
+      small.className="tag";
+      small.textContent="Trace-table style: enter the final output/value asked.";
+      card.appendChild(small);
+    }
+  } else if(q.type==="pseudo"){
+    const ta=document.createElement("textarea");
+    ta.placeholder="Write your pseudocode / trace table here…";
+    card.appendChild(ta);
+
+    const actions=document.createElement("div");
+    actions.className="actions";
+    const show=document.createElement("button");
+    show.className="btnWarn";
+    show.textContent="Show Model Answer";
+    show.onclick=()=> {
+      const m=card.querySelector(".model");
+      m.style.display = (m.style.display==="block") ? "none" : "block";
+    };
+    actions.appendChild(show);
+    card.appendChild(actions);
+
+    const model=document.createElement("div");
+    model.className="model";
+    model.innerHTML = `<pre class="mono">${q.model || "Model answer not set."}</pre>`;
+    card.appendChild(model);
+  }
+
+  // feedback
+  const fb=document.createElement("div");
+  fb.className="fb";
+  fb.id="fb-"+qid;
+  card.appendChild(fb);
+
+  return card;
+}
+
+function renderTopic(topicId){
+  const topic = TOPICS.find(t=>t.id===topicId);
+  if(!topic) return;
+
+  state.activeTopicId = topicId;
+  setActiveBtn(topicId);
+
+  topicTitlePill.innerHTML = `<b>${topic.title}</b>`;
+  topicDesc.textContent = topic.desc;
+
+  questionsArea.innerHTML="";
+  topic.questions.forEach((q,idx)=>{
+    questionsArea.appendChild(mkQCard(topicId, idx, q));
+  });
+
+  const st=state.topic[topicId];
+  topicScoreEl.textContent = st.score;
+  topicMaxEl.textContent = st.max;
+
+  submitTopicBtn.disabled = st.submitted;
+  resetTopicBtn.disabled = false;
+
+  // disable inputs if already submitted
+  if(st.submitted){
+    lockTopicInputs(true);
+    showAllFeedback(topicId); // keep feedback visible
+  } else {
+    lockTopicInputs(false);
+    hideAllFeedback(topicId);
+  }
+}
+
+function lockTopicInputs(lock){
+  questionsArea.querySelectorAll("select,input,textarea").forEach(el=>{
+    // don't lock textarea for self-check if you want; but match exam practice: lock after submission
+    el.disabled = lock;
+  });
+}
+function hideAllFeedback(topicId){
+  questionsArea.querySelectorAll(".fb").forEach(fb=>{ fb.className="fb"; fb.style.display="none"; fb.textContent=""; });
+}
+function showAllFeedback(topicId){
+  // feedback is already in class ok/no; do nothing
+}
+
+/* ---------------- MARKING ---------------- */
+function showFb(qid, ok, msg){
+  const fb=document.getElementById("fb-"+qid);
+  if(!fb) return;
+  fb.style.display="block";
+  fb.className = "fb " + (ok ? "ok" : "no");
+  fb.textContent = (ok ? "✅ " : "❌ ") + msg;
+}
+
+function getUserAnswer(card){
+  const qt=card.dataset.qtype;
+  if(qt==="mcq"){
+    return card.querySelector("select")?.value ?? "";
+  }
+  if(qt==="short" || qt==="trace"){
+    return card.querySelector("input")?.value ?? "";
+  }
+  return ""; // pseudo not auto-marked
+}
+
+function markTopic(topicId){
+  const topic = TOPICS.find(t=>t.id===topicId);
+  if(!topic) return;
+
+  const st=state.topic[topicId];
+  if(st.submitted) return;
+
+  let score=0;
+
+  const cards = [...questionsArea.querySelectorAll(".qCard")];
+  cards.forEach((card, idx)=>{
+    const q = topic.questions[idx];
+    const qid = card.dataset.qid;
+
+    if(q.type==="pseudo"){
+      // self-check item
+      showFb(qid, true, "Self-check: use model answer and your teacher’s marking points.");
+      return;
+    }
+
+    const marks = Number(card.dataset.marks||0);
+    const user = getUserAnswer(card);
+
+    let ok=false;
+
+    if(q.type==="mcq"){
+      ok = (user !== "" && Number(user) === Number(q.answer));
+    } else {
+      // short/trace: allow flexible compare (numbers or words)
+      const expected = q.answer;
+
+      if(expected === "(depends)"){
+        ok = (norm(user).length > 0); // must enter something
+      } else {
+        // Accept minor formatting for comma-separated lists (e.g., "1,2,4,5" or "1, 2, 4, 5")
+        const u = norm(user).replace(/,/g,",");
+        const e = norm(expected).replace(/,/g,",");
+        ok = (u === e);
+      }
+    }
+
+    if(ok){
+      score += marks;
+      showFb(qid, true, (q.explain || "Correct."));
+    } else {
+      const exp = (q.type==="mcq") ? q.choices[q.answer] : q.answer;
+      showFb(qid, false, `Correct answer: ${exp}. ${q.explain || ""}`.trim());
+    }
+  });
+
+  st.score = score;
+  st.submitted = true;
+
+  topicScoreEl.textContent = st.score;
+  topicMaxEl.textContent = st.max;
+
+  updateGrand();
+  setActiveBtn(topicId);
+
+  lockTopicInputs(true);
+  submitTopicBtn.disabled = true;
+}
+
+function resetTopic(topicId){
+  const st=state.topic[topicId];
+  st.submitted=false;
+  st.score=0;
+  updateGrand();
+  renderTopic(topicId);
+}
+
+/* ---------------- TOPIC SELECTION ---------------- */
+function selectTopic(topicId){ renderTopic(topicId); }
+
+/* ---------------- BUTTON WIRES ---------------- */
+submitTopicBtn.onclick=()=>{
+  if(!state.activeTopicId) return;
+  markTopic(state.activeTopicId);
+};
+resetTopicBtn.onclick=()=>{
+  if(!state.activeTopicId) return;
+  resetTopic(state.activeTopicId);
+};
+
+document.getElementById("totalBtn").onclick=()=>{
+  const max = Number(grandMaxEl.textContent);
+  const score = Number(grandScoreEl.textContent);
+  document.getElementById("finalScore").textContent = score;
+  document.getElementById("finalMax").textContent = max;
+  document.getElementById("finalBox").classList.remove("hidden");
+};
+
+/* Start with first topic */
+selectTopic(TOPICS[0].id);
+</script>
+</body>
+</html>
