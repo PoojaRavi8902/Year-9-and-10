@@ -1,118 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>IGCSE Computer Science – Algorithm Design & Problem Solving</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      background: #f7f9fc;
-      color: #222;
-    }
-    header {
-      background: #0b3c5d;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    section {
-      padding: 20px 40px;
-      background: #ffffff;
-      margin: 20px auto;
-      max-width: 1000px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-    h1, h2, h3 {
-      color: #0b3c5d;
-    }
-    h2 {
-      border-bottom: 2px solid #e1e8ed;
-      padding-bottom: 6px;
-    }
-    ul {
-      margin-left: 20px;
-    }
-    li {
-      margin-bottom: 6px;
-    }
-    .exam-tip {
-      background: #eef6ff;
-      border-left: 6px solid #1c7ed6;
-      padding: 10px;
-      margin: 15px 0;
-    }
-    .definition {
-      background: #f1f8f5;
-      border-left: 6px solid #2f9e44;
-      padding: 10px;
-      margin: 15px 0;
-    }
-    pre {
-      background: #111;
-      color: #0f0;
-      padding: 12px;
-      overflow-x: auto;
-      font-family: "Courier New", monospace;
-      font-size: 14px;
-      border-radius: 4px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 10px;
-    }
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-    th {
-      background: #e9ecef;
-    }
-    th, td {
-      padding: 8px;
-      text-align: left;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #0b3c5d;
-      color: #fff;
-      margin-top: 30px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Algorithm Design & Problem Solving</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.main-content {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.section {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.definition {
+  background: rgba(0,255,150,0.15);
+  border-left: 5px solid #00ff88;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 8px;
+}
+
+.exam-tip {
+  background: rgba(0,150,255,0.15);
+  border-left: 5px solid #00c6ff;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 8px;
+}
+
+pre {
+  background: #000;
+  color: #00ff88;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px;
+}
+
+th {
+  background: rgba(255,255,255,0.1);
+}
+
+h2, h3 {
+  color: white;
+}
+</style>
+
 </head>
+
 <body>
 
-<header>
-  <h1>IGCSE Computer Science</h1>
-  <p>Algorithm Design & Problem Solving (Exam-Friendly Notes)</p>
+<!-- HEADER -->
+<header class="hero">
+  <h1>💻 Computer Science Learning Hub</h1>
+  <p>Prepared by Ravi Raju</p>
 </header>
 
-<section>
-  <h2>Learning Objectives</h2>
-  <ul>
-    <li>Understand the stages of the Program Development Life Cycle (PDLC)</li>
-    <li>Explain computer systems and sub-systems</li>
-    <li>Apply abstraction and decomposition</li>
-    <li>Use flowcharts, pseudocode and structure diagrams</li>
-    <li>Explain the purpose of an algorithm</li>
-    <li>Use conditional statements and iteration</li>
-    <li>Identify and correct errors in algorithms</li>
-  </ul>
-</section>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="#">Lesson</a>
+  <a href="#">Practice</a>
+</nav>
 
-<section>
-  <h2>1. Program Development Life Cycle (PDLC)</h2>
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<div class="section">
+  <h2>🎯 Learning Objectives</h2>
+  <ul>
+    <li>Understand PDLC stages</li>
+    <li>Explain systems and sub-systems</li>
+    <li>Apply abstraction and decomposition</li>
+    <li>Use flowcharts, pseudocode and diagrams</li>
+    <li>Explain algorithms</li>
+    <li>Use selection and iteration</li>
+    <li>Identify and correct errors</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>🔄 Program Development Life Cycle (PDLC)</h2>
 
   <div class="definition">
-    <strong>Definition:</strong>  
-    The Program Development Life Cycle describes the stages involved in developing a computer program from the initial idea to a working solution.
+    The Program Development Life Cycle describes the stages involved in developing a program from idea to solution.
   </div>
 
-  <h3>Stages of PDLC</h3>
   <ul>
     <li>Analysis</li>
     <li>Design</li>
@@ -122,79 +116,53 @@
   </ul>
 
   <div class="exam-tip">
-    <strong>Exam Tip:</strong>  
-    You must be able to <em>describe</em> what happens in each stage, not just list them.
+    You must describe each stage — not just list them.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>1.1 Analysis</h2>
+<div class="section">
+  <h2>📊 Analysis</h2>
 
-  <p>
-    Before solving a problem, it must be clearly defined.  
-    This produces a <strong>requirements specification</strong>.
-  </p>
+  <p>This stage produces a requirements specification.</p>
 
   <h3>Abstraction</h3>
-  <p>
-    Abstraction removes unnecessary detail and keeps only what is essential.
-  </p>
+  <p>Removes unnecessary detail and keeps essential information.</p>
 
   <h3>Decomposition</h3>
-  <p>
-    Decomposition breaks a complex problem into smaller, manageable parts.
-  </p>
+  <p>Breaks a problem into smaller parts.</p>
 
   <div class="exam-tip">
-    <strong>Remember:</strong>  
-    Abstraction = remove detail  
+    Abstraction = remove detail<br>
     Decomposition = break into parts
   </div>
-</section>
+</div>
 
-<section>
-  <h2>1.2 Design</h2>
-  <p>
-    The design stage shows how the program will work before coding begins.
-  </p>
+<div class="section">
+  <h2>🧩 Design</h2>
   <ul>
     <li>Structure diagrams</li>
     <li>Flowcharts</li>
     <li>Pseudocode</li>
   </ul>
-</section>
+</div>
 
-<section>
-  <h2>1.3 Coding and Iterative Testing</h2>
-  <p>
-    The program is written in a suitable programming language.
-    Each module is tested and corrected repeatedly until it works correctly.
-  </p>
-</section>
+<div class="section">
+  <h2>💻 Coding & Testing</h2>
+  <p>Programs are written and tested repeatedly to remove errors.</p>
+</div>
 
-<section>
-  <h2>1.4 Testing</h2>
-  <p>
-    The complete program is tested using different sets of test data
-    to ensure all parts work together.
-  </p>
-</section>
-
-<section>
-  <h2>2. Computer Systems and Sub-Systems</h2>
+<div class="section">
+  <h2>🧠 Computer Systems</h2>
 
   <div class="definition">
-    <strong>Definition:</strong>  
-    A computer system consists of hardware, software, data, communications and people.
+    A system includes hardware, software, data, communication and people.
   </div>
 
-  <p>
-    Each system can be divided into sub-systems until each part performs a single task.
-  </p>
-</section>
+  <p>Systems can be divided into sub-systems.</p>
+</div>
 
-<section>
-  <h2>2.1 Input – Process – Output (IPO)</h2>
+<div class="section">
+  <h2>🔄 Input – Process – Output</h2>
 
   <table>
     <tr>
@@ -203,11 +171,11 @@
     </tr>
     <tr>
       <td>Input</td>
-      <td>Data entered into the system</td>
+      <td>Data entered</td>
     </tr>
     <tr>
       <td>Process</td>
-      <td>Actions performed on the data</td>
+      <td>Actions performed</td>
     </tr>
     <tr>
       <td>Output</td>
@@ -215,83 +183,81 @@
     </tr>
     <tr>
       <td>Storage</td>
-      <td>Data saved for future use</td>
+      <td>Saved data</td>
     </tr>
   </table>
-</section>
+</div>
 
-<section>
-  <h2>3. Algorithms</h2>
+<div class="section">
+  <h2>📐 Algorithms</h2>
 
   <div class="definition">
-    <strong>Definition:</strong>  
-    An algorithm is a set of step-by-step instructions used to solve a problem.
+    A step-by-step solution to a problem.
   </div>
 
-  <h3>Pseudocode Example</h3>
   <pre>
 Price ← 10
 Tax ← Price * 0.12
 FinalPrice ← Price + Tax
   </pre>
-</section>
+</div>
 
-<section>
-  <h2>4. Selection (IF and CASE)</h2>
+<div class="section">
+  <h2>🔀 Selection</h2>
 
   <pre>
-IF Age &lt; 18
-  THEN OUTPUT "Child"
-  ELSE OUTPUT "Adult"
+IF Age &lt; 18 THEN
+  OUTPUT "Child"
+ELSE
+  OUTPUT "Adult"
 ENDIF
   </pre>
 
   <pre>
 CASE OF Day
   1 : OUTPUT "Monday"
-  2 : OUTPUT "Tuesday"
   OTHERWISE OUTPUT "Invalid"
 ENDCASE
   </pre>
-</section>
+</div>
 
-<section>
-  <h2>5. Iteration (Loops)</h2>
+<div class="section">
+  <h2>🔁 Iteration</h2>
 
-  <h3>FOR Loop</h3>
   <pre>
-FOR Counter ← 1 TO 10
+FOR i ← 1 TO 10
   OUTPUT "*"
 NEXT
   </pre>
 
-  <h3>REPEAT UNTIL Loop</h3>
   <pre>
 REPEAT
   INPUT Mark
 UNTIL Mark = -1
   </pre>
 
-  <h3>WHILE Loop</h3>
   <pre>
 WHILE Mark &lt;&gt; -1 DO
   INPUT Mark
 ENDWHILE
   </pre>
-</section>
+</div>
 
-<section>
-  <h2>Exam Success Tips</h2>
+<div class="section">
+  <h2>🎯 Exam Tips</h2>
   <ul>
     <li>Use correct terminology</li>
-    <li>Indent pseudocode clearly</li>
-    <li>Label decision branches in flowcharts</li>
-    <li>Explain both purpose and process</li>
+    <li>Indent pseudocode</li>
+    <li>Label flowcharts clearly</li>
+    <li>Explain purpose and process</li>
   </ul>
-</section>
+</div>
 
+</div>
+
+<!-- FOOTER -->
 <footer>
-  IGCSE Computer Science – Algorithm Design & Problem Solving
+  <p>Prepared for MES Cairo</p>
 </footer>
 
 </body>
