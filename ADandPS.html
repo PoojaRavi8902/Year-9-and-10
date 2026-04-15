@@ -2,75 +2,88 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>IGCSE Computer Science – Lesson 1: PDLC & Analysis</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Lesson 1 – PDLC & Analysis</title>
+
+<link rel="stylesheet" href="style.css">
+
 <style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6f8;
-  margin: 0;
-  color: #222;
-  line-height: 1.7;
-}
-header {
-  background: #003366;
-  color: white;
+.main-content {
+  max-width: 1100px;
+  margin: 20px auto;
   padding: 20px;
 }
-section {
-  background: white;
-  margin: 20px auto;
-  padding: 30px;
-  max-width: 1100px;
-  border-radius: 6px;
+
+.section {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 20px;
 }
-h1, h2, h3 {
-  color: #003366;
-}
-.exam-box {
-  background: #eef4ff;
-  border-left: 6px solid #3366cc;
-  padding: 15px;
-  margin: 20px 0;
-}
+
 .definition {
-  background: #f1f8f5;
-  border-left: 6px solid #2f9e44;
+  background: rgba(0,255,150,0.15);
+  border-left: 5px solid #00ff88;
   padding: 15px;
-  margin: 20px 0;
+  margin: 15px 0;
+  border-radius: 8px;
 }
+
+.exam-box {
+  background: rgba(0,150,255,0.15);
+  border-left: 5px solid #00c6ff;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 8px;
+}
+
+h2, h3 {
+  color: #ffffff;
+}
+
 ul li {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
-footer {
-  background: #003366;
-  color: white;
-  text-align: center;
-  padding: 15px;
+
+ol li {
+  margin-bottom: 8px;
 }
 </style>
+
 </head>
 
 <body>
 
-<header>
-  <h1>IGCSE Computer Science</h1>
-  <p>Lesson 1 – Program Development Life Cycle & Analysis</p>
+<!-- HEADER -->
+<header class="hero">
+  <h1>💻 Computer Science Learning Hub</h1>
+  <p>Prepared by Ravi Raju</p>
 </header>
 
-<section>
-  <h2>Lesson Objectives</h2>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="#">Lesson</a>
+  <a href="#">Practice</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<div class="section">
+  <h2>🎯 Lesson Objectives</h2>
   <ul>
     <li>Define an algorithm</li>
     <li>Describe the stages of the Program Development Life Cycle (PDLC)</li>
     <li>Explain the purpose of the analysis stage</li>
     <li>Distinguish between abstraction and decomposition</li>
   </ul>
-</section>
+</div>
 
-<section>
-  <h2>What is an Algorithm?</h2>
+<div class="section">
+  <h2>💡 What is an Algorithm?</h2>
 
   <div class="definition">
     <strong>Algorithm:</strong><br>
@@ -81,10 +94,10 @@ footer {
     Algorithms are the foundation of all computer programs.  
     Before any code is written, an algorithm must be designed to clearly describe the solution.
   </p>
-</section>
+</div>
 
-<section>
-  <h2>Program Development Life Cycle (PDLC)</h2>
+<div class="section">
+  <h2>🔄 Program Development Life Cycle (PDLC)</h2>
 
   <p>
     The Program Development Life Cycle is a structured process used to develop computer programs.
@@ -102,12 +115,12 @@ footer {
 
   <div class="exam-box">
     <strong>Exam Tip:</strong><br>
-    You must be able to <em>describe what happens</em> in each stage, not just list the stages.
+    You must be able to <em>describe what happens</em> in each stage, not just list them.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Analysis Stage</h2>
+<div class="section">
+  <h2>📊 Analysis Stage</h2>
 
   <div class="definition">
     <strong>Analysis:</strong><br>
@@ -126,10 +139,10 @@ footer {
     <li>Outputs expected</li>
     <li>Rules and constraints</li>
   </ul>
-</section>
+</div>
 
-<section>
-  <h2>Abstraction</h2>
+<div class="section">
+  <h2>🧠 Abstraction</h2>
 
   <div class="definition">
     <strong>Abstraction:</strong><br>
@@ -143,12 +156,11 @@ footer {
   <p><strong>Example:</strong></p>
   <p>
     A road map shows roads and junctions but does not show buildings, trees, or people.
-    This makes navigation easier.
   </p>
-</section>
+</div>
 
-<section>
-  <h2>Decomposition</h2>
+<div class="section">
+  <h2>🧩 Decomposition</h2>
 
   <div class="definition">
     <strong>Decomposition:</strong><br>
@@ -166,30 +178,35 @@ footer {
     <strong>Exam Warning:</strong><br>
     Abstraction removes detail.<br>
     Decomposition breaks a problem into parts.<br>
-    Do not confuse these in exam answers.
+    Do not confuse these.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Exam Practice</h2>
+<div class="section">
+  <h2>📝 Exam Practice</h2>
 
   <p><strong>Question 1 (2 marks):</strong><br>
   Define abstraction.</p>
 
-  <p><strong>Mark Scheme:</strong><br>
-  Removing unnecessary detail (1)<br>
-  Keeping only essential features (1)</p>
+  <div class="exam-box">
+    Removing unnecessary detail (1)<br>
+    Keeping only essential features (1)
+  </div>
 
   <p><strong>Question 2 (4 marks):</strong><br>
   Explain the difference between abstraction and decomposition.</p>
 
-  <p><strong>Mark Scheme:</strong><br>
-  Abstraction removes unnecessary detail (2)<br>
-  Decomposition breaks a problem into smaller parts (2)</p>
-</section>
+  <div class="exam-box">
+    Abstraction removes unnecessary detail (2)<br>
+    Decomposition breaks a problem into smaller parts (2)
+  </div>
+</div>
 
+</div>
+
+<!-- FOOTER -->
 <footer>
-  IGCSE Computer Science – Lesson 1
+  <p>Prepared for MES Cairo</p>
 </footer>
 
 </body>
