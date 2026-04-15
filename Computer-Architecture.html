@@ -15,35 +15,33 @@
   padding: 20px;
 }
 
-/* COLLAPSIBLE CARDS (UPGRADED) */
+/* GLASS CARDS */
 .card {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(12px);
   border-radius: 14px;
-  margin-bottom: 15px;
-  overflow: hidden;
+  margin-bottom: 18px;
   border: 1px solid rgba(255,255,255,0.15);
+  overflow: hidden;
 }
 
 .card summary {
-  cursor: pointer;
   padding: 18px;
-  font-size: 1.1em;
-  display: flex;
-  justify-content: space-between;
+  cursor: pointer;
+  font-size: 1.15em;
+  font-weight: bold;
 }
 
 .card .content {
   padding: 20px;
-  background: rgba(0,0,0,0.2);
 }
 
-/* SUB BLOCKS */
+/* SUB SECTIONS */
 .subtopic {
   background: rgba(255,255,255,0.05);
   padding: 15px;
   border-radius: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
 /* CALLOUTS */
@@ -72,6 +70,7 @@
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
 th, td {
@@ -83,9 +82,17 @@ th, td {
 .code {
   background: #000;
   color: #00ff88;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   font-family: monospace;
+}
+
+/* SVG */
+.svg-figure {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
 }
 </style>
 
@@ -93,19 +100,16 @@ th, td {
 
 <body>
 
-<!-- HEADER -->
 <header class="hero">
   <h1>💻 Computer Science Learning Hub</h1>
   <p>Prepared by Ravi Raju</p>
 </header>
 
-<!-- NAVBAR -->
 <nav class="navbar">
   <a href="index.html">Home</a>
   <a href="#">Processor</a>
 </nav>
 
-<!-- MAIN -->
 <div class="main-content">
 
 <div class="controls">
@@ -119,11 +123,26 @@ th, td {
 <div class="content">
 
 <div class="subtopic">
-<p>The von Neumann model stores instructions and data in the same memory and executes sequentially.</p>
+<p>The von Neumann model describes a system where instructions and data are stored together and executed sequentially.</p>
 </div>
 
+<div class="subtopic">
+<ul>
+<li>CPU processes instructions</li>
+<li>Shared memory</li>
+<li>Sequential execution</li>
+</ul>
+</div>
+
+<svg class="svg-figure" viewBox="0 0 900 200">
+<rect x="50" y="50" width="200" height="80" fill="#e7f3ff"/>
+<text x="70" y="90">Memory</text>
+<rect x="350" y="50" width="200" height="80" fill="#e7f3ff"/>
+<text x="380" y="90">CPU</text>
+</svg>
+
 <div class="exam-tip">
-Von Neumann bottleneck: CPU waits for memory transfer.
+Von Neumann bottleneck: shared bus causes delay.
 </div>
 
 </div>
@@ -135,7 +154,7 @@ Von Neumann bottleneck: CPU waits for memory transfer.
 <div class="content">
 
 <div class="subtopic">
-<p>CPU consists of CU, ALU, and registers.</p>
+<p>CPU consists of Control Unit, ALU and registers.</p>
 </div>
 
 <table>
@@ -143,12 +162,13 @@ Von Neumann bottleneck: CPU waits for memory transfer.
 <tr><td>PC</td><td>Next instruction</td></tr>
 <tr><td>MAR</td><td>Address</td></tr>
 <tr><td>MDR</td><td>Data</td></tr>
-<tr><td>CIR</td><td>Current instruction</td></tr>
+<tr><td>CIR</td><td>Instruction</td></tr>
+<tr><td>SR</td><td>Status</td></tr>
 </table>
 
 <div class="example">
-ADD 400 example:
-MAR ← 400 → MDR → ALU → Accumulator
+ADD 400 process:
+MAR → MDR → ALU → ACC
 </div>
 
 </div>
@@ -162,7 +182,7 @@ MAR ← 400 → MDR → ALU → Accumulator
 <table>
 <tr><th>Bus</th><th>Function</th></tr>
 <tr><td>Address</td><td>Location</td></tr>
-<tr><td>Data</td><td>Transfers data</td></tr>
+<tr><td>Data</td><td>Transfers</td></tr>
 <tr><td>Control</td><td>Signals</td></tr>
 </table>
 
@@ -181,6 +201,10 @@ MAR ← 400 → MDR → ALU → Accumulator
 <li>Word length</li>
 <li>Bus width</li>
 </ul>
+
+<div class="example">
+2 GHz = 0.5 ns per cycle
+</div>
 
 </div>
 </details>
@@ -219,29 +243,25 @@ CIR ← MDR
 <summary>5.08 Interrupts</summary>
 <div class="content">
 
-<ul>
-<li>Pause current task</li>
+<ol>
+<li>Pause program</li>
+<li>Save state</li>
 <li>Run ISR</li>
-<li>Return to program</li>
-</ul>
+<li>Restore</li>
+</ol>
 
 </div>
 </details>
 
 </div>
 
-<!-- FOOTER -->
 <footer>
 <p>Prepared for MES Cairo</p>
 </footer>
 
 <script>
-function expandAll(){
-  document.querySelectorAll('details').forEach(d=>d.open=true);
-}
-function collapseAll(){
-  document.querySelectorAll('details').forEach(d=>d.open=false);
-}
+function expandAll(){document.querySelectorAll('details').forEach(d=>d.open=true);}
+function collapseAll(){document.querySelectorAll('details').forEach(d=>d.open=false);}
 </script>
 
 </body>
