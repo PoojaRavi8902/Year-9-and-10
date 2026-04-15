@@ -49,6 +49,47 @@ nav a:hover {
   border-radius: 10px;
 }
 
+/* FILTER BUTTONS */
+.controls {
+  margin-bottom: 20px;
+}
+
+.controls button {
+  margin-right: 10px;
+  background: #444;
+}
+
+.controls button:hover {
+  background: #00c6ff;
+}
+
+/* QUESTION CARD */
+.card {
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* CORRECT / WRONG */
+.correct {
+  color: #00ff88;
+}
+
+.wrong {
+  color: #ff4d4d;
+}
+
+/* TEXTAREA STYLE */
+textarea {
+  min-height: 100px;
+}
+
+/* HEADER FIX */
+.hero h1 {
+  font-size: 2em;
+}
 /* GRID BUTTONS */
 .grid {
   display: grid;
