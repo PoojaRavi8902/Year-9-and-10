@@ -3,17 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>ADPS Learning + Practice</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-}
-
 .container {
   max-width: 1200px;
   margin: auto;
@@ -27,203 +22,84 @@ body {
   padding-left: 10px;
   color: white;
 }
-
-.card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  color: white;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-button {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  background: #00c6ff;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0072ff;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  margin-top: 10px;
-}
-
-.correct { color: #00ff88; }
-.wrong { color: #ff4d4d; }
-
-.controls button {
-  margin-right: 10px;
-  background: #444;
-}
-
-.controls button:hover {
-  background: #00c6ff;
-}
-
-.score-box {
-  background: rgba(0,0,0,0.3);
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: white;
-}
 </style>
+
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header class="hero">
   <h1>💻 Computer Science Learning Hub</h1>
   <p>Prepared by Ravi Raju</p>
 </header>
 
+<!-- NAVBAR -->
 <nav class="navbar">
   <a href="index.html">Home</a>
-  <a href="#learn">Learning</a>
   <a href="#practice">Practice</a>
 </nav>
 
+<!-- CONTENT -->
 <div class="container">
 
-<div class="score-box">
-  Score: <span id="score">0</span> / <span id="total">0</span>
+  <!-- SCORE -->
+  <div class="score-box">
+    Score: <span id="score">0</span> / <span id="total">0</span>
+  </div>
+
+  <h2 id="practice" class="section-title">📝 Practice Questions</h2>
+
+  <!-- FILTER -->
+  <div class="controls">
+    <button onclick="filterQuestions('all')">All</button>
+    <button onclick="filterQuestions('mcq')">MCQ</button>
+    <button onclick="filterQuestions('fill')">Fill</button>
+    <button onclick="filterQuestions('open')">Open</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions"></div>
+
+  <button onclick="showScore()">Show Final Score</button>
+
 </div>
 
-<h2 id="practice" class="section-title">📝 Practice Questions</h2>
-
-<div class="controls">
-  <button onclick="filterQuestions('all')">All</button>
-  <button onclick="filterQuestions('mcq')">MCQ</button>
-  <button onclick="filterQuestions('fill')">Fill</button>
-  <button onclick="filterQuestions('open')">Open</button>
-</div>
-
-<div id="questions"></div>
-<button onclick="showScore()">Show Final Score</button>
-
-</div>
-
+<!-- FOOTER -->
 <footer>
-<p>Prepared for MES Cairo</p>
+  <p>Prepared for MES Cairo</p>
 </footer>
 
+<!-- QUESTIONS DATA (ONLY THIS STAYS IN PAGE) -->
 <script>
-
-let score = 0;
-let answered = new Set();
-
 const questions = [
 
 {type:"mcq",question:"Which loop is counter-controlled?",options:["WHILE","REPEAT","FOR","IF"],answer:2},
 {type:"mcq",question:"Which is selection?",options:["FOR","WHILE","IF","REPEAT"],answer:2},
 {type:"mcq",question:"Which loop always executes at least once?",options:["FOR","WHILE","REPEAT UNTIL","IF"],answer:2},
+
 {type:"fill",question:"What does MOD return?",answer:["remainder","mod"]},
 {type:"fill",question:"Which loop is best for validation?",answer:["repeat","repeat until"]},
 
-{type:"open",question:"Write pseudocode to check EVEN or ODD.",mark:"INPUT N\nIF N MOD 2 = 0 THEN OUTPUT 'EVEN' ELSE OUTPUT 'ODD' ENDIF"},
+{type:"open",question:"Write pseudocode to check EVEN or ODD.",
+mark:"INPUT N\nIF N MOD 2 = 0 THEN OUTPUT 'EVEN' ELSE OUTPUT 'ODD' ENDIF"},
 
-{type:"open",question:"Write pseudocode to find total of 5 numbers.",mark:"Total ← 0\nFOR i ← 1 TO 5\n INPUT x\n Total ← Total + x\nNEXT i\nOUTPUT Total"},
+{type:"open",question:"Write pseudocode to find total of 5 numbers.",
+mark:"Total ← 0\nFOR i ← 1 TO 5\n INPUT x\n Total ← Total + x\nNEXT i\nOUTPUT Total"},
 
 {type:"fill",question:"Trace: Total=0; FOR i=1 to 3 → Total?",answer:"6"},
-{type:"mcq",question:"Flowchart decision symbol?",options:["Rectangle","Diamond","Circle","Arrow"],answer:1},
 
-{type:"mcq",question:"MOD 10 of 27?",options:["2","7","10","17"],answer:1}
+{type:"mcq",question:"Flowchart decision symbol?",
+options:["Rectangle","Diamond","Circle","Arrow"],answer:1},
+
+{type:"mcq",question:"MOD 10 of 27?",
+options:["2","7","10","17"],answer:1}
 
 ];
-
-function loadQuestions(filter="all"){
-  const container=document.getElementById("questions");
-  container.innerHTML="";
-
-  let filtered=questions.filter(q=>filter==="all"||q.type===filter);
-  document.getElementById("total").textContent=filtered.length;
-
-  filtered.forEach((q,i)=>{
-    let html=`<div class="card"><p><b>Q${i+1}:</b> ${q.question}</p>`;
-
-    if(q.type==="mcq"){
-      q.options.forEach((opt,index)=>{
-        html+=`<label><input type="radio" name="q${i}" value="${index}">${opt}</label><br>`;
-      });
-      html+=`<button onclick="checkMCQ(${i})">Check</button>`;
-    }
-
-    else if(q.type==="fill"){
-      html+=`<input id="input${i}"><button onclick="checkFill(${i})">Check</button>`;
-    }
-
-    else{
-      html+=`<textarea id="input${i}"></textarea><button onclick="showMark(${i})">Show Answer</button>`;
-    }
-
-    html+=`<div id="result${i}"></div></div>`;
-    container.innerHTML+=html;
-  });
-}
-
-function filterQuestions(type){ loadQuestions(type); }
-
-function checkMCQ(i){
-  const selected=document.querySelector(`input[name="q${i}"]:checked`);
-  const result=document.getElementById(`result${i}`);
-
-  if(!selected){ result.innerHTML="⚠️ Select"; return; }
-
-  if(Number(selected.value)===questions[i].answer){
-    result.innerHTML="<span class='correct'>✅ Correct</span>";
-    if(!answered.has(i)){score++;answered.add(i);}
-  }else{
-    result.innerHTML="<span class='wrong'>❌ Incorrect</span>";
-  }
-  updateScore();
-}
-
-function checkFill(i){
-  const val=document.getElementById(`input${i}`).value.toLowerCase().trim();
-  const correct=questions[i].answer;
-  const result=document.getElementById(`result${i}`);
-
-  let ok=Array.isArray(correct)?correct.includes(val):val===correct;
-
-  if(ok){
-    result.innerHTML="<span class='correct'>✅ Correct</span>";
-    if(!answered.has(i)){score++;answered.add(i);}
-  }else{
-    result.innerHTML="<span class='wrong'>❌ Incorrect</span>";
-  }
-  updateScore();
-}
-
-function showMark(i){
-  document.getElementById(`result${i}`).innerHTML="<pre>"+questions[i].mark+"</pre>";
-}
-
-function updateScore(){
-  document.getElementById("score").textContent=score;
-}
-
-function showScore(){
-  alert(`Final Score: ${score}/${questions.length}`);
-}
-
-loadQuestions();
-
 </script>
+
+<!-- MAIN ENGINE -->
+<script src="script.js"></script>
 
 </body>
 </html>
