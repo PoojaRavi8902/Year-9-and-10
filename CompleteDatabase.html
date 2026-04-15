@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Databases — Interactive Lesson</title>
+<title>Databases — Full SQL Lab</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -47,6 +47,13 @@ button {
   cursor: pointer;
 }
 
+.output {
+  margin-top: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(0,0,0,0.4);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -55,14 +62,6 @@ table {
 th, td {
   padding: 8px;
   border-bottom: 1px solid rgba(255,255,255,0.2);
-}
-
-.tip {
-  background: rgba(255,200,0,0.15);
-  padding: 10px;
-  border-left: 4px solid #ffd54a;
-  border-radius: 6px;
-  margin: 10px 0;
 }
 </style>
 
@@ -77,7 +76,7 @@ th, td {
 
 <nav class="navbar">
   <a href="index.html">Home</a>
-  <a href="#">Databases</a>
+  <a href="#">SQL Lab</a>
 </nav>
 
 <div class="main-content">
@@ -85,67 +84,22 @@ th, td {
 <div class="grid">
 
 <!-- LEFT -->
-<div>
-
-<div class="section">
-<h2>📚 What is a Database?</h2>
-<p>A structured collection of data stored for easy access.</p>
-<div class="tip">Think: hospital records or school systems.</div>
-</div>
-
-<div class="section">
-<h2>📊 Fields & Records</h2>
-<p>Field = column, Record = row</p>
-
-<table>
-<tr><th>HospitalNumber</th><th>FirstName</th><th>Ward</th></tr>
-<tr><td>HN001</td><td>Ali</td><td>6</td></tr>
-<tr><td>HN002</td><td>Sara</td><td>7</td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>🔑 Primary Key</h2>
-<p>A unique identifier (e.g. HospitalNumber).</p>
-</div>
-
-<div class="section">
-<h2>🧠 SQL Basics</h2>
-<pre>
-SELECT FirstName
-FROM PATIENT
-WHERE WardNumber = 6;
-</pre>
-</div>
-
-</div>
-
-<!-- RIGHT -->
-<div>
-
 <div class="section">
 <h2>💻 SQL Runner</h2>
 
-<textarea id="sql">
-SELECT HospitalNumber, FirstName
+<textarea id="sqlInput">SELECT HospitalNumber, FirstName, FamilyName
 FROM PATIENT
-</textarea>
+WHERE Consultant = 'Mr Smith';</textarea>
 
-<button onclick="runSQL()">Run</button>
+<button onclick="runSQL()">Run SQL</button>
 
-<div id="output"></div>
-
+<div id="output" class="output"></div>
 </div>
 
+<!-- RIGHT -->
 <div class="section">
-<h3>📖 Glossary</h3>
-<ul>
-<li>Field: column</li>
-<li>Record: row</li>
-<li>Primary key: unique ID</li>
-</ul>
-</div>
-
+<h3>📊 Data Preview</h3>
+<table id="preview"></table>
 </div>
 
 </div>
@@ -158,26 +112,110 @@ FROM PATIENT
 
 <script>
 
-// DATA
+// ================= FULL DATA =================
 const PATIENT = [
-{HospitalNumber:"HN001", FirstName:"Ali", WardNumber:6},
-{HospitalNumber:"HN002", FirstName:"Sara", WardNumber:7}
+{ HospitalNumber:'HN000001', FirstName:'Winnie', FamilyName:'Sing', DateOfAdmission:'2022-10-12', Consultant:'Mr Smith', WardNumber:6 },
+{ HospitalNumber:'HN000002', FirstName:'Steve', FamilyName:'Chow', DateOfAdmission:'2022-10-23', Consultant:'Miss Abebe', WardNumber:6 },
+{ HospitalNumber:'HN000003', FirstName:'Chin', FamilyName:'Wee', DateOfAdmission:'2022-10-30', Consultant:'Mr Jones', WardNumber:7 },
+{ HospitalNumber:'HN000004', FirstName:'Min', FamilyName:'Hoo', DateOfAdmission:'2022-11-01', Consultant:'Mr Smith', WardNumber:6 },
+{ HospitalNumber:'HN000005', FirstName:'Peter', FamilyName:'Patel', DateOfAdmission:'2022-11-12', Consultant:'Mr Jones', WardNumber:7 },
+{ HospitalNumber:'HN000006', FirstName:'Sue', FamilyName:'Sands', DateOfAdmission:'2022-11-19', Consultant:'Miss Abebe', WardNumber:6 },
+{ HospitalNumber:'HN000007', FirstName:'Farouk', FamilyName:'Khan', DateOfAdmission:'2022-11-22', Consultant:'Mr Jones', WardNumber:7 },
+{ HospitalNumber:'HN000008', FirstName:'Ahmad', FamilyName:'Teo', DateOfAdmission:'2022-11-22', Consultant:'Mr Jones', WardNumber:7 }
 ];
 
-// SQL ENGINE (simple)
-function runSQL(){
-  const out=document.getElementById("output");
-  out.innerHTML="";
-
-  let table="<table><tr><th>ID</th><th>Name</th></tr>";
-
+// ================= PREVIEW =================
+function loadPreview(){
+  let html="<tr><th>ID</th><th>First</th><th>Family</th><th>Consultant</th></tr>";
   PATIENT.forEach(p=>{
-    table+=`<tr><td>${p.HospitalNumber}</td><td>${p.FirstName}</td></tr>`;
+    html+=`<tr><td>${p.HospitalNumber}</td><td>${p.FirstName}</td><td>${p.FamilyName}</td><td>${p.Consultant}</td></tr>`;
   });
-
-  table+="</table>";
-  out.innerHTML=table;
+  document.getElementById("preview").innerHTML=html;
 }
+
+// ================= FULL SQL ENGINE =================
+function runSQL(){
+  let sql=document.getElementById("sqlInput").value.trim();
+
+  if(!sql.toUpperCase().includes("SELECT") || !sql.toUpperCase().includes("FROM")){
+    return showError("Only SELECT queries supported");
+  }
+
+  let rows=[...PATIENT];
+
+  // WHERE
+  let whereMatch = sql.match(/WHERE (.+?)(ORDER BY|$)/i);
+  if(whereMatch){
+    let cond = whereMatch[1].trim();
+    rows = rows.filter(r => evalCond(r, cond));
+  }
+
+  // ORDER BY
+  let orderMatch = sql.match(/ORDER BY (\w+)/i);
+  if(orderMatch){
+    let key = orderMatch[1];
+    rows.sort((a,b)=>a[key]>b[key]?1:-1);
+  }
+
+  display(rows);
+}
+
+// ================= CONDITION PARSER =================
+function evalCond(row, cond){
+
+  // BETWEEN
+  let between = cond.match(/(\w+) BETWEEN '([^']+)' AND '([^']+)'/i);
+  if(between){
+    let k=between[1];
+    return row[k] >= between[2] && row[k] <= between[3];
+  }
+
+  // IN
+  let inMatch = cond.match(/(\w+) IN \(([^)]+)\)/i);
+  if(inMatch){
+    let k=inMatch[1];
+    let vals=inMatch[2].replace(/'/g,'').split(',');
+    return vals.includes(row[k]);
+  }
+
+  // LIKE
+  let like = cond.match(/(\w+) LIKE '(.+)'/i);
+  if(like){
+    let k=like[1];
+    let val=like[2].replace('%','');
+    return row[k].includes(val);
+  }
+
+  // =
+  let eq = cond.match(/(\w+) = '([^']+)'/i);
+  if(eq){
+    return row[eq[1]] == eq[2];
+  }
+
+  // <>
+  let ne = cond.match(/(\w+) <> (\d+)/i);
+  if(ne){
+    return row[ne[1]] != Number(ne[2]);
+  }
+
+  return true;
+}
+
+// ================= OUTPUT =================
+function display(rows){
+  let html="<table><tr><th>ID</th><th>Name</th></tr>";
+  rows.forEach(r=>{
+    html+=`<tr><td>${r.HospitalNumber}</td><td>${r.FirstName}</td></tr>`;
+  });
+  html+="</table>";
+  document.getElementById("output").innerHTML=html;
+}
+
+function showError(msg){
+  document.getElementById("output").innerHTML=`<div style="color:red">${msg}</div>`;
+}
+
+loadPreview();
 
 </script>
 
