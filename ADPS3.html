@@ -8,22 +8,18 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-
-/* BACKGROUND */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #1e3c72, #2a5298);
 }
 
-/* MAIN WRAPPER */
 .container {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
-/* SECTION TITLE */
 .section-title {
   margin: 30px 0 10px;
   font-size: 1.5em;
@@ -32,7 +28,6 @@ body {
   color: white;
 }
 
-/* CARD */
 .card {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -40,9 +35,13 @@ body {
   padding: 20px;
   margin-bottom: 15px;
   color: white;
+  transition: 0.3s;
 }
 
-/* BUTTONS */
+.card:hover {
+  transform: scale(1.02);
+}
+
 button {
   padding: 8px 12px;
   border-radius: 8px;
@@ -50,14 +49,12 @@ button {
   background: #00c6ff;
   color: white;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 button:hover {
   background: #0072ff;
 }
 
-/* INPUTS */
 input, textarea {
   width: 100%;
   padding: 10px;
@@ -66,13 +63,18 @@ input, textarea {
   margin-top: 10px;
 }
 
-/* RESULT */
-.result {
-  margin-top: 10px;
-  font-weight: bold;
+.correct { color: #00ff88; }
+.wrong { color: #ff4d4d; }
+
+.controls button {
+  margin-right: 10px;
+  background: #444;
 }
 
-/* SCORE BOX */
+.controls button:hover {
+  background: #00c6ff;
+}
+
 .score-box {
   background: rgba(0,0,0,0.3);
   padding: 10px;
@@ -80,20 +82,16 @@ input, textarea {
   margin-bottom: 20px;
   color: white;
 }
-
 </style>
-
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header class="hero">
   <h1>💻 Computer Science Learning Hub</h1>
   <p>Prepared by Ravi Raju</p>
 </header>
 
-<!-- NAV -->
 <nav class="navbar">
   <a href="index.html">Home</a>
   <a href="#learn">Learning</a>
@@ -102,31 +100,12 @@ input, textarea {
 
 <div class="container">
 
-<!-- SCORE -->
 <div class="score-box">
   Score: <span id="score">0</span> / <span id="total">0</span>
 </div>
 
-<!-- LEARNING SECTION -->
-<h2 id="learn" class="section-title">📘 Learning</h2>
-
-<div class="card">
-<h3>Sequential</h3>
-<p>Steps executed one after another.</p>
-</div>
-
-<div class="card">
-<h3>Selection (IF)</h3>
-<p>Used for decision making.</p>
-</div>
-
-<div class="card">
-<h3>Iteration (Loops)</h3>
-<p>FOR, WHILE, REPEAT UNTIL</p>
-</div>
-
-<!-- PRACTICE -->
 <h2 id="practice" class="section-title">📝 Practice Questions</h2>
+
 <div class="controls">
   <button onclick="filterQuestions('all')">All</button>
   <button onclick="filterQuestions('mcq')">MCQ</button>
@@ -134,582 +113,114 @@ input, textarea {
   <button onclick="filterQuestions('open')">Open</button>
 </div>
 
-
 <div id="questions"></div>
-
 <button onclick="showScore()">Show Final Score</button>
 
 </div>
 
-<!-- FOOTER -->
 <footer>
 <p>Prepared for MES Cairo</p>
 </footer>
 
 <script>
 
-// =========================
-// CONFIG
-// =========================
 let score = 0;
 let answered = new Set();
 
-// =========================
-// QUESTION BANK (ADD HERE)
-// =========================
 const questions = [
 
-/* =========================
-   SECTION A: MCQ
-========================= */
-{
-type: "mcq",
-question: "What does a trace table show?",
-options: ["Program output only", "Variable changes step by step", "Errors only", "Flowchart symbols"],
-answer: 1
-},
+{type:"mcq",question:"Which loop is counter-controlled?",options:["WHILE","REPEAT","FOR","IF"],answer:2},
+{type:"mcq",question:"Which is selection?",options:["FOR","WHILE","IF","REPEAT"],answer:2},
+{type:"mcq",question:"Which loop always executes at least once?",options:["FOR","WHILE","REPEAT UNTIL","IF"],answer:2},
+{type:"fill",question:"What does MOD return?",answer:["remainder","mod"]},
+{type:"fill",question:"Which loop is best for validation?",answer:["repeat","repeat until"]},
 
-{
-type: "mcq",
-question: "Which symbol represents decision in flowchart?",
-options: ["Rectangle", "Diamond", "Circle", "Arrow"],
-answer: 1
-},
-{
-type: "mcq",
-question: "Which loop is counter-controlled?",
-options: ["WHILE", "REPEAT", "FOR", "IF"],
-answer: 2
-},
+{type:"open",question:"Write pseudocode to check EVEN or ODD.",mark:"INPUT N\nIF N MOD 2 = 0 THEN OUTPUT 'EVEN' ELSE OUTPUT 'ODD' ENDIF"},
 
-{
-type: "mcq",
-question: "Which is selection?",
-options: ["FOR", "WHILE", "IF", "REPEAT"],
-answer: 2
-},
-{
-type: "mcq",
-question: "Which structure is used for decision making?",
-options: ["FOR", "WHILE", "IF", "REPEAT"],
-answer: 2
-},
+{type:"open",question:"Write pseudocode to find total of 5 numbers.",mark:"Total ← 0\nFOR i ← 1 TO 5\n INPUT x\n Total ← Total + x\nNEXT i\nOUTPUT Total"},
 
-{
-type: "mcq",
-question: "Which loop always executes at least once?",
-options: ["FOR", "WHILE", "REPEAT UNTIL", "IF"],
-answer: 2
-},
+{type:"fill",question:"Trace: Total=0; FOR i=1 to 3 → Total?",answer:"6"},
+{type:"mcq",question:"Flowchart decision symbol?",options:["Rectangle","Diamond","Circle","Arrow"],answer:1},
 
-{
-type: "mcq",
-question: "Which loop is entry controlled?",
-options: ["FOR", "WHILE", "REPEAT", "CASE"],
-answer: 1
-},
-
-/* =========================
-   SECTION B: FILL
-========================= */
-{
-type: "fill",
-question: "Which loop is best for validation?",
-answer: "repeat"
-},
-{
-type: "fill",
-question: "What does MOD return?",
-answer: "remainder"
-},
-
-{
-type: "fill",
-question: "What keyword is used to display output in pseudocode?",
-answer: "output"
-},
-
-{
-type: "fill",
-question: "Which operator is used for remainder?",
-answer: "mod"
-},
-
-/* =========================
-   SECTION C: OPEN
-========================= */
-{
-type: "open",
-question: "Write pseudocode to input a number and output if it is EVEN or ODD.",
-mark: "INPUT N\nIF N MOD 2 = 0 THEN\n OUTPUT \"EVEN\"\nELSE\n OUTPUT \"ODD\"\nENDIF"
-},
-
-{
-type: "open",
-question: "Write pseudocode to input 5 numbers and output their total.",
-mark: "Total ← 0\nFOR i ← 1 TO 5\n INPUT x\n Total ← Total + x\nNEXT i\nOUTPUT Total"
-},
-
-{
-type: "open",
-question: "Write pseudocode to input 2 numbers and output their sum.",
-mark: "INPUT A\nINPUT B\nOUTPUT A + B"
-}
+{type:"mcq",question:"MOD 10 of 27?",options:["2","7","10","17"],answer:1}
 
 ];
 
-/* =========================
-   SECTION D: PSEUDOCODE (CORE)
-========================= */
+function loadQuestions(filter="all"){
+  const container=document.getElementById("questions");
+  container.innerHTML="";
 
-{
-type: "open",
-question: "Write pseudocode to input 3 numbers and output their average.",
-mark: "INPUT A\nINPUT B\nINPUT C\nAvg ← (A + B + C) / 3\nOUTPUT Avg"
-},
+  let filtered=questions.filter(q=>filter==="all"||q.type===filter);
+  document.getElementById("total").textContent=filtered.length;
 
-{
-type: "open",
-question: "Write pseudocode to input a number and output if it is POSITIVE, NEGATIVE or ZERO.",
-mark: "INPUT N\nIF N > 0 THEN\n OUTPUT \"POSITIVE\"\nELSEIF N < 0 THEN\n OUTPUT \"NEGATIVE\"\nELSE\n OUTPUT \"ZERO\"\nENDIF"
-},
+  filtered.forEach((q,i)=>{
+    let html=`<div class="card"><p><b>Q${i+1}:</b> ${q.question}</p>`;
 
-{
-type: "open",
-question: "Write pseudocode to output numbers from 1 to 10 using FOR loop.",
-mark: "FOR i ← 1 TO 10\n OUTPUT i\nNEXT i"
-},
-
-{
-type: "open",
-question: "Write pseudocode to output even numbers from 2 to 20.",
-mark: "FOR i ← 2 TO 20 STEP 2\n OUTPUT i\nNEXT i"
-},
-
-{
-type: "open",
-question: "Write pseudocode to input numbers until 0 is entered and output total.",
-mark: "Total ← 0\nINPUT x\nWHILE x ≠ 0\n Total ← Total + x\n INPUT x\nENDWHILE\nOUTPUT Total"
-},
-
-{
-type: "open",
-question: "Write pseudocode to validate input between 1 and 10.",
-mark: "REPEAT\n INPUT N\nUNTIL N ≥ 1 AND N ≤ 10"
-},
-
-{
-type: "open",
-question: "Write pseudocode to count how many numbers out of 5 are greater than 10.",
-mark: "Count ← 0\nFOR i ← 1 TO 5\n INPUT x\n IF x > 10 THEN\n  Count ← Count + 1\n ENDIF\nNEXT i\nOUTPUT Count"
-},
-
-{
-type: "open",
-question: "Write pseudocode to find maximum of 5 numbers.",
-mark: "Max ← -9999\nFOR i ← 1 TO 5\n INPUT x\n IF x > Max THEN\n  Max ← x\n ENDIF\nNEXT i\nOUTPUT Max"
-},
-
-{
-type: "open",
-question: "Write pseudocode to find minimum of 5 numbers.",
-mark: "Min ← 9999\nFOR i ← 1 TO 5\n INPUT x\n IF x < Min THEN\n  Min ← x\n ENDIF\nNEXT i\nOUTPUT Min"
-},
-
-{
-type: "open",
-question: "Write pseudocode to output multiplication table of a number.",
-mark: "INPUT N\nFOR i ← 1 TO 10\n OUTPUT N * i\nNEXT i"
-}
-  
-/* =========================
-   SECTION E: DEBUGGING
-========================= */
-
-{
-type: "open",
-question: "Identify error: Total is not initialised before loop.",
-mark: "Add: Total ← 0 before loop"
-},
-
-{
-type: "open",
-question: "Identify error: WHILE loop missing increment.",
-mark: "Add: i ← i + 1 inside loop"
-},
-
-{
-type: "open",
-question: "Identify error: wrong comparison in validation.",
-mark: "Use ≥ and ≤ instead of > and <"
-},
-
-{
-type: "open",
-question: "Fix: IF N MOD 2 = 1 THEN EVEN.",
-mark: "Correct: N MOD 2 = 0 for EVEN"
-},
-
-{
-type: "open",
-question: "Identify error: loop runs 11 times instead of 10.",
-mark: "Use correct range: 1 to 10"
-},
-
-{
-type: "open",
-question: "Identify error: wrong variable updated.",
-mark: "Update correct variable (e.g. Count instead of Mark)"
-},
-
-{
-type: "open",
-question: "Fix infinite loop issue in WHILE.",
-mark: "Ensure loop variable is updated"
-}
-  
-/* =========================
-   SECTION F: TRACE TABLES
-========================= */
-
-{
-type: "fill",
-question: "Trace: Total=0; FOR i=1 to 3: Total=Total+i. Final Total?",
-answer: "6"
-},
-
-{
-type: "fill",
-question: "Trace: i=2; WHILE i<=8 step 2. How many outputs?",
-answer: "4"
-},
-
-{
-type: "fill",
-question: "Trace: x=5; REPEAT x=x-1 UNTIL x=2. Final x?",
-answer: "2"
-},
-
-{
-type: "fill",
-question: "Trace: Sum=0; FOR i=1 to 4: Sum += i*2. Final?",
-answer: "20"
-},
-
-{
-type: "fill",
-question: "Trace: Count=0; i=1..5, count evens. Final?",
-answer: "2"
-}
-  
-/* =========================
-   SECTION G: CONCEPT + FLOWCHART
-========================= */
-
-{
-type: "mcq",
-question: "Flowchart decision symbol is?",
-options: ["Rectangle", "Diamond", "Circle", "Arrow"],
-answer: 1
-},
-
-{
-type: "mcq",
-question: "Input/output symbol is?",
-options: ["Rectangle", "Diamond", "Parallelogram", "Circle"],
-answer: 2
-},
-
-{
-type: "mcq",
-question: "Which is iteration?",
-options: ["IF", "FOR", "CASE", "INPUT"],
-answer: 1
-},
-
-{
-type: "mcq",
-question: "Which is exit-controlled loop?",
-options: ["FOR", "WHILE", "REPEAT UNTIL", "IF"],
-answer: 2
-},
-
-{
-type: "mcq",
-question: "Algorithm is?",
-options: ["Code", "Step-by-step solution", "Hardware", "Network"],
-answer: 1
-}
-  
-/* =========================
-   SECTION H: ADVANCED PSEUDOCODE
-========================= */
-
-{
-type: "open",
-question: "Write pseudocode to count how many numbers are negative in 10 inputs.",
-mark: "Count ← 0\nFOR i ← 1 TO 10\n INPUT x\n IF x < 0 THEN\n  Count ← Count + 1\n ENDIF\nNEXT i\nOUTPUT Count"
-},
-
-{
-type: "open",
-question: "Write pseudocode to calculate factorial of a number.",
-mark: "INPUT N\nFact ← 1\nFOR i ← 1 TO N\n Fact ← Fact * i\nNEXT i\nOUTPUT Fact"
-},
-
-{
-type: "open",
-question: "Write pseudocode to check if a number is divisible by 5 and 3.",
-mark: "INPUT N\nIF N MOD 5 = 0 AND N MOD 3 = 0 THEN\n OUTPUT \"YES\"\nELSE\n OUTPUT \"NO\"\nENDIF"
-},
-
-{
-type: "open",
-question: "Write pseudocode to reverse a number (logic explanation acceptable).",
-mark: "Repeatedly extract last digit and rebuild number (algorithm explanation acceptable)"
-},
-
-{
-type: "open",
-question: "Write pseudocode to find average of numbers until -1 is entered.",
-mark: "Total ← 0\nCount ← 0\nINPUT x\nWHILE x ≠ -1\n Total ← Total + x\n Count ← Count + 1\n INPUT x\nENDWHILE\nOUTPUT Total / Count"
-}
-  
-/* =========================
-   SECTION I: ADVANCED TRACE
-========================= */
-
-{
-type: "fill",
-question: "Trace: P=2; loop doubles 4 times. Final P?",
-answer: "32"
-},
-
-{
-type: "fill",
-question: "Trace: A=1; FOR i=1 to 5: A=A+i. Final A?",
-answer: "16"
-},
-
-{
-type: "fill",
-question: "Trace: x=10; subtract 3 until <4. Final x?",
-answer: "1"
-},
-
-{
-type: "mcq",
-question: "Which error causes infinite loop?",
-options: ["Wrong variable type", "Missing update", "Extra output", "Wrong input"],
-answer: 1
-},
-
-{
-type: "mcq",
-question: "Which is best for unknown iterations?",
-options: ["FOR", "WHILE", "CASE", "INPUT"],
-answer: 1
-}
-  
-/* =========================
-   SECTION J: EXAM STYLE
-========================= */
-
-{
-type: "open",
-question: "Explain difference between FOR and WHILE loop.",
-mark: "FOR = fixed iterations, WHILE = condition-based iterations"
-},
-
-{
-type: "open",
-question: "Explain what a trace table is used for.",
-mark: "To track variable changes step by step during execution"
-},
-
-{
-type: "open",
-question: "Describe validation and verification.",
-mark: "Validation = sensible data, Verification = correct data entry"
-},
-
-{
-type: "open",
-question: "Explain why REPEAT UNTIL is useful.",
-mark: "Ensures loop runs at least once and is good for validation"
-},
-
-{
-type: "open",
-question: "Explain difference between selection and iteration.",
-mark: "Selection = decision, Iteration = repetition"
-}
-  
-/* =========================
-   SECTION K: QUICK MCQs
-========================= */
-
-{
-type: "mcq",
-question: "MOD 10 of 27 is?",
-options: ["2", "7", "10", "17"],
-answer: 1
-},
-
-{
-type: "mcq",
-question: "Which loop checks condition first?",
-options: ["REPEAT", "WHILE", "FOR", "CASE"],
-answer: 1
-},
-
-{
-type: "mcq",
-question: "Which is NOT a loop?",
-options: ["FOR", "WHILE", "IF", "REPEAT"],
-answer: 2
-},
-
-{
-type: "mcq",
-question: "What is initialisation?",
-options: ["Ending program", "Setting starting value", "Looping", "Output"],
-answer: 1
-},
-
-{
-type: "mcq",
-question: "Which is logical operator?",
-options: ["+", "MOD", "AND", "="],
-answer: 2
-}
-// =========================
-// LOAD QUESTIONS
-// =========================
-function loadQuestions() {
-  const container = document.getElementById("questions");
-  container.innerHTML = "";
-
-  document.getElementById("total").textContent = questions.length;
-
-  questions.forEach((q, i) => {
-
-    let html = `<div class="card">
-    <p><b>Q${i+1}:</b> ${q.question}</p>`;
-
-    // MCQ
-    if(q.type === "mcq") {
-      q.options.forEach((opt, index) => {
-        html += `
-        <label>
-          <input type="radio" name="q${i}" value="${index}">
-          ${opt}
-        </label><br>`;
+    if(q.type==="mcq"){
+      q.options.forEach((opt,index)=>{
+        html+=`<label><input type="radio" name="q${i}" value="${index}">${opt}</label><br>`;
       });
-
-      html += `<button onclick="checkMCQ(${i})">Check</button>`;
+      html+=`<button onclick="checkMCQ(${i})">Check</button>`;
     }
 
-    // FILL
-    else if(q.type === "fill") {
-      html += `
-      <input type="text" id="input${i}" placeholder="Your answer">
-      <button onclick="checkFill(${i})">Check</button>`;
+    else if(q.type==="fill"){
+      html+=`<input id="input${i}"><button onclick="checkFill(${i})">Check</button>`;
     }
 
-    // OPEN
-    else {
-      html += `
-      <textarea id="input${i}" placeholder="Write your answer"></textarea>
-      <button onclick="showMark(${i})">Show Mark Scheme</button>`;
+    else{
+      html+=`<textarea id="input${i}"></textarea><button onclick="showMark(${i})">Show Answer</button>`;
     }
 
-    html += `<div id="result${i}" class="result"></div></div>`;
-
-    container.innerHTML += html;
+    html+=`<div id="result${i}"></div></div>`;
+    container.innerHTML+=html;
   });
 }
 
-// =========================
-// CHECK MCQ
-// =========================
-function checkMCQ(i) {
-  const selected = document.querySelector(`input[name="q${i}"]:checked`);
-  const result = document.getElementById(`result${i}`);
+function filterQuestions(type){ loadQuestions(type); }
 
-  if (!selected) {
-    result.innerHTML = "⚠️ Select an answer";
-    return;
+function checkMCQ(i){
+  const selected=document.querySelector(`input[name="q${i}"]:checked`);
+  const result=document.getElementById(`result${i}`);
+
+  if(!selected){ result.innerHTML="⚠️ Select"; return; }
+
+  if(Number(selected.value)===questions[i].answer){
+    result.innerHTML="<span class='correct'>✅ Correct</span>";
+    if(!answered.has(i)){score++;answered.add(i);}
+  }else{
+    result.innerHTML="<span class='wrong'>❌ Incorrect</span>";
   }
-
-  if (Number(selected.value) === questions[i].answer) {
-    result.innerHTML = "✅ Correct";
-    if (!answered.has(i)) {
-      score++;
-      answered.add(i);
-    }
-  } else {
-    result.innerHTML = "❌ Incorrect";
-  }
-
   updateScore();
 }
 
-// =========================
-// CHECK FILL
-// =========================
-function checkFill(i) {
-  const val = document.getElementById(`input${i}`).value.toLowerCase().trim();
-  const result = document.getElementById(`result${i}`);
+function checkFill(i){
+  const val=document.getElementById(`input${i}`).value.toLowerCase().trim();
+  const correct=questions[i].answer;
+  const result=document.getElementById(`result${i}`);
 
-  const correct = questions[i].answer;
+  let ok=Array.isArray(correct)?correct.includes(val):val===correct;
 
-  let isCorrect = false;
-
-  if (Array.isArray(correct)) {
-    isCorrect = correct.includes(val);
-  } else {
-    isCorrect = val === correct.toLowerCase();
+  if(ok){
+    result.innerHTML="<span class='correct'>✅ Correct</span>";
+    if(!answered.has(i)){score++;answered.add(i);}
+  }else{
+    result.innerHTML="<span class='wrong'>❌ Incorrect</span>";
   }
-
-  if (isCorrect) {
-    result.innerHTML = "✅ Correct";
-    if (!answered.has(i)) {
-      score++;
-      answered.add(i);
-    }
-  } else {
-    result.innerHTML = "❌ Incorrect";
-  }
-
   updateScore();
 }
 
-// =========================
-// SHOW MARK SCHEME
-// =========================
-function showMark(i) {
-  const result = document.getElementById(`result${i}`);
-  result.innerHTML = "<pre>" + questions[i].mark + "</pre>";
+function showMark(i){
+  document.getElementById(`result${i}`).innerHTML="<pre>"+questions[i].mark+"</pre>";
 }
 
-// =========================
-// UPDATE SCORE
-// =========================
-function updateScore() {
-  document.getElementById("score").textContent = score;
+function updateScore(){
+  document.getElementById("score").textContent=score;
 }
 
-// =========================
-// FINAL SCORE
-// =========================
-function showScore() {
-  alert(`Final Score: ${score} / ${questions.length}`);
+function showScore(){
+  alert(`Final Score: ${score}/${questions.length}`);
 }
 
-// =========================
-// INIT
-// =========================
 loadQuestions();
 
 </script>
