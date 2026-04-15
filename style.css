@@ -1,86 +1,131 @@
+
+/* =========================
+   GLOBAL BASE
+========================= */
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
   background: #f4f6f9;
+  color: #333;
 }
+
+/* =========================
+   HEADER (HERO)
+========================= */
 .hero {
   text-align: center;
-  padding: 20px;
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #667eea, #00c6ff);
   color: white;
 }
 
+.hero h1 {
+  margin: 0;
+  font-size: 2.2em;
+}
+
+.hero p {
+  margin-top: 5px;
+  font-size: 1em;
+  opacity: 0.9;
+}
+
+/* =========================
+   NAVBAR
+========================= */
 .navbar {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  background: #111;
-  padding: 10px;
+  gap: 25px;
+  background: #1a1a2e;
+  padding: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar a {
   color: white;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
+  transition: 0.3s;
 }
 
 .navbar a:hover {
   color: #00c6ff;
 }
 
-footer {
-  text-align: center;
-  padding: 15px;
-  background: #000;
-  color: white;
-  margin-top: 20px;
-}
-/* HEADER */
-header {
-  background: linear-gradient(135deg, #1e90ff, #00c6ff);
-  color: white;
-  text-align: center;
-  padding: 30px;
+/* =========================
+   CONTAINER
+========================= */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
 }
 
-/* NAVBAR */
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  background: #222;
-  padding: 10px;
+/* =========================
+   SECTION TITLES
+========================= */
+.section-title {
+  margin: 30px 0 15px;
+  font-size: 1.5em;
+  border-left: 5px solid #667eea;
+  padding-left: 10px;
 }
 
-nav a {
+/* =========================
+   CARDS
+========================= */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
   color: white;
-  text-decoration: none;
-  padding: 8px 15px;
-  border-radius: 5px;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-nav a:hover {
-  background: #1e90ff;
+button:hover {
+  transform: scale(1.05);
 }
 
-/* WELCOME */
-.welcome {
-  margin: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
+/* =========================
+   INPUTS
+========================= */
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  font-size: 0.95em;
 }
 
-/* CARDS */
-.card {
-  margin: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
+textarea {
+  min-height: 100px;
 }
 
-/* FILTER BUTTONS */
+/* =========================
+   FILTER CONTROLS
+========================= */
 .controls {
   margin-bottom: 20px;
 }
@@ -94,59 +139,76 @@ nav a:hover {
   background: #00c6ff;
 }
 
-/* QUESTION CARD */
-.card {
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-/* CORRECT / WRONG */
-.correct {
-  color: #00ff88;
-}
-
-.wrong {
-  color: #ff4d4d;
-}
-
-/* TEXTAREA STYLE */
-textarea {
-  min-height: 100px;
-}
-
-/* HEADER FIX */
-.hero h1 {
-  font-size: 2em;
-}
-/* GRID BUTTONS */
+/* =========================
+   GRID (INDEX PAGE)
+========================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
 }
 
 .grid a {
   display: block;
-  background: #1e90ff;
+  background: #667eea;
   color: white;
   text-align: center;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
   text-decoration: none;
   transition: 0.3s;
 }
 
 .grid a:hover {
-  background: #0056b3;
+  background: #00c6ff;
 }
 
-/* FOOTER */
+/* =========================
+   FEEDBACK COLORS
+========================= */
+.correct {
+  color: #00c851;
+  font-weight: bold;
+}
+
+.wrong {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+/* =========================
+   SCORE BOX
+========================= */
+.score-box {
+  background: #1a1a2e;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* =========================
+   FOOTER
+========================= */
 footer {
   text-align: center;
   padding: 15px;
-  background: #222;
+  background: #1a1a2e;
   color: white;
+  margin-top: 30px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hero h1 {
+    font-size: 1.6em;
+  }
 }
