@@ -1,108 +1,80 @@
-body{
-font-family: Arial, Helvetica, sans-serif;
-margin:0;
-background:#fff44f;   /* Lemon yellow */
-color:#006400;        /* Dark green text */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f6f9;
 }
 
-/* Header */
-
-header{
-background:#006400;
-color:#fff44f;
-text-align:center;
-padding:20px;
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #1e90ff, #00c6ff);
+  color: white;
+  text-align: center;
+  padding: 30px;
 }
 
-/* Navigation bar */
-
-nav{
-background:#228B22;
-padding:10px;
-text-align:center;
+/* NAVBAR */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background: #222;
+  padding: 10px;
 }
 
-nav a{
-color:#fff44f;
-text-decoration:none;
-font-weight:bold;
-margin:10px;
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: 0.3s;
 }
 
-nav a:hover{
-text-decoration:underline;
+nav a:hover {
+  background: #1e90ff;
 }
 
-/* Section styling */
-
-section{
-padding:30px;
-margin:20px;
-background:white;
-border-radius:8px;
+/* WELCOME */
+.welcome {
+  margin: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
 }
 
-/* Footer */
-
-footer{
-background:#006400;
-color:#fff44f;
-text-align:center;
-padding:20px;
-margin-top:40px;
-width:100%;
-}
-/* Layout for sidebar */
-
-.container{
-display:flex;
+/* CARDS */
+.card {
+  margin: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
 }
 
-/* Sidebar */
-
-.sidebar{
-width:250px;
-background:#228B22;
-padding:20px;
-height:100vh;
-overflow:auto;
+/* GRID BUTTONS */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
 }
 
-.sidebar a{
-display:block;
-color:#fff44f;
-padding:8px;
-text-decoration:none;
-font-weight:bold;
+.grid a {
+  display: block;
+  background: #1e90ff;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s;
 }
 
-.sidebar a:hover{
-background:#006400;
+.grid a:hover {
+  background: #0056b3;
 }
 
-/* Lesson content */
-
-.content{
-flex:1;
-padding:30px;
-}
-/* Lesson navigation buttons */
-
-.lesson-nav{
-display:flex;
-justify-content:space-between;
-margin-top:40px;
-}
-
-.lesson-nav a{
-background:#006400;
-color:#fff44f;
-padding:10px 20px;
-text-decoration:none;
-border-radius:5px;
-font-weight:bold;
-}
-
-.lesson-nav a:hover{
-background:#228B22;
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #222;
+  color: white;
 }
