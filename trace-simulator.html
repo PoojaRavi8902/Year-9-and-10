@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Trace Table Simulator</title>
+
+<style>
+
+body{
+background:#FFFACD;
+font-family:Arial;
+color:green;
+text-align:center;
+}
+
+.container{
+width:70%;
+margin:auto;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid green;
+padding:10px;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+background:green;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+input{
+padding:8px;
+margin:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+<a href="index.html">
+<button>⬅ Back to Learning Hub</button>
+</a>
+<h1>Trace Table Simulator</h1>
+<h3>Prepared by Ravi Raju – War footing</h3>
+
+<div class="container">
+
+<p>
+This simulator demonstrates how variables change inside a loop.
+</p>
+
+<label>Start Value:</label>
+<input id="start" type="number" value="1">
+
+<label>End Value:</label>
+<input id="end" type="number" value="5">
+
+<button onclick="generateTrace()">Generate Trace Table</button>
+
+<table id="traceTable">
+
+<tr>
+<th>Iteration</th>
+<th>i</th>
+<th>Total</th>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+function generateTrace(){
+
+let start=parseInt(document.getElementById("start").value);
+let end=parseInt(document.getElementById("end").value);
+
+let table=document.getElementById("traceTable");
+
+table.innerHTML="<tr><th>Iteration</th><th>i</th><th>Total</th></tr>";
+
+let total=0;
+let iteration=1;
+
+for(let i=start;i<=end;i++){
+
+total=total+i;
+
+let row=table.insertRow();
+
+row.insertCell(0).innerHTML=iteration;
+row.insertCell(1).innerHTML=i;
+row.insertCell(2).innerHTML=total;
+
+iteration++;
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

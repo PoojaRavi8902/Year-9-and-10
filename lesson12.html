@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Lesson 12- CASE Structure</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Computer Science Learning Hub</h1>
+<h3>Prepared by Ravi Raju</h3>
+</header>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h3>Lessons</h3>
+
+<a href="lesson01.html">1 Introduction</a>
+<a href="lesson02.html">2 Problem Analysis</a>
+<a href="lesson03.html">3 Decomposition</a>
+<a href="lesson04.html">4 Abstraction</a>
+<a href="lesson05.html">5 Algorithms</a>
+<a href="lesson06.html">6 Algorithm Representation</a>
+<a href="lesson07.html">7 Pseudocode</a>
+<a href="lesson08.html">8 Arithmetic Operations</a>
+<a href="lesson09.html">9 Logical Operators</a>
+<a href="lesson10.html">10 Sequence</a>
+<a href="lesson11.html">11 Selection</a>
+<a href="lesson12.html">12 CASE Structure</a>
+<a href="lesson13.html">13 Iteration</a>
+<a href="lesson14.html">14 Count Controlled Loops</a>
+<a href="lesson15.html">15 Condition Controlled Loops</a>
+<a href="lesson16.html">16 Nested Loops</a>
+<a href="lesson17.html">17 Variables</a>
+<a href="lesson18.html">18 Data Types</a>
+<a href="lesson19.html">19 Constants</a>
+<a href="lesson20.html">20 Arrays</a>
+<a href="lesson21.html">21 Array Processing</a>
+<a href="lesson22.html">22 Trace Tables</a>
+<a href="lesson23.html">23 Linear Search</a>
+<a href="lesson24.html">24 Counting Algorithms</a>
+<a href="lesson25.html">25 Total Algorithms</a>
+<a href="lesson26.html">26 Maximum Minimum</a>
+<a href="lesson27.html">27 Validation</a>
+<a href="lesson28.html">28 Verification</a>
+<a href="lesson29.html">29 Test Data</a>
+<a href="lesson30.html">30 Debugging</a>
+
+</div>
+
+<!-- Lesson Content -->
+
+<div class="content">
+
+<h2>Lesson 12 – CASE Structure</h2>
+
+<h3>Lesson Objectives</h3>
+
+<ul>
+<li>Understand the purpose of the CASE structure</li>
+<li>Learn how CASE is used for multiple decisions</li>
+<li>Compare CASE statements with IF statements</li>
+</ul>
+
+<h3>What is the CASE Structure?</h3>
+
+<p>
+The CASE structure is used when a program must choose between several possible actions depending on the value of a variable.
+</p>
+
+<p>
+Instead of writing many IF statements, the CASE structure allows multiple conditions to be handled in a clear and organised way.
+</p>
+
+<h3>General Structure</h3>
+
+<pre>
+CASE variable OF
+    value1 : statements
+    value2 : statements
+    value3 : statements
+    OTHERWISE : statements
+ENDCASE
+</pre>
+
+<p>
+The program checks the value of the variable and executes the corresponding statements.
+</p>
+
+<h3>Example</h3>
+
+<p>
+Algorithm to display the name of a day based on a number.
+</p>
+
+<pre>
+INPUT dayNumber
+
+CASE dayNumber OF
+    1 : OUTPUT "Monday"
+    2 : OUTPUT "Tuesday"
+    3 : OUTPUT "Wednesday"
+    4 : OUTPUT "Thursday"
+    5 : OUTPUT "Friday"
+    OTHERWISE : OUTPUT "Invalid day"
+ENDCASE
+</pre>
+
+<h3>How the CASE Structure Works</h3>
+
+<ol>
+<li>The program evaluates the value of the variable.</li>
+<li>The program searches for a matching case.</li>
+<li>The corresponding instructions are executed.</li>
+<li>If no case matches, the OTHERWISE option is executed.</li>
+</ol>
+
+<h3>CASE vs IF Statements</h3>
+
+<table border="1" cellpadding="8">
+
+<tr>
+<th>CASE Structure</th>
+<th>IF Structure</th>
+</tr>
+
+<tr>
+<td>Used for multiple fixed values</td>
+<td>Used for conditions and comparisons</td>
+</tr>
+
+<tr>
+<td>Clear and organised</td>
+<td>Can become complex with many conditions</td>
+</tr>
+
+<tr>
+<td>Often easier to read</td>
+<td>More flexible for complex conditions</td>
+</tr>
+
+</table>
+
+<h3>Advantages of CASE</h3>
+
+<ul>
+<li>Improves readability of algorithms</li>
+<li>Reduces the need for many IF statements</li>
+<li>Makes decision-making structures clearer</li>
+</ul>
+
+<h3>Practice Questions</h3>
+
+<ol>
+<li>What is the purpose of the CASE structure?</li>
+<li>Write pseudocode using CASE to display a message for numbers 1, 2, or 3.</li>
+<li>Explain one advantage of using CASE instead of multiple IF statements.</li>
+</ol>
+
+<h3>Exam Style Question</h3>
+
+<p>
+Write pseudocode using a CASE structure that inputs a number between 1 and 3 and displays a corresponding colour:
+</p>
+
+<ul>
+<li>1 – Red</li>
+<li>2 – Blue</li>
+<li>3 – Green</li>
+</ul>
+</pre>
+<div class="lesson-nav">
+
+<a href="lesson11.html">⬅ Previous Lesson</a>
+
+<a href="lesson13.html">Next Lesson ➜</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+<p>IGCSE Computer Science – Algorithm Design and Problem Solving</p>
+<p>Prepared by Ravi Raju – War footing</p>
+
+</footer>
+
+</body>
+
+</html>

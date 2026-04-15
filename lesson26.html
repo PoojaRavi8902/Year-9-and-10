@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Lesson 26 – Maximum/Minimum</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Computer Science Learning Hub</h1>
+<h3>Prepared by Ravi Raju</h3>
+</header>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h3>Lessons</h3>
+
+<a href="lesson01.html">1 Introduction</a>
+<a href="lesson02.html">2 Problem Analysis</a>
+<a href="lesson03.html">3 Decomposition</a>
+<a href="lesson04.html">4 Abstraction</a>
+<a href="lesson05.html">5 Algorithms</a>
+<a href="lesson06.html">6 Algorithm Representation</a>
+<a href="lesson07.html">7 Pseudocode</a>
+<a href="lesson08.html">8 Arithmetic Operations</a>
+<a href="lesson09.html">9 Logical Operators</a>
+<a href="lesson10.html">10 Sequence</a>
+<a href="lesson11.html">11 Selection</a>
+<a href="lesson12.html">12 CASE Structure</a>
+<a href="lesson13.html">13 Iteration</a>
+<a href="lesson14.html">14 Count Controlled Loops</a>
+<a href="lesson15.html">15 Condition Controlled Loops</a>
+<a href="lesson16.html">16 Nested Loops</a>
+<a href="lesson17.html">17 Variables</a>
+<a href="lesson18.html">18 Data Types</a>
+<a href="lesson19.html">19 Constants</a>
+<a href="lesson20.html">20 Arrays</a>
+<a href="lesson21.html">21 Array Processing</a>
+<a href="lesson22.html">22 Trace Tables</a>
+<a href="lesson23.html">23 Linear Search</a>
+<a href="lesson24.html">24 Counting Algorithms</a>
+<a href="lesson25.html">25 Total Algorithms</a>
+<a href="lesson26.html">26 Maximum Minimum</a>
+<a href="lesson27.html">27 Validation</a>
+<a href="lesson28.html">28 Verification</a>
+<a href="lesson29.html">29 Test Data</a>
+<a href="lesson30.html">30 Debugging</a>
+
+</div>
+
+<!-- Lesson Content -->
+
+<div class="content">
+
+<h2>Lesson 26 – Maximum and Minimum Algorithms</h2>
+
+<h3>Lesson Objectives</h3>
+
+<ul>
+<li>Understand how to find the largest value in a dataset</li>
+<li>Understand how to find the smallest value in a dataset</li>
+<li>Apply comparison techniques in algorithms</li>
+</ul>
+
+<h3>What is a Maximum Algorithm?</h3>
+
+<p>
+A maximum algorithm is used to find the largest value in a set of numbers.
+</p>
+
+<p>
+The algorithm compares each value with the current maximum value and updates the maximum when a larger value is found.
+</p>
+
+<h3>Basic Maximum Algorithm</h3>
+
+<pre>
+max ← numbers[1]
+
+FOR i ← 2 TO n
+
+    IF numbers[i] > max THEN
+        max ← numbers[i]
+    ENDIF
+
+NEXT i
+
+OUTPUT max
+</pre>
+
+<p>
+The variable <b>max</b> always stores the largest value found so far.
+</p>
+
+<h3>Example Dataset</h3>
+
+<pre>
+Numbers: 45  78  62  90  33
+</pre>
+
+<p>
+The largest value is:
+</p>
+
+<pre>
+90
+</pre>
+
+<h3>Minimum Algorithm</h3>
+
+<p>
+A minimum algorithm works in a similar way but finds the smallest value.
+</p>
+
+<pre>
+min ← numbers[1]
+
+FOR i ← 2 TO n
+
+    IF numbers[i] < min THEN
+        min ← numbers[i]
+    ENDIF
+
+NEXT i
+
+OUTPUT min
+</pre>
+
+<h3>Example Dataset</h3>
+
+<pre>
+Numbers: 45  78  62  90  33
+</pre>
+
+<p>
+The smallest value is:
+</p>
+
+<pre>
+33
+</pre>
+
+<h3>How the Algorithm Works</h3>
+
+<ol>
+<li>Start by assuming the first value is the maximum (or minimum).</li>
+<li>Compare each remaining value.</li>
+<li>Update the variable if a larger (or smaller) value is found.</li>
+<li>Display the final result.</li>
+</ol>
+
+<h3>Why These Algorithms Are Important</h3>
+
+<ul>
+<li>Used to analyse data</li>
+<li>Help identify highest and lowest values</li>
+<li>Commonly used in real-world applications</li>
+</ul>
+
+<h3>Practice Questions</h3>
+
+<ol>
+<li>What is a maximum algorithm?</li>
+<li>Write pseudocode to find the largest value in an array.</li>
+<li>Write pseudocode to find the smallest value in an array.</li>
+</ol>
+
+<h3>Exam Style Question</h3>
+
+<p>
+An array called <b>temperatures</b> stores the temperatures recorded during a week.
+Write pseudocode to find the highest temperature.
+</p>
+</pre>
+<div class="lesson-nav">
+
+<a href="lesson25.html">⬅ Previous Lesson</a>
+
+<a href="lesson27.html">Next Lesson ➜</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+<p>IGCSE Computer Science – Algorithm Design and Problem Solving</p>
+<p>Prepared by Ravi Raju – War footing</p>
+
+</footer>
+
+</body>
+
+</html>

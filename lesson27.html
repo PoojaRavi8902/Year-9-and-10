@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Lesson 27 – Validation</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Computer Science Learning Hub</h1>
+<h3>Prepared by Ravi Raju</h3>
+</header>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h3>Lessons</h3>
+
+<a href="lesson01.html">1 Introduction</a>
+<a href="lesson02.html">2 Problem Analysis</a>
+<a href="lesson03.html">3 Decomposition</a>
+<a href="lesson04.html">4 Abstraction</a>
+<a href="lesson05.html">5 Algorithms</a>
+<a href="lesson06.html">6 Algorithm Representation</a>
+<a href="lesson07.html">7 Pseudocode</a>
+<a href="lesson08.html">8 Arithmetic Operations</a>
+<a href="lesson09.html">9 Logical Operators</a>
+<a href="lesson10.html">10 Sequence</a>
+<a href="lesson11.html">11 Selection</a>
+<a href="lesson12.html">12 CASE Structure</a>
+<a href="lesson13.html">13 Iteration</a>
+<a href="lesson14.html">14 Count Controlled Loops</a>
+<a href="lesson15.html">15 Condition Controlled Loops</a>
+<a href="lesson16.html">16 Nested Loops</a>
+<a href="lesson17.html">17 Variables</a>
+<a href="lesson18.html">18 Data Types</a>
+<a href="lesson19.html">19 Constants</a>
+<a href="lesson20.html">20 Arrays</a>
+<a href="lesson21.html">21 Array Processing</a>
+<a href="lesson22.html">22 Trace Tables</a>
+<a href="lesson23.html">23 Linear Search</a>
+<a href="lesson24.html">24 Counting Algorithms</a>
+<a href="lesson25.html">25 Total Algorithms</a>
+<a href="lesson26.html">26 Maximum Minimum</a>
+<a href="lesson27.html">27 Validation</a>
+<a href="lesson28.html">28 Verification</a>
+<a href="lesson29.html">29 Test Data</a>
+<a href="lesson30.html">30 Debugging</a>
+
+</div>
+
+<!-- Lesson Content -->
+
+<div class="content">
+
+<h2>Lesson 27 – Validation</h2>
+
+<h3>Lesson Objectives</h3>
+
+<ul>
+<li>Understand the concept of validation</li>
+<li>Learn how validation checks input data</li>
+<li>Design algorithms that prevent invalid data entry</li>
+</ul>
+
+<h3>What is Validation?</h3>
+
+<p>
+Validation is the process of checking whether input data is sensible, reasonable, and acceptable before it is processed by a program.
+</p>
+
+<p>
+Validation helps prevent incorrect or invalid data from entering a system.
+</p>
+
+<h3>Example</h3>
+
+<p>
+Suppose a program asks the user to enter their age.
+The age cannot be negative.
+</p>
+
+<pre>
+INPUT age
+
+IF age < 0 THEN
+    OUTPUT "Invalid age"
+ENDIF
+</pre>
+
+<h3>Common Types of Validation</h3>
+
+<ul>
+<li><b>Range check</b> – Ensures the value is within a specific range.</li>
+<li><b>Length check</b> – Ensures data has the correct number of characters.</li>
+<li><b>Format check</b> – Ensures data follows a specific pattern.</li>
+<li><b>Presence check</b> – Ensures that data is not left empty.</li>
+</ul>
+
+<h3>Example – Range Check</h3>
+
+<p>
+Marks must be between 0 and 100.
+</p>
+
+<pre>
+INPUT mark
+
+IF mark < 0 OR mark > 100 THEN
+    OUTPUT "Invalid mark"
+ENDIF
+</pre>
+
+<h3>Example – Presence Check</h3>
+
+<pre>
+INPUT name
+
+IF name = "" THEN
+    OUTPUT "Name cannot be empty"
+ENDIF
+</pre>
+
+<h3>Example – Using Validation with Loops</h3>
+
+<p>
+Programs often repeat input until valid data is entered.
+</p>
+
+<pre>
+REPEAT
+    INPUT age
+UNTIL age >= 0
+</pre>
+
+<h3>Why Validation is Important</h3>
+
+<ul>
+<li>Prevents incorrect data entry</li>
+<li>Improves reliability of programs</li>
+<li>Ensures accurate results</li>
+</ul>
+
+<h3>Practice Questions</h3>
+
+<ol>
+<li>What is validation?</li>
+<li>Explain the purpose of a range check.</li>
+<li>Write pseudocode that ensures a number entered is positive.</li>
+</ol>
+
+<h3>Exam Style Question</h3>
+
+<p>
+Write pseudocode that asks the user to enter a mark between 0 and 100.
+The program must continue asking until a valid mark is entered.
+</p>
+<div class="lesson-nav">
+
+<a href="lesson26.html">⬅ Previous Lesson</a>
+
+<a href="lesson28.html">Next Lesson ➜</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+<p>IGCSE Computer Science – Algorithm Design and Problem Solving</p>
+<p>Prepared by Ravi Raju – War footing</p>
+
+</footer>
+
+</body>
+
+</html>

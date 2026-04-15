@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Lesson 22 – Trace Tables</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Computer Science Learning Hub</h1>
+<h3>Prepared by Ravi Raju</h3>
+</header>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h3>Lessons</h3>
+
+<a href="lesson01.html">1 Introduction</a>
+<a href="lesson02.html">2 Problem Analysis</a>
+<a href="lesson03.html">3 Decomposition</a>
+<a href="lesson04.html">4 Abstraction</a>
+<a href="lesson05.html">5 Algorithms</a>
+<a href="lesson06.html">6 Algorithm Representation</a>
+<a href="lesson07.html">7 Pseudocode</a>
+<a href="lesson08.html">8 Arithmetic Operations</a>
+<a href="lesson09.html">9 Logical Operators</a>
+<a href="lesson10.html">10 Sequence</a>
+<a href="lesson11.html">11 Selection</a>
+<a href="lesson12.html">12 CASE Structure</a>
+<a href="lesson13.html">13 Iteration</a>
+<a href="lesson14.html">14 Count Controlled Loops</a>
+<a href="lesson15.html">15 Condition Controlled Loops</a>
+<a href="lesson16.html">16 Nested Loops</a>
+<a href="lesson17.html">17 Variables</a>
+<a href="lesson18.html">18 Data Types</a>
+<a href="lesson19.html">19 Constants</a>
+<a href="lesson20.html">20 Arrays</a>
+<a href="lesson21.html">21 Array Processing</a>
+<a href="lesson22.html">22 Trace Tables</a>
+<a href="lesson23.html">23 Linear Search</a>
+<a href="lesson24.html">24 Counting Algorithms</a>
+<a href="lesson25.html">25 Total Algorithms</a>
+<a href="lesson26.html">26 Maximum Minimum</a>
+<a href="lesson27.html">27 Validation</a>
+<a href="lesson28.html">28 Verification</a>
+<a href="lesson29.html">29 Test Data</a>
+<a href="lesson30.html">30 Debugging</a>
+
+</div>
+
+<!-- Lesson Content -->
+
+<div class="content">
+
+<h2>Lesson 22 – Trace Tables</h2>
+
+<h3>Lesson Objectives</h3>
+
+<ul>
+<li>Understand what trace tables are</li>
+<li>Learn how to trace algorithms step by step</li>
+<li>Track changes in variable values during program execution</li>
+</ul>
+
+<h3>What is a Trace Table?</h3>
+
+<p>
+A trace table is a tool used to track how the values of variables change during the execution of an algorithm.
+</p>
+
+<p>
+It helps programmers and students understand how an algorithm works step by step.
+</p>
+
+<p>
+Trace tables are commonly used to test algorithms and identify logical errors.
+</p>
+
+<h3>Example Algorithm</h3>
+
+<pre>
+total ← 0
+
+FOR i ← 1 TO 3
+    total ← total + i
+NEXT i
+
+OUTPUT total
+</pre>
+
+<h3>Trace Table</h3>
+
+<table border="1" cellpadding="8">
+
+<tr>
+<th>i</th>
+<th>total</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>6</td>
+</tr>
+
+</table>
+
+<p>
+The trace table shows how the value of <b>total</b> changes during each iteration of the loop.
+</p>
+
+<h3>Steps for Creating a Trace Table</h3>
+
+<ol>
+<li>Identify all variables used in the algorithm.</li>
+<li>Create columns for each variable.</li>
+<li>Execute the algorithm step by step.</li>
+<li>Record the values of variables after each step.</li>
+</ol>
+
+<h3>Example with an Array</h3>
+
+<pre>
+total ← 0
+
+FOR i ← 1 TO 3
+    total ← total + marks[i]
+NEXT i
+</pre>
+
+<h3>Trace Table</h3>
+
+<table border="1" cellpadding="8">
+
+<tr>
+<th>i</th>
+<th>marks[i]</th>
+<th>total</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>70</td>
+<td>70</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>80</td>
+<td>150</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>60</td>
+<td>210</td>
+</tr>
+
+</table>
+
+<h3>Why Trace Tables Are Important</h3>
+
+<ul>
+<li>Help understand how algorithms work</li>
+<li>Help detect logical errors</li>
+<li>Useful for testing and debugging programs</li>
+</ul>
+
+<h3>Practice Questions</h3>
+
+<ol>
+<li>What is a trace table?</li>
+<li>Why are trace tables useful when analysing algorithms?</li>
+<li>Create a trace table for the following algorithm:</li>
+</ol>
+
+<pre>
+sum ← 0
+
+FOR i ← 1 TO 3
+    sum ← sum + 2
+NEXT i
+</pre>
+
+<h3>Exam Style Question</h3>
+
+<p>
+Complete the trace table for the following algorithm.
+</p>
+
+<pre>
+total ← 0
+
+FOR i ← 1 TO 4
+    total ← total + i
+NEXT i
+</pre>
+</pre>
+<div class="lesson-nav">
+
+<a href="lesson21.html">⬅ Previous Lesson</a>
+
+<a href="lesson23.html">Next Lesson ➜</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+<p>IGCSE Computer Science – Algorithm Design and Problem Solving</p>
+<p>Prepared by Ravi Raju – War footing</p>
+
+</footer>
+
+</body>
+
+</html>

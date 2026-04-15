@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Lesson 15- Condition Controlled Loop</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Computer Science Learning Hub</h1>
+<h3>Prepared by Ravi Raju</h3>
+</header>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h3>Lessons</h3>
+
+<a href="lesson01.html">1 Introduction</a>
+<a href="lesson02.html">2 Problem Analysis</a>
+<a href="lesson03.html">3 Decomposition</a>
+<a href="lesson04.html">4 Abstraction</a>
+<a href="lesson05.html">5 Algorithms</a>
+<a href="lesson06.html">6 Algorithm Representation</a>
+<a href="lesson07.html">7 Pseudocode</a>
+<a href="lesson08.html">8 Arithmetic Operations</a>
+<a href="lesson09.html">9 Logical Operators</a>
+<a href="lesson10.html">10 Sequence</a>
+<a href="lesson11.html">11 Selection</a>
+<a href="lesson12.html">12 CASE Structure</a>
+<a href="lesson13.html">13 Iteration</a>
+<a href="lesson14.html">14 Count Controlled Loops</a>
+<a href="lesson15.html">15 Condition Controlled Loops</a>
+<a href="lesson16.html">16 Nested Loops</a>
+<a href="lesson17.html">17 Variables</a>
+<a href="lesson18.html">18 Data Types</a>
+<a href="lesson19.html">19 Constants</a>
+<a href="lesson20.html">20 Arrays</a>
+<a href="lesson21.html">21 Array Processing</a>
+<a href="lesson22.html">22 Trace Tables</a>
+<a href="lesson23.html">23 Linear Search</a>
+<a href="lesson24.html">24 Counting Algorithms</a>
+<a href="lesson25.html">25 Total Algorithms</a>
+<a href="lesson26.html">26 Maximum Minimum</a>
+<a href="lesson27.html">27 Validation</a>
+<a href="lesson28.html">28 Verification</a>
+<a href="lesson29.html">29 Test Data</a>
+<a href="lesson30.html">30 Debugging</a>
+
+</div>
+
+<!-- Lesson Content -->
+
+<div class="content">
+
+<h2>Lesson 15 – Condition-Controlled Loops (WHILE Loops)</h2>
+
+<h3>Lesson Objectives</h3>
+
+<ul>
+<li>Understand the concept of condition-controlled loops</li>
+<li>Learn how WHILE loops work in algorithms</li>
+<li>Design algorithms that repeat instructions while a condition is true</li>
+</ul>
+
+<h3>What is a Condition-Controlled Loop?</h3>
+
+<p>
+A condition-controlled loop repeats a set of instructions while a specific condition remains true.
+</p>
+
+<p>
+Unlike count-controlled loops, the number of repetitions is not known before the loop starts.
+The loop continues until the condition becomes false.
+</p>
+
+<h3>WHILE Loop Structure</h3>
+
+<pre>
+WHILE condition DO
+    statements
+ENDWHILE
+</pre>
+
+<p>
+The condition is checked before the loop executes.
+If the condition is TRUE, the statements inside the loop are executed.
+If the condition is FALSE, the loop stops.
+</p>
+
+<h3>Example 1 – Counting Numbers</h3>
+
+<pre>
+i ← 1
+
+WHILE i <= 5 DO
+    OUTPUT i
+    i ← i + 1
+ENDWHILE
+</pre>
+
+<p>
+This algorithm displays numbers from 1 to 5.
+</p>
+
+<h3>How the Loop Works</h3>
+
+<ol>
+<li>The variable i starts with the value 1.</li>
+<li>The program checks the condition i ≤ 5.</li>
+<li>If the condition is TRUE, the loop executes.</li>
+<li>The value of i increases.</li>
+<li>The condition is checked again.</li>
+</ol>
+
+<h3>Example 2 – Password Checking</h3>
+
+<pre>
+INPUT password
+
+WHILE password <> "secret" DO
+    OUTPUT "Incorrect password"
+    INPUT password
+ENDWHILE
+
+OUTPUT "Access granted"
+</pre>
+
+<p>
+The program continues asking for the password until the correct one is entered.
+</p>
+
+<h3>Advantages of WHILE Loops</h3>
+
+<ul>
+<li>Useful when the number of repetitions is unknown</li>
+<li>Allows programs to respond to changing conditions</li>
+<li>Widely used in interactive programs</li>
+</ul>
+
+<h3>Practice Questions</h3>
+
+<ol>
+<li>What is a condition-controlled loop?</li>
+<li>Write pseudocode using a WHILE loop to display numbers from 1 to 10.</li>
+<li>Explain when a WHILE loop should be used.</li>
+</ol>
+
+<h3>Exam Style Question</h3>
+
+<p>
+Write pseudocode using a WHILE loop that asks the user to enter numbers until the number 0 is entered.
+</p>
+</pre>
+<div class="lesson-nav">
+
+<a href="lesson14.html">⬅ Previous Lesson</a>
+
+<a href="lesson16.html">Next Lesson ➜</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+<p>IGCSE Computer Science – Algorithm Design and Problem Solving</p>
+<p>Prepared by Ravi Raju – War footing</p>
+
+</footer>
+
+</body>
+
+</html>
